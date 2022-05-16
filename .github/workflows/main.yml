@@ -40,6 +40,8 @@ jobs:
       
       - name: install latex   
         uses: r-lib/actions/setup-tinytex@v1
+        
+      - name: install ubuntu dependencies  
         run: sudo apt-get update -y && sudo apt-get -y install cmake
       
       - name: Install rmarkdown
