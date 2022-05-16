@@ -16,7 +16,6 @@ permissions:
 jobs:
   render_pdf:
     runs-on: ubuntu-latest
-    #container: r-base:4.1.3
     container: rocker/tidyverse
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
@@ -32,14 +31,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-renv-
             
-      - name: install dependencies
-        uses: r-lib/actions/setup-r@v1
-
       - name: install pandoc  
-        uses: r-lib/actions/setup-pandoc@v1
+        uses: r-lib/actions/setup-pandoc@v2
       
       - name: install latex   
-        uses: r-lib/actions/setup-tinytex@v1
+        uses: r-lib/actions/setup-tinytex@v2
         
       - name: install ubuntu dependencies  
         run: sudo apt-get update -y && sudo apt-get -y install cmake
