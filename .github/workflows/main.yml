@@ -38,7 +38,7 @@ jobs:
         run: Rscript -e 'install.packages("rmarkdown")'
         
       - name: Render my document to all types
-        run: Rscript -e 'rmarkdown::render("index.Rmd", output_format = "html_document")'
+        run: Rscript -e 'rmarkdown::render("test.Rmd", output_format = "all")'
 
       - name: Commit results
         run: |
