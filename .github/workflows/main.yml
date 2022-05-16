@@ -34,7 +34,7 @@ jobs:
             
       - name: install dependencies
         uses: r-lib/actions/setup-r@v1
-        
+
       - name: install pandoc  
         uses: r-lib/actions/setup-pandoc@v1
       
@@ -47,7 +47,7 @@ jobs:
         
       - name: Render my document to all types
         run: Rscript -e 'rmarkdown::render("index.Rmd", output_format = "html_document")'
-      
+
       - name: Commit results
         run: |
           git add index*
@@ -64,3 +64,4 @@ jobs:
 #  run: |
 #    bookdown::render_book("index.Rmd", "bookdown::pdf_book")
 #  shell: Rscript {0}
+
