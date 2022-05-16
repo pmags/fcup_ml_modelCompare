@@ -20,6 +20,9 @@ jobs:
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
+      - name: work around permission issue
+        run: git config --global --add safe.directory /__w/fcup_ml_modelCompare/fcup_ml_modelCompare
+      
       - name: Set up Git repository
         uses: actions/checkout@v2
       
