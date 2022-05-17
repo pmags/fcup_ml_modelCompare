@@ -3,9 +3,9 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">Title</a></li>
+        <li><a href="./">Machine Learning: compare different models</a></li>
       after: |
-        <li><a href="https://www.mosaic.pt" target="blank"></a></li>
+        <li><a href="https://www.fcup.up.pt" target="blank"></a></li>
     download: ["pdf"]
 bookdown::pdf_book:
   includes:

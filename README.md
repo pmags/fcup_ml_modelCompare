@@ -1,6 +1,6 @@
 # Readme
 
-Repositório para trabalho final da cadeira de Estatistica e Análise de Dados do Mestrado de Data Science 2022/2023
+Repositório para trabalho final da cadeira de Machine Learning do Mestrado de Data Science 2021/2023
 
 
 ## Instruções para construção do relatório
@@ -37,12 +37,3 @@ Para iniciar packages num novo ambiente `renv::restore()`
 
 **Novos projetos deverão ser criados diretamente do repositório github.**
 
-
-
-
-
-
-# Readme
-Project on how differenty models estimate the decision border on a classification problem
-
-https://hub.docker.com/r/asachet/rocker-tidymodels

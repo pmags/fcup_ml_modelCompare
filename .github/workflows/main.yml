@@ -16,7 +16,8 @@ permissions:
 jobs:
   render_pdf:
     runs-on: ubuntu-latest
-    container: rocker/tidyverse
+    container: asachet/rocker-tidymodels
+    #container: rocker/tidyverse
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
