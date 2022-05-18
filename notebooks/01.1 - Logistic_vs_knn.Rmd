@@ -1,0 +1,43 @@
+---
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+
+knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+
+```
+
+```{r}
+
+library(tidyverse)
+
+set.seed(123)
+
+dataset <- cbind(x1 = rnorm(100), x2 = rnorm(100))
+dataset_logistic <- as_tibble(dataset) %>% 
+ mutate(y = ifelse(x1 >= x2, "A", "B"))
+
+```
+
+```{r}
+
+ggplot(dataset_logistic, aes(x1, x2, color = y)) + geom_point()
+
+```
+
+```{r}
+
+dataset_knn <- as_tibble(dataset) %>% 
+ mutate(y = ifelse(x1 >= x2^2, "A", "B"))
+
+```
+
+
+```{r}
+
+ggplot(dataset_knn, aes(x1, x2, color = y)) + geom_point()
+
+```
