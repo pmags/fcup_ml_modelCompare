@@ -1,5 +1,5 @@
 # Readme
-
+Marta Ferreira
 Repositório para trabalho final da cadeira de Machine Learning do Mestrado de Data Science 2021/2023
 
 
