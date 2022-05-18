@@ -3,6 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+# logistic
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
