@@ -18,6 +18,7 @@ source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
 library(tidyverse)
 library(tidymodels)
 library(workflowsets)
+library(gridExtra)
 
 # set global seed for reproducibility
 set.seed(123)
@@ -37,7 +38,66 @@ decision_fun_quadratic <- function(x1, x2){
   return(res)
 }
 
+dataset_linear <- dataset_gen_runif(class_fun = decision_fun_linear)
+dataset_quadratic <- dataset_gen_runif(class_fun = decision_fun_quadratic)
+
+grid.arrange(
+  dataset_linear$border_plot, 
+  dataset_quadratic$border_plot, 
+  nrow = 1,
+  top = "Optimal decision border")
+
 ```
+
+
+```{r}
+
+l_mu <- list(
+  "g1" = c(5,3), 
+  "g2" = c(3,5)
+  )
+
+l_cvm <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
+  )
+
+l_w <- list(
+  "wg1" = 0.5, 
+  "wg2" = 0.5
+  )
+
+
+decision <- function(x1,x2, l_mu, l_cvm){
+  
+  l_mu <- list(
+    "g1" = c(5,3), 
+    "g2" = c(3,5)
+  )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(1,0,0,1),2,2),
+    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
+  )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 0.5
+  
+  
+  g <- case_when(
+    
+    px_0 > px_1 ~ 0,
+    TRUE ~ 1
+  )
+  
+  return(g)
+}
+
+dataset_gen_mvnorm(l_mu, l_cvm, l_w, class_fun = decision)
+
+
+```
+
 
 
 
