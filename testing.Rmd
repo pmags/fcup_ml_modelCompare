@@ -1,0 +1,125 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+
+sample2 <- replicate(2,runif(1000, min = 0, max = 10))
+
+dataset2 <-  as_tibble(sample2) %>% 
+    set_colnames(c("x1","x2"))
+
+class_fun = function(x)(1.2 * x - 5)^2 + 2
+
+dataset2 <- dataset2 %>% 
+        mutate(
+          border = purrr::map_dbl(x1, class_fun),
+          g = ifelse(x2 >= abs(border), 1, 0)
+        )
+
+ggplot(dataset2, aes(x1, x2, color = factor(g))) + 
+    geom_point(size = 3, shape = 1) +
+    scale_x_continuous(expand = c(0, 0)) + 
+    scale_y_continuous(expand = c(0, 0)) +
+    theme_bw() +
+    theme(
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      axis.text.y=element_blank(),
+      axis.ticks.y=element_blank(),
+      axis.line = element_blank(),
+      legend.position="bottom",
+      panel.border = element_rect(colour = "black", fill=NA, size=1),
+      panel.grid.minor = element_blank(),
+      panel.grid.major = element_blank(),
+      plot.caption.position = "plot"
+    ) +
+    scale_color_manual(values=c("orangered2", "navyblue"), name = "") 
+
+x1_range = seq(0, max(dataset2$x1), by = 0.1)
+x2_range = seq(0, max(dataset2$x2), by = 0.1)
+grid = expand.grid(x1 = x1_range, x2 = x2_range)
+
+# conditional probability of (x1, x2) given y = 0
+px_y0 <- ifelse(grid$x2 >= (1.2 * grid$x1 - 5)^2 + 2 , 1, 0  )
+# conditional probability of (x1, x2) given y = 1
+px_y1 <- ifelse(grid$x2 < (1.2 * grid$x1 - 5)^2 + 2  , 1, 0  )
+
+# Predicted class (posterior)
+  py0_x         <- px_y0 * 0.5
+  py1_x         <- px_y1 * (1 - 0.5)
+  optimal       <- py1_x - py0_x
+
+  predict_class <- ifelse(py0_x > py1_x, 0, 1)
+  
+  predict_df <- data.frame(
+    py0_x         = py0_x,
+    py1_x         = py1_x,
+    optimal       = optimal,
+    predict_class = predict_class
+  )
+  combine = cbind(grid,predict_df)  
+  
+  ggplot(dataset2, aes(x1, x2, color = factor(g))) + 
+    geom_point(size = 3, shape = 1) +
+    scale_x_continuous(expand = c(0, 0)) + 
+    scale_y_continuous(expand = c(0, 0)) +
+    theme_bw() +
+    theme(
+      #axis.text.x=element_blank(),
+      axis.ticks.x=element_blank(),
+      #axis.text.y=element_blank(),
+      axis.ticks.y=element_blank(),
+      axis.line = element_blank(),
+      legend.position="bottom",
+      panel.border = element_rect(colour = "black", fill=NA, size=1),
+      panel.grid.minor = element_blank(),
+      panel.grid.major = element_blank(),
+      plot.caption.position = "plot"
+    ) +
+    scale_color_manual(values=c("orangered2", "navyblue"), name = "") +
+    geom_contour(data = combine, aes(x = x1,y = x2, z = optimal), color = "black", linetype = "dashed", breaks = 0) 
+
+```
+
+```{r}
+
+decision_fun <- function(x1, x2){
+  res <- ifelse(x2 >= abs( (1.2 * x1 - 5)^2 + 2 ), 1, 0)
+  return(res)
+}
+
+res <- dataset_gen(class_fun = decision_fun)
+
+```
+
+
+```{r}
+
+decision_fun_linear <- function(x1, x2){
+  res <- ifelse(x2 >= x1, 1, 0)
+  return(res)
+}
+
+res_linear <- dataset_gen(class_fun = decision_fun_linear)
+
+
+```
+
+
+```{r}
+
+decision_fun_normal <- function(x1, x2){
+  
+  mu <- c(6,6)
+  cvar <- matrix(c(0.5,0,0,0.5), 2, 2)
+  p <- mvtnorm::pmvnorm(c(x1,x2), mean = mu, sigma = cvar)
+  
+  res <- ifelse(p[1] >= 0.1 & p[1] <= 0.5, 1, 0)
+  return(res)
+}
+
+res_normal <- dataset_gen(class_fun = decision_fun_normal)
+
+
+```

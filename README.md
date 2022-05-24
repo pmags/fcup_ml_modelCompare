@@ -37,3 +37,9 @@ Para iniciar packages num novo ambiente `renv::restore()`
 
 **Novos projetos deverão ser criados diretamente do repositório github.**
 
+Pedro: 8,4,2,6,7
+Marta: 3,5,9,10,11
+
+https://rpubs.com/ppaquay/65566
+https://stackoverflow.com/questions/24052643/how-to-plot-non-linear-decision-boundaries-with-a-grid-in-r
+https://mathformachines.com/posts/decision/

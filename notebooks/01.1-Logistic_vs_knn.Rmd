@@ -3,42 +3,72 @@ editor_options:
   chunk_output_type: console
 ---
 
-# logistic
+# logistic vs knn
+
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
 knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
 
 ```
 
-```{r}
-
+```{r include=FALSE}
+# libraries
 library(tidyverse)
+library(tidymodels)
+library(workflowsets)
 
+# set global seed for reproducibility
 set.seed(123)
 
-dataset <- cbind(x1 = rnorm(100), x2 = rnorm(100))
-dataset_logistic <- as_tibble(dataset) %>% 
- mutate(y = ifelse(x1 >= x2, "A", "B"))
-
-```
-
-```{r}
-
-ggplot(dataset_logistic, aes(x1, x2, color = y)) + geom_point()
-
-```
-
-```{r}
-
-dataset_knn <- as_tibble(dataset) %>% 
- mutate(y = ifelse(x1 >= x2^2, "A", "B"))
-
 ```
 
 
 ```{r}
 
-ggplot(dataset_knn, aes(x1, x2, color = y)) + geom_point()
+decision_fun_linear <- function(x1, x2){
+  res <- ifelse(x2 >= x1, 1, 0)
+  return(res)
+}
+
+decision_fun_quadratic <- function(x1, x2){
+  res <- ifelse(x2 >= abs( (1.2 * x1 - 5)^2 + 2 ), 1, 0)
+  return(res)
+}
 
 ```
+
+
+
+```{r eval=FALSE}
+# 1. specify the model
+logistic_reg_glm_spec <-
+  logistic_reg(mode = "classification") %>%
+  set_engine('glm') 
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(y ~ x1 + x2 , data = dataset_logistic)
+  
+# 3, Buildworkflow
+logit_wflow <- 
+  workflow() %>% 
+  add_model(logistic_reg_glm_spec) %>% 
+  add_recipe(preprocess)
+
+#4. Fit model
+fit_control <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
+
+folds <- vfold_cv(dataset_logistic, v = 10)
+
+logit_fit <- 
+  logit_wflow %>% 
+  fit_resamples(folds, verbose = TRUE, control = fit_control)
+
+
+#5. Performance metrics over the validation set
+collect_metrics(logit_fit)
+
+```
+ 
