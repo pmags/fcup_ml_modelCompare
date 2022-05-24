@@ -94,6 +94,10 @@ dataset_gen_unif <- function(size = 1000, nVar = 2, n_g = 2, class_fun = NULL, t
         predictclass = ifelse(py0_x > py1_x, 0, 1) # posterior class
       )
     
+    
+    
+    
+    
     grid <- cbind(grid, conditional_prb)
     
     dataset_plot_border <- dataset_plot +
@@ -129,7 +133,7 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
     
   }
   
-  sample <- do.call(rbind.data.frame,l_sample) %>% magrittr::set_colnames(paste0("x", 1:nVar))
+  sample <- do.call(rbind.data.frame,l_sample) %>% magrittr::set_colnames( paste0("x", 1:nVar) )
   
   dataset <- sample %>% 
     mutate(
@@ -168,6 +172,9 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
       g = purrr::pmap_dbl(., class_fun )
     )
   
+  grid_merge <- merge(grid, data.frame( class = 0:(n_g-1) ), all=TRUE)
+  
+  
   l <- list()
   
   for (i in 1:n_g) {
@@ -176,28 +183,32 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
     
   }
   
+ new_grid <- grid_merge %>% mutate(p_class = ifelse(class == g, 1, 0))
+  
+  
   # Calculates conditional probabilities
   conditional_prb = do.call(cbind.data.frame, l) %>% 
     set_colnames(paste0("px_G",0:(n_g-1))) %>% 
     mutate(
-      py0_x = treshold * px_G0,
-      py1_x = (1-treshold) * px_G1,
-      bayesborder = py1_x - py0_x ,
-      predictclass = ifelse(py0_x > py1_x, 0, 1) # posterior class
-    )
+       py0_x = treshold * px_G0,
+       py1_x = (1-treshold) * px_G1,
+       bayesborder = py1_x - py0_x ,
+       predictclass = ifelse(py0_x > py1_x, 0, 1) # posterior class
+     )
   
   grid <- cbind(grid, conditional_prb)
   
+  
   dataset_plot_border <- dataset_plot +
-    geom_contour(data = grid, aes(x = x1,y = x2, z = bayesborder), color = "black", linetype = "dashed", breaks = 0) 
+    geom_contour(data = grid, aes(x = x1, y = x2, z = bayesborder), color = "black", linetype = "dashed", breaks = 0)
+    #geom_contour(data = grid, aes(x = x1, y = x2, z = conditional_prb, color = g, group=g),  linetype = "dashed", breaks = 0)
+
+  dataset_plot_border_newgrid <- dataset_plot +
+    geom_contour(data = new_grid, aes(x = x1, y = x2, z = p_class, color = as.factor(class), group = as.factor(class)), bins = 2)
   
   # return results
   results <- list(dataset_plot = dataset_plot, dataset = dataset, cond = grid, border_plot = dataset_plot_border)
-  return(results)
-  
-  results <- list(dataset = dataset, dataset_plot = dataset_plot)
-  
-  return(results)
+  return( dataset_plot_border_newgrid )
   
 }
 
