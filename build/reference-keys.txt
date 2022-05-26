@@ -1,2 +1,4 @@
 example
-logistic
+logistic-vs-knn
+linear-discriminante-analysis-vs-decision-tree
+linear-discriminante-analysis-vs-decision-tree-1

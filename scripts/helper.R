@@ -31,7 +31,7 @@ dataset_gen_unif <- function(size = 1000, nVar = 2, n_g = 2, class_fun = NULL, t
     # Verify if inputs are correct data types
     stopifnot("A numeric value needs to be provided for the size of the dataset" = is.numeric(size))
     stopifnot("A numeric value needs to be provided for the number of variables to be produced" = is.numeric(nVar))
-    stopifnot("The classification function needs to be of the type function" = is.function(class_fun) & is.null(shape))
+    stopifnot("The classification function needs to be of the type function" = is.function(class_fun))
     stopifnot("Number of variables needs to be equal or above 2" = nVar >= 2)
     
     # Random sample of data
@@ -128,17 +128,17 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
   
   for (i in 1:length(l_mu)) {
     
-    s <- rmvnorm(size/length(l_w), l_mu[[i]], l_cvm[[i]])
+    s <- cbind(rmvnorm(size/length(l_w), l_mu[[i]], l_cvm[[i]]),i-1)
     l_sample[[i]] <- s
     
   }
   
-  sample <- do.call(rbind.data.frame,l_sample) %>% magrittr::set_colnames( paste0("x", 1:nVar) )
+  dataset <- do.call(rbind.data.frame,l_sample) %>% magrittr::set_colnames( c(paste0("x", 1:nVar),"g" ) )
   
-  dataset <- sample %>% 
-    mutate(
-      g = purrr::pmap_dbl(., class_fun )
-    )
+  # dataset <- sample %>% 
+  #   mutate(
+  #     g = purrr::pmap_dbl(., class_fun )
+  #   )
   
   # Creates plot
   dataset_plot <- ggplot(dataset, aes(x1, x2, color = factor(g))) + 
@@ -201,14 +201,14 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
   
   dataset_plot_border <- dataset_plot +
     geom_contour(data = grid, aes(x = x1, y = x2, z = bayesborder), color = "black", linetype = "dashed", breaks = 0)
-    #geom_contour(data = grid, aes(x = x1, y = x2, z = conditional_prb, color = g, group=g),  linetype = "dashed", breaks = 0)
-
+    
   dataset_plot_border_newgrid <- dataset_plot +
-    geom_contour(data = new_grid, aes(x = x1, y = x2, z = p_class, color = as.factor(class), group = as.factor(class)), bins = 2)
+    geom_contour(data = new_grid, aes(x = x1, y = x2, z = p_class, color = as.factor(class), group = as.factor(class)), bins = 1)
+  
   
   # return results
-  results <- list(dataset_plot = dataset_plot, dataset = dataset, cond = grid, border_plot = dataset_plot_border)
-  return( dataset_plot_border_newgrid )
+  results <- list(dataset_plot = dataset_plot, dataset = dataset, cond = new_grid, border_plot = dataset_plot_border_newgrid)
+  return( results )
   
 }
 

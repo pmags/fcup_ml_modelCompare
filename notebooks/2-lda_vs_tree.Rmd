@@ -1,0 +1,95 @@
+---
+editor_options:
+  chunk_output_type: console
+---
+
+# Linear Discriminante Analysis vs Decision tree
+
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+
+knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
+
+```
+
+```{r include=FALSE}
+# libraries
+library(tidyverse)
+library(tidymodels)
+library(workflowsets)
+library(gridExtra)
+
+# set global seed for reproducibility
+set.seed(123)
+
+```
+
+
+```{r}
+
+l_mu <- list(
+  "g1" = c(5,3), 
+  "g2" = c(3,5)
+  )
+
+l_cvm <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
+  )
+
+l_w <- list(
+  "wg1" = 0.5, 
+  "wg2" = 0.5
+  )
+
+
+decision <- function(x1,x2, l_mu, l_cvm){
+  
+  l_mu <- list(
+    "g1" = c(5,3), 
+    "g2" = c(3,5)
+  )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(1,0,0,1),2,2),
+    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
+  )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 0.5
+  
+  
+  g <- case_when(
+    
+    px_0 > px_1 ~ 0,
+    TRUE ~ 1
+  )
+  
+  return(g)
+}
+
+dataset_lda <- dataset_gen_mvnorm(l_mu, l_cvm, l_w, class_fun = decision)
+
+decision_fun_normal <- function(x1, x2){
+  
+  mu <- c(6,6)
+  cvar <- matrix(c(0.5,0,0,0.5), 2, 2)
+  p <- mvtnorm::pmvnorm(c(x1,x2), mean = mu, sigma = cvar)
+  
+  res <- ifelse(p[1] <= 0.5, 1, 0)
+  return(res)
+}
+
+dataset_dtree <- dataset_gen_unif(class_fun = decision_fun_normal)
+
+
+
+grid.arrange(
+  dataset_dtree$border_plot, 
+  dataset_lda$border_plot, 
+  nrow = 1,
+  top = "Optimal decision border")
+
+```
+

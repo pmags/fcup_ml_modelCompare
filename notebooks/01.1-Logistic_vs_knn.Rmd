@@ -5,7 +5,6 @@ editor_options:
 
 # logistic vs knn
 
-
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
 knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
@@ -26,6 +25,8 @@ set.seed(123)
 ```
 
 
+## Dataset definition  
+
 ```{r}
 
 decision_fun_linear <- function(x1, x2){
@@ -38,8 +39,8 @@ decision_fun_quadratic <- function(x1, x2){
   return(res)
 }
 
-dataset_linear <- dataset_gen_runif(class_fun = decision_fun_linear)
-dataset_quadratic <- dataset_gen_runif(class_fun = decision_fun_quadratic)
+dataset_linear <- dataset_gen_unif(class_fun = decision_fun_linear)
+dataset_quadratic <- dataset_gen_unif(class_fun = decision_fun_quadratic)
 
 grid.arrange(
   dataset_linear$border_plot, 
@@ -49,175 +50,52 @@ grid.arrange(
 
 ```
 
+## Model fitting
+
 
 ```{r}
 
-l_mu <- list(
-  "g1" = c(5,3), 
-  "g2" = c(3,5)
-  )
+# 0. Separate test and train
 
-l_cvm <- list( 
-  "covg1" = matrix(c(1,0,0,1),2,2),
-  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
-  )
+data_linear <- dataset_linear$dataset
+data_linear$g <- factor(data_linear$g)
 
-l_w <- list(
-  "wg1" = 0.5, 
-  "wg2" = 0.5
-  )
+split <- initial_split(data_linear, prop = 0.8)
+
+train_data_linear <- training(split)
+test_data_linear <- testing(split)
 
 
-decision <- function(x1,x2, l_mu, l_cvm){
-  
-  l_mu <- list(
-    "g1" = c(5,3), 
-    "g2" = c(3,5)
-  )
-  
-  l_cvm <- list( 
-    "covg1" = matrix(c(1,0,0,1),2,2),
-    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
-  )
-  
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 0.5
-  
-  
-  g <- case_when(
-    
-    px_0 > px_1 ~ 0,
-    TRUE ~ 1
-  )
-  
-  return(g)
-}
+data_quadratic <- dataset_quadratic$dataset
+data_quadratic$g <- factor(data_quadratic$g)
 
-dataset_gen_mvnorm(l_mu, l_cvm, l_w, class_fun = decision)
+split <- initial_split(data_quadratic, prop = 0.8)
 
+train_data_quadratic <- training(split)
+test_data_quadratic <- testing(split)
 
 ```
 
 
 
-```{r}
-
-l_mu_2 <- list(
-  "g1" = c(5,3), 
-  "g2" = c(3,5),
-  "g3" = c(1,2)
-  )
-
-l_cvm_2 <- list( 
-  "covg1" = matrix(c(1,0,0,1),2,2),
-  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
-  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
-  )
-
-l_w_2 <- list(
-  "wg1" = 1/3, 
-  "wg2" = 1/3,
-  "wg3" = 1/3
-  )
-
-
-decision_2 <- function(x1,x2, l_mu, l_cvm){
-  
-  l_mu <- list(
-    "g1" = c(5,3), 
-    "g2" = c(3,5),
-    "g3" = c(1,2)
-  )
-  
-  l_cvm <- list( 
-    "covg1" = matrix(c(1,0,0,1),2,2),
-    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
-    "covg3" = matrix(c(1,0.2,0.2,1),2,2)
-  )
-  
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]])  
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) 
-  px_2 <- dmvnorm(c(x1,x2), mean = l_mu[[3]], sigma = l_cvm[[3]])
-  
-  g <- case_when(
-    
-    px_0 > px_1 & px_0 > px_2 ~ 0,
-    px_1 > px_0 & px_1 > px_2 ~ 1,
-    px_2 > px_0 & px_2 > px_1 ~ 2,
-    TRUE ~ 2
-  )
-  
-  return(g)
-}
-
-y <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 3)
-
-
-
-
-```
+### Logistic regression
 
 
 ```{r}
 
- train <- rbind(iris3[1:25,1:2,1],
-                iris3[1:25,1:2,2],
-                iris3[1:25,1:2,3])
- cl <- factor(c(rep("s",25), rep("c",25), rep("v",25)))
+## Create workflow
+
+### Logistic regression -------------------------
+
  
-  require(MASS)
-
- test <- expand.grid(x=seq(min(train[,1]-1), max(train[,1]+1),
-                           by=0.1),
-                     y=seq(min(train[,2]-1), max(train[,2]+1), 
-                           by=0.1))
- require(class)
- classif <- knn(train, test, cl, k = 3, prob=TRUE)
- prob <- attr(classif, "prob")
- 
- require(dplyr)
-
- dataf <- bind_rows(mutate(test,
-                           prob=prob,
-                           cls="c",
-                           prob_cls=ifelse(classif==cls,
-                                           1, 0)),
-                    mutate(test,
-                           prob=prob,
-                           cls="v",
-                           prob_cls=ifelse(classif==cls,
-                                           1, 0)),
-                    mutate(test,
-                           prob=prob,
-                           cls="s",
-                           prob_cls=ifelse(classif==cls,
-                                           1, 0)))
- 
- require(ggplot2)
- ggplot(dataf) +
-    geom_point(aes(x=x, y=y, col=cls),
-               data = mutate(test, cls=classif),
-               size=1.2) + 
-    geom_contour(aes(x=x, y=y, z=prob_cls, group=cls, color=cls),
-                 bins=2,
-                 data=dataf) +
-    geom_point(aes(x=x, y=y, col=cls),
-               size=3,
-               data=data.frame(x=train[,1], y=train[,2], cls=cl))
-
-```
-
-
-
-```{r eval=FALSE}
 # 1. specify the model
 logistic_reg_glm_spec <-
   logistic_reg(mode = "classification") %>%
-  set_engine('glm') 
+  set_engine('glm', family = "binomial") 
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(y ~ x1 + x2 , data = dataset_logistic)
+  recipe(g ~ x1 + x2 , data = train_data_linear)
   
 # 3, Buildworkflow
 logit_wflow <- 
@@ -225,18 +103,103 @@ logit_wflow <-
   add_model(logistic_reg_glm_spec) %>% 
   add_recipe(preprocess)
 
-#4. Fit model
+# 4. Fit model
 fit_control <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
 
-folds <- vfold_cv(dataset_logistic, v = 10)
+folds_linear <- vfold_cv(train_data_linear, v = 10)
+folds_quadratic <- vfold_cv(train_data_quadratic, v = 10)
 
-logit_fit <- 
+
+logit_metrics_linear <- 
   logit_wflow %>% 
-  fit_resamples(folds, verbose = TRUE, control = fit_control)
+  fit_resamples(folds_linear, verbose = TRUE, control = fit_control)
+
+logit_metrics_quadratic <- 
+  logit_wflow %>% 
+  fit_resamples(folds_quadratic, verbose = TRUE, control = fit_control)
+
+# 5. Performance metrics over the validation set
+logit_metrics_linear <- collect_metrics(logit_metrics_linear, summarize = FALSE)
+logit_metrics_quadratic <- collect_metrics(logit_metrics_quadratic, summarize = FALSE)
 
 
-#5. Performance metrics over the validation set
-collect_metrics(logit_fit)
+# 6. Fits final model
+logit_linear_fit <- 
+  logit_wflow %>% 
+  fit(train_data_linear)
+
+logit_linear_model <- extract_fit_parsnip(logit_linear_fit)
+
+logit_quadratic_fit <- 
+  logit_wflow %>% 
+  fit(train_data_quadratic)
+
+logit_quadratic_model <- extract_fit_parsnip(logit_quadratic_fit)
 
 ```
+
+
  
+### KNN
+
+```{r}
+
+### Knn--------------- -------------------------
+
+# 1. specify the model
+nearest_neighbor_kknn_spec <-
+  nearest_neighbor() %>%
+  set_engine('kknn') %>%
+  set_mode('classification')
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = train_data)
+  
+# 3, Buildworkflow
+knn_wflow <- 
+  workflow() %>% 
+  add_model(nearest_neighbor_kknn_spec) %>% 
+  add_recipe(preprocess)
+
+```
+
+
+## Compare results
+
+
+```{r}
+
+linear_metrics_plot <- 
+  ggplot(logit_metrics_linear, aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+quadratic_metrics_plot <- 
+  ggplot(logit_metrics_quadratic, aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+grid.arrange(
+  linear_metrics_plot, 
+  quadratic_metrics_plot, 
+  nrow = 1,
+  top = "Logit applied to different datasets")
+
+```
+
+
+```{r}
+
+log_results <- 
+  test_data %>%
+  bind_cols(
+    predict(model, new_data = test_data),
+    predict(model, new_data = test_data, type = "prob")
+  ) %>% 
+  mutate(
+    .pred_1 = round(.pred_1, 3),
+    .pred_0 = round(.pred_0, 3)
+    )
+
+```

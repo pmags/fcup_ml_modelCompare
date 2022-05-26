@@ -1,3 +1,10 @@
+# additional files
+testing.Rmd
+testing.nb.html
+
+# Environment
+/remv/
+
 # History files
 .Rhistory
 .Rapp.history
