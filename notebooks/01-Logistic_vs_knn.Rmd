@@ -154,7 +154,7 @@ nearest_neighbor_kknn_spec <-
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(g ~ x1 + x2 , data = train_data)
+  recipe(g ~ x1 + x2 , data = train_data_linear)
   
 # 3, Buildworkflow
 knn_wflow <- 
@@ -189,7 +189,7 @@ grid.arrange(
 ```
 
 
-```{r}
+```{r eval=FALSE}
 
 log_results <- 
   test_data %>%

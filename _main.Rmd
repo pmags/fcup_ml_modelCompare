@@ -1,0 +1,506 @@
+--- 
+title: "Dataset compare between models"
+subtitle: "Machine Learning"
+author: "Marta Ferreira e Pedro Magalhães"
+date: "18/04/2022"
+site: bookdown::bookdown_site
+geometry: margin=2.5cm
+documentclass: article
+link-citations: yes
+pdf-cover-image: theme/images/cover.pdf
+cover-image: theme/images/cover.pdf
+---
+```{r include=FALSE, cache=FALSE}
+rm(list = ls(all = TRUE))
+```
+
+\newpage
+
+# Introduction {-}
+
+## Project structure {-}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elit pellentesque habitant morbi tristique senectus. Nunc mi ipsum faucibus vitae aliquet nec ullamcorper. Fames ac turpis egestas maecenas pharetra convallis. Mi quis hendrerit dolor magna eget est lorem ipsum dolor. Eleifend mi in nulla posuere sollicitudin. Massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada. Eget gravida cum sociis natoque penatibus et magnis dis parturient. Fames ac turpis egestas sed tempus urna et pharetra. Consectetur a erat nam at lectus urna duis. Tortor aliquam nulla facilisi cras fermentum odio eu feugiat. Ultrices dui sapien eget mi proin sed. Risus nec feugiat in fermentum posuere urna.
+
+Adipiscing at in tellus integer feugiat scelerisque varius morbi enim. Iaculis nunc sed augue lacus. Eu consequat ac felis donec et. Imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada. Ultrices dui sapien eget mi proin sed libero enim sed. Nam at lectus urna duis convallis convallis tellus id interdum. Congue mauris rhoncus aenean vel elit scelerisque mauris. Tortor consequat id porta nibh venenatis cras. Quam adipiscing vitae proin sagittis nisl rhoncus mattis rhoncus urna. Turpis tincidunt id aliquet risus feugiat. Pharetra magna ac placerat vestibulum lectus. Leo integer malesuada nunc vel. Viverra adipiscing at in tellus integer feugiat scelerisque. Risus feugiat in ante metus dictum at tempor commodo. Egestas maecenas pharetra convallis posuere morbi leo urna. Lobortis mattis aliquam faucibus purus in massa tempor. Adipiscing tristique risus nec feugiat in.
+
+Vel risus commodo viverra maecenas accumsan lacus vel. Egestas sed tempus urna et pharetra pharetra massa massa. Dictumst quisque sagittis purus sit amet volutpat consequat. Ut tellus elementum sagittis vitae et leo. Viverra justo nec ultrices dui sapien eget mi. Sit amet purus gravida quis. Habitant morbi tristique senectus et. Nec ullamcorper sit amet risus nullam. At quis risus sed vulputate odio. Facilisis volutpat est velit egestas dui id. Imperdiet massa tincidunt nunc pulvinar sapien. Turpis egestas integer eget aliquet nibh praesent tristique. Massa eget egestas purus viverra accumsan in nisl nisi. Sed augue lacus viverra vitae congue. Justo eget magna fermentum iaculis eu non diam. Venenatis a condimentum vitae sapien pellentesque habitant morbi tristique senectus. Quam nulla porttitor massa id neque aliquam vestibulum.
+
+At consectetur lorem donec massa. Phasellus faucibus scelerisque eleifend donec pretium vulputate. Convallis aenean et tortor at risus viverra. Vel pharetra vel turpis nunc eget. Orci porta non pulvinar neque laoreet suspendisse. Semper feugiat nibh sed pulvinar proin gravida. Eget magna fermentum iaculis eu non. Iaculis at erat pellentesque adipiscing. Amet est placerat in egestas erat imperdiet. Parturient montes nascetur ridiculus mus mauris vitae. Vestibulum lorem sed risus ultricies tristique nulla aliquet enim tortor. Laoreet sit amet cursus sit amet dictum sit. Libero id faucibus nisl tincidunt eget.
+
+Donec ultrices tincidunt arcu non sodales neque. A pellentesque sit amet porttitor eget dolor morbi. Amet nisl suscipit adipiscing bibendum. Sit amet est placerat in egestas erat imperdiet sed. Viverra justo nec ultrices dui sapien eget. Aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis. Venenatis cras sed felis eget. Non tellus orci ac auctor augue mauris augue neque. Et molestie ac feugiat sed lectus vestibulum. Purus viverra accumsan in nisl nisi scelerisque eu ultrices. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit. Ornare aenean euismod elementum nisi. Integer malesuada nunc vel risus. Facilisi cras fermentum odio eu feugiat pretium nibh ipsum consequat.
+
+## Approaches and Assumptions {-}
+
+
+
+\newpage
+
+<!--chapter:end:index.Rmd-->
+
+---
+editor_options:
+  chunk_output_type: console
+---
+```{r include=FALSE, cache=FALSE}
+rm(list = ls(all = TRUE))
+```
+
+# logistic vs knn
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+
+knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
+
+```
+
+```{r include=FALSE}
+# libraries
+library(tidyverse)
+library(tidymodels)
+library(workflowsets)
+library(gridExtra)
+
+# set global seed for reproducibility
+set.seed(123)
+
+```
+
+
+## Dataset definition  
+
+```{r}
+
+decision_fun_linear <- function(x1, x2){
+  res <- ifelse(x2 >= x1, 1, 0)
+  return(res)
+}
+
+decision_fun_quadratic <- function(x1, x2){
+  res <- ifelse(x2 >= abs( (1.2 * x1 - 5)^2 + 2 ), 1, 0)
+  return(res)
+}
+
+dataset_linear <- dataset_gen_unif(class_fun = decision_fun_linear)
+dataset_quadratic <- dataset_gen_unif(class_fun = decision_fun_quadratic)
+
+grid.arrange(
+  dataset_linear$border_plot, 
+  dataset_quadratic$border_plot, 
+  nrow = 1,
+  top = "Optimal decision border")
+
+```
+
+## Model fitting
+
+
+```{r}
+
+# 0. Separate test and train
+
+data_linear <- dataset_linear$dataset
+data_linear$g <- factor(data_linear$g)
+
+split <- initial_split(data_linear, prop = 0.8)
+
+train_data_linear <- training(split)
+test_data_linear <- testing(split)
+
+
+data_quadratic <- dataset_quadratic$dataset
+data_quadratic$g <- factor(data_quadratic$g)
+
+split <- initial_split(data_quadratic, prop = 0.8)
+
+train_data_quadratic <- training(split)
+test_data_quadratic <- testing(split)
+
+```
+
+
+
+### Logistic regression
+
+
+```{r}
+
+## Create workflow
+
+### Logistic regression -------------------------
+
+ 
+# 1. specify the model
+logistic_reg_glm_spec <-
+  logistic_reg(mode = "classification") %>%
+  set_engine('glm', family = "binomial") 
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = train_data_linear)
+  
+# 3, Buildworkflow
+logit_wflow <- 
+  workflow() %>% 
+  add_model(logistic_reg_glm_spec) %>% 
+  add_recipe(preprocess)
+
+# 4. Fit model
+fit_control <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
+
+folds_linear <- vfold_cv(train_data_linear, v = 10)
+folds_quadratic <- vfold_cv(train_data_quadratic, v = 10)
+
+
+logit_metrics_linear <- 
+  logit_wflow %>% 
+  fit_resamples(folds_linear, verbose = TRUE, control = fit_control)
+
+logit_metrics_quadratic <- 
+  logit_wflow %>% 
+  fit_resamples(folds_quadratic, verbose = TRUE, control = fit_control)
+
+# 5. Performance metrics over the validation set
+logit_metrics_linear <- collect_metrics(logit_metrics_linear, summarize = FALSE)
+logit_metrics_quadratic <- collect_metrics(logit_metrics_quadratic, summarize = FALSE)
+
+
+# 6. Fits final model
+logit_linear_fit <- 
+  logit_wflow %>% 
+  fit(train_data_linear)
+
+logit_linear_model <- extract_fit_parsnip(logit_linear_fit)
+
+logit_quadratic_fit <- 
+  logit_wflow %>% 
+  fit(train_data_quadratic)
+
+logit_quadratic_model <- extract_fit_parsnip(logit_quadratic_fit)
+
+```
+
+
+ 
+### KNN
+
+```{r}
+
+### Knn--------------- -------------------------
+
+# 1. specify the model
+nearest_neighbor_kknn_spec <-
+  nearest_neighbor() %>%
+  set_engine('kknn') %>%
+  set_mode('classification')
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = train_data_linear)
+  
+# 3, Buildworkflow
+knn_wflow <- 
+  workflow() %>% 
+  add_model(nearest_neighbor_kknn_spec) %>% 
+  add_recipe(preprocess)
+
+```
+
+
+## Compare results
+
+
+```{r}
+
+linear_metrics_plot <- 
+  ggplot(logit_metrics_linear, aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+quadratic_metrics_plot <- 
+  ggplot(logit_metrics_quadratic, aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+grid.arrange(
+  linear_metrics_plot, 
+  quadratic_metrics_plot, 
+  nrow = 1,
+  top = "Logit applied to different datasets")
+
+```
+
+
+```{r eval=FALSE}
+
+log_results <- 
+  test_data %>%
+  bind_cols(
+    predict(model, new_data = test_data),
+    predict(model, new_data = test_data, type = "prob")
+  ) %>% 
+  mutate(
+    .pred_1 = round(.pred_1, 3),
+    .pred_0 = round(.pred_0, 3)
+    )
+
+```
+
+<!--chapter:end:notebooks/01.1-Logistic_vs_knn.Rmd-->
+
+---
+editor_options:
+  chunk_output_type: console
+---
+```{r include=FALSE, cache=FALSE}
+rm(list = ls(all = TRUE))
+```
+
+# Linear Discriminante Analysis vs Decision tree
+
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+
+knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
+
+```
+
+```{r include=FALSE}
+# libraries
+library(tidyverse)
+library(tidymodels)
+library(workflowsets)
+library(gridExtra)
+
+# set global seed for reproducibility
+set.seed(123)
+
+```
+
+
+```{r}
+
+l_mu <- list(
+  "g1" = c(5,3), 
+  "g2" = c(3,5)
+  )
+
+l_cvm <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
+  )
+
+l_w <- list(
+  "wg1" = 0.5, 
+  "wg2" = 0.5
+  )
+
+
+decision <- function(x1,x2, l_mu, l_cvm){
+  
+  l_mu <- list(
+    "g1" = c(5,3), 
+    "g2" = c(3,5)
+  )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(1,0,0,1),2,2),
+    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
+  )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 0.5
+  
+  
+  g <- case_when(
+    
+    px_0 > px_1 ~ 0,
+    TRUE ~ 1
+  )
+  
+  return(g)
+}
+
+dataset_lda <- dataset_gen_mvnorm(l_mu, l_cvm, l_w, class_fun = decision)
+
+decision_fun_normal <- function(x1, x2){
+  
+  mu <- c(6,6)
+  cvar <- matrix(c(0.5,0,0,0.5), 2, 2)
+  p <- mvtnorm::pmvnorm(c(x1,x2), mean = mu, sigma = cvar)
+  
+  res <- ifelse(p[1] <= 0.5, 1, 0)
+  return(res)
+}
+
+dataset_dtree <- dataset_gen_unif(class_fun = decision_fun_normal)
+
+
+
+grid.arrange(
+  dataset_dtree$border_plot, 
+  dataset_lda$border_plot, 
+  nrow = 1,
+  top = "Optimal decision border")
+
+```
+
+
+<!--chapter:end:notebooks/2-lda_vs_tree.Rmd-->
+
+---
+editor_options:
+  chunk_output_type: console
+---
+```{r include=FALSE, cache=FALSE}
+rm(list = ls(all = TRUE))
+```
+
+# Linear Discriminante Analysis vs Decision tree
+
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+
+knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
+
+```
+
+```{r include=FALSE}
+# libraries
+library(tidyverse)
+library(tidymodels)
+library(workflowsets)
+library(gridExtra)
+
+# set global seed for reproducibility
+set.seed(123)
+
+```
+
+
+```{r}
+# QDA
+
+l_mu_2 <- list(
+  "g1" = c(5,3), 
+  "g2" = c(3,5),
+  "g3" = c(1,2)
+  )
+
+l_cvm_2 <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
+  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  )
+
+l_w_2 <- list(
+  "wg1" = 1/3, 
+  "wg2" = 1/3,
+  "wg3" = 1/3
+  )
+
+
+decision_2 <- function(x1,x2, l_mu, l_cvm){
+  
+  l_mu <- list(
+    "g1" = c(5,3), 
+    "g2" = c(3,5),
+    "g3" = c(1,2)
+  )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(1,0,0,1),2,2),
+    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
+    "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 1/3 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 1/3
+  px_2 <- dmvnorm(c(x1,x2), mean = l_mu[[3]], sigma = l_cvm[[3]]) * 1/3
+  
+  g <- case_when(
+    
+    px_0 > px_1 & px_0 > px_2 ~ 0,
+    px_1 > px_0 & px_1 > px_2 ~ 1,
+    px_2 > px_0 & px_2 > px_1 ~ 2,
+    TRUE ~ 2
+  )
+  
+  return(g)
+}
+
+dataset_qda <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 3)
+
+
+```
+
+```{r}
+
+l_mu_2 <- list(
+  "g1" = c(2,2), 
+  "g2" = c(2,2),
+  "g3" = c(2,2)
+  )
+
+l_cvm_2 <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,0,0,1),2,2),
+  "covg3" = matrix(c(1,0,0,1),2,2)
+  )
+
+l_w_2 <- list(
+  "wg1" = 1/3, 
+  "wg2" = 1/3,
+  "wg3" = 1/3
+  )
+
+
+decision_2 <- function(x1,x2, l_mu, l_cvm){
+  
+  l_mu <- list(
+    "g1" = c(5,3), 
+    "g2" = c(3,5),
+    "g3" = c(1,2)
+  )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(1,0,0,1),2,2),
+    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
+    "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]])  
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) 
+  px_2 <- dmvnorm(c(x1,x2), mean = l_mu[[3]], sigma = l_cvm[[3]])
+  
+  g <- case_when(
+    
+    px_0 > px_1 & px_0 > px_2 ~ 0,
+    px_1 > px_0 & px_1 > px_2 ~ 1,
+    px_2 > px_0 & px_2 > px_1 ~ 2,
+    TRUE ~ 2
+  )
+  
+  return(g)
+}
+
+dataset_lda <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 3)
+
+```
+
+```{r}
+
+grid.arrange(
+  dataset_qda$border_plot, 
+  dataset_lda$border_plot, 
+  nrow = 1,
+  top = "Optimal decision border")
+
+```
+
+
+<!--chapter:end:notebooks/3-lda_vs_qda.Rmd-->
+

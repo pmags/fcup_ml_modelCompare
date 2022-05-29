@@ -11,6 +11,9 @@ Projecto construido utilizando `Bookdown`. Para compilar relatório final utiliz
 # Html
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 
+bookdown::render_book("index.Rmd", "bookdown::html_book")
+
+
 # pdf
 bookdown::render_book("index.Rmd", "bookdown::pdf_book")
 

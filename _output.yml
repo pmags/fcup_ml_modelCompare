@@ -20,5 +20,6 @@ bookdown::pdf_book:
   toc_title: "Índice"
   toc_depth: 3
   toc_appendix: yes
-bookdown::powerpoint_presentation2:
+bookdown::html_book:
+  css: "_theme/style.css"
   
