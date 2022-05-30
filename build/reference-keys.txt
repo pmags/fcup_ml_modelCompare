@@ -1,0 +1,9 @@
+logistic-vs-knn
+dataset-definition
+model-fitting
+logistic-regression
+knn
+compare-results
+conclusion
+linear-discriminante-analysis-vs-decision-tree
+linear-discriminante-analysis-vs-decision-tree-1

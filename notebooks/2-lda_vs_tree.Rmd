@@ -14,16 +14,21 @@ source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
 ```
 
 ```{r include=FALSE}
+
 # libraries
-library(tidyverse)
 library(tidymodels)
 library(workflowsets)
 library(gridExtra)
 
-# set global seed for reproducibility
+# global seed for reproducibility
 set.seed(123)
 
 ```
+
+
+## Dataset definition  
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
 
 
 ```{r}
@@ -84,7 +89,6 @@ decision_fun_normal <- function(x1, x2){
 dataset_dtree <- dataset_gen_unif(class_fun = decision_fun_normal)
 
 
-
 grid.arrange(
   dataset_dtree$border_plot, 
   dataset_lda$border_plot, 
@@ -92,4 +96,8 @@ grid.arrange(
   top = "Optimal decision border")
 
 ```
+
+## Model fitting
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
 

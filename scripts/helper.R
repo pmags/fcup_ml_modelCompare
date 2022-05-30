@@ -2,7 +2,6 @@
 # libraries ---------------------------------------------------------------
 
 library(ggplot2)
-#library(ggforce)
 library(dplyr)
 library(purrr)
 library(mvtnorm)
@@ -215,6 +214,54 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
 
 
 
+# Classification metrics function -----------------------------------------
+
+model_metrics <- function(test_data = NULL, model = NULL )  {
+  
+      
+  # Verify if inputs are correct data types
+  stopifnot("A test dataframe should be provided" = is.data.frame(test_data))
+  stopifnot("A model should be provided" = !is.null(model))
+  
+  
+  # fit test data
+  fit_test <- 
+    test_data %>% 
+    bind_cols(
+      predict(model, new_data = test_data),
+      predict(model, new_data = test_data, type = "prob"),
+    ) %>% 
+    mutate_if(is.numeric, round, digits= 3) %>% 
+    mutate(
+      decision = .pred_1 - .pred_0
+    )
+      
+  # confusion matrix
+  confusion_matrix <- conf_mat(fit_test, truth = g, estimate = .pred_class)
+  confusion_matrix_plot <- autoplot(confusion_matrix, type = "heatmap")
+  
+  
+  # Accuracy
+  acc <- accuracy(fit_test, truth = g, estimate = .pred_class)
+  
+  # Roc curve
+  roc_curve <- roc_curve(fit_test, truth = g, estimate = .pred_0) %>% 
+    autoplot()
+  
+  auc_roc <- roc_auc(fit_test,
+                     truth = g, 
+                     .pred_0)
+      
+  
+  results <- list(fit = fit_test, 
+                  cf_matrix = confusion_matrix, 
+                  cf_plot =  confusion_matrix_plot, 
+                  acc = acc, 
+                  roc_curve = roc_curve, 
+                  auc_roc = auc_roc)
+  
+  return(results)
+}
 
 
 
