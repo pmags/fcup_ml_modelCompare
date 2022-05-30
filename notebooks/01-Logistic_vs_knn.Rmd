@@ -218,12 +218,12 @@ knn_quadratic_model <- extract_fit_parsnip(knn_quadratic_fit)
 
 # fit model to grid to find border linear
 
-grid_linear <- 
-  dataset_linear$cond %>% 
+grid_linear <-
+  dataset_linear$cond %>%
   bind_cols(
     predict(logit_linear_model, new_data = dataset_linear$cond),
     predict(logit_linear_model, new_data = dataset_linear$cond, type = "prob"),
-  ) %>% 
+  ) %>%
   mutate(
     .pred_1 = round(.pred_1, 3),
     .pred_0 = round(.pred_0, 3),
@@ -231,18 +231,26 @@ grid_linear <-
   )
 
 plot_logistic_decision_linear <- dataset_linear$border_plot +
-   geom_contour(data = grid_linear, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
-  geom_point(data = grid_linear, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+  geom_contour(data = grid_linear, 
+               aes(x = x1, y = x2, z = decision), 
+               color = "Purple", 
+               breaks = 0, 
+               size = 1, 
+               alpha = 0.5) +
+  geom_point(data = grid_linear, 
+             aes(x = x1, y = x2, color = .pred_class), 
+             size = 0.1, 
+             alpha = 0.1)
 
 
 # fit model to grid to find border quadratic
 
-grid_quadratic <- 
-  dataset_quadratic$cond %>% 
+grid_quadratic <-
+  dataset_quadratic$cond %>%
   bind_cols(
     predict(logit_linear_model, new_data = dataset_quadratic$cond),
     predict(logit_linear_model, new_data = dataset_quadratic$cond, type = "prob"),
-  ) %>% 
+  ) %>%
   mutate(
     .pred_1 = round(.pred_1, 3),
     .pred_0 = round(.pred_0, 3),
@@ -250,8 +258,16 @@ grid_quadratic <-
   )
 
 plot_logistic_decision_quadratic <- dataset_quadratic$border_plot +
-   geom_contour(data = grid_quadratic, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
-  geom_point(data = grid_quadratic, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+  geom_contour(data = grid_quadratic, 
+               aes(x = x1, y = x2, z = decision), 
+               color = "Purple", 
+               breaks = 0, 
+               size = 1, 
+               alpha = 0.5) +
+  geom_point(data = grid_quadratic, 
+             aes(x = x1, y = x2, color = .pred_class), 
+             size = 0.1, 
+             alpha = 0.1)
 
 
 ```
