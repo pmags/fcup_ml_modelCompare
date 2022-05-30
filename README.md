@@ -1,7 +1,7 @@
 # Readme
-Marta Ferreira
 Repositório para trabalho final da cadeira de Machine Learning do Mestrado de Data Science 2021/2023
 
+![GitHub issues](https://img.shields.io/github/issues/pmags/fcup_ml_modelCompare?style=flat-square)
 
 ## Instruções para construção do relatório
 
