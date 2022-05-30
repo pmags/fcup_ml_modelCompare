@@ -101,3 +101,245 @@ grid.arrange(
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
 
+```{r echo=TRUE}
+
+# 0. Separate test and train
+
+data_lda <- dataset_lda$dataset
+data_lda$g <- factor(data_lda$g)
+
+split <- initial_split(data_lda, prop = 0.8)
+
+train_data_lda <- training(split)
+test_data_lda <- testing(split)
+
+
+
+
+data_dtree <- dataset_dtree$dataset
+data_dtree$g <- factor(data_dtree$g)
+
+split <- initial_split(data_dtree, prop = 0.8)
+
+train_data_dtree <- training(split)
+test_data_dtree <- testing(split)
+
+```
+
+
+### LDA
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+
+```{r echo=TRUE}
+
+## Create workflow
+
+### LDA regression -------------------------
+
+
+MASS::lda(g ~ x1 + x2 , data = train_data_lda)
+ 
+# 1. specify the model
+discrim_linear_MASS_spec <-
+  discrim_linear() %>%
+  set_mode("classification") %>%
+  set_engine("MASS")
+
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = train_data_lda)
+  
+# 3, Buildworkflow
+lda_wflow <- 
+  workflow() %>% 
+  add_model(discrim_linear_MASS_spec) %>% 
+  add_recipe(preprocess)
+
+
+lda_wflow %>% fit(data = train_data_lda)
+
+# 4. Fit model
+fit_control <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
+
+folds_lda <- vfold_cv(train_data_lda, v = 10)
+folds_dtree <- vfold_cv(train_data_dtree, v = 10)
+
+
+lda_metrics_dataset_lda <- 
+  lda_wflow %>% 
+  fit_resamples(folds_lda, verbose = TRUE, control = fit_control)
+
+lda_metrics_dataset_dtree <- 
+  lda_wflow %>% 
+  fit_resamples(folds_dtree, verbose = TRUE, control = fit_control)
+
+# 5. Performance metrics over the validation set
+lda_metrics_dataset_lda <- collect_metrics(lda_metrics_dataset_lda, summarize = FALSE)
+lda_metrics_dataset_dtree <- collect_metrics(lda_metrics_dataset_dtree, summarize = FALSE)
+
+
+# 6. Fits final model
+lda_ldaFit <- 
+  lda_wflow %>% 
+  fit(train_data_lda)
+
+lda_ldaModel <- extract_fit_parsnip(lda_ldaFit)
+
+lda_dtreeFit <- 
+  lda_wflow %>% 
+  fit(train_data_dtree)
+
+lda_dtreeModel <- extract_fit_parsnip(lda_dtreeFit)
+
+```
+
+
+## Decision tree
+
+
+```{r}
+
+### Decision tree --------------- -------------------------
+
+# 1. specify the model
+decision_tree_rpart_spec <-
+  decision_tree() %>% 
+  set_engine("rpart") %>%
+  set_mode("classification")
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = train_data_lda) # just to set the relation, irrelevante which dataset used
+  
+# 3, Buildworkflow
+dtree_wflow <- 
+  workflow() %>% 
+  add_model(decision_tree_rpart_spec) %>% 
+  add_recipe(preprocess)
+
+# 4. Fit model
+
+dtree_metrics_dataset_lda <- 
+  dtree_wflow %>% 
+  fit_resamples(folds_lda, verbose = TRUE, control = fit_control) # folds and fit control defined above
+
+dtree_metrics_dataset_dtree <- 
+  dtree_wflow %>% 
+  fit_resamples(folds_dtree, verbose = TRUE, control = fit_control)
+
+# 5. Performance metrics over the validation set
+dtree_metrics_dataset_lda <- collect_metrics(dtree_metrics_dataset_lda, summarize = FALSE)
+dtree_metrics_dataset_dtree <- collect_metrics(dtree_metrics_dataset_dtree, summarize = FALSE)
+
+
+# 6. Fits final model
+dtree_fit_dataset_lda <- 
+  dtree_wflow %>% 
+  fit(train_data_lda)
+
+dtree_model_dataset_lda <- extract_fit_parsnip(dtree_fit_dataset_lda)
+
+dtree_fit_dataset_dtree <- 
+  dtree_wflow %>% 
+  fit(train_data_dtree)
+
+dtree_model_dataset_dtree <- extract_fit_parsnip(dtree_fit_dataset_dtree)
+
+
+```
+
+
+## Compare results
+
+```{r}
+
+# logistic regression decision boundary
+
+# fit model to grid to find border linear
+
+grid_linear <- 
+  dataset_linear$cond %>% 
+  bind_cols(
+    predict(logit_linear_model, new_data = dataset_linear$cond),
+    predict(logit_linear_model, new_data = dataset_linear$cond, type = "prob"),
+  ) %>% 
+  mutate(
+    .pred_1 = round(.pred_1, 3),
+    .pred_0 = round(.pred_0, 3),
+    decision = .pred_1 - .pred_0
+  )
+
+plot_logistic_decision_linear <- dataset_linear$border_plot +
+   geom_contour(data = grid_linear, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
+  geom_point(data = grid_linear, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+
+
+# fit model to grid to find border quadratic
+
+grid_quadratic <- 
+  dataset_quadratic$cond %>% 
+  bind_cols(
+    predict(logit_linear_model, new_data = dataset_quadratic$cond),
+    predict(logit_linear_model, new_data = dataset_quadratic$cond, type = "prob"),
+  ) %>% 
+  mutate(
+    .pred_1 = round(.pred_1, 3),
+    .pred_0 = round(.pred_0, 3),
+    decision = .pred_1 - .pred_0
+  )
+
+plot_logistic_decision_quadratic <- dataset_quadratic$border_plot +
+   geom_contour(data = grid_quadratic, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
+  geom_point(data = grid_quadratic, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+
+
+```
+
+
+
+```{r}
+
+# Decision tree
+
+# fit model to grid to find border linear
+
+dtree_grid_lda_dataset <- 
+  dataset_lda$cond %>% 
+  bind_cols(
+    predict(dtree_model_dataset_lda, new_data = dataset_lda$cond),
+    predict(dtree_model_dataset_lda, new_data = dataset_lda$cond, type = "prob"),
+  ) %>% 
+  mutate(
+    .pred_1 = round(.pred_1, 3),
+    .pred_0 = round(.pred_0, 3),
+    decision = .pred_1 - .pred_0
+  )
+
+plot_dtree_decision_lda_dataset <- dataset_lda$border_plot +
+   geom_contour(data = dtree_grid_lda_dataset, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
+  geom_point(data = dtree_grid_lda_dataset, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+
+
+# fit model to grid to find border quadratic
+
+dtree_grid_dtree_dataset <- 
+  dataset_dtree$cond %>% 
+  bind_cols(
+    predict(dtree_model_dataset_dtree, new_data = dataset_dtree$cond),
+    predict(dtree_model_dataset_dtree, new_data = dataset_dtree$cond, type = "prob"),
+  ) %>% 
+  mutate(
+    .pred_1 = round(.pred_1, 3),
+    .pred_0 = round(.pred_0, 3),
+    decision = .pred_1 - .pred_0
+  )
+
+plot_dtree_decision_dtree_dataset <- dataset_dtree$border_plot +
+   geom_contour(data = dtree_grid_dtree_dataset, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
+  geom_point(data = dtree_grid_dtree_dataset, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+
+
+```
+

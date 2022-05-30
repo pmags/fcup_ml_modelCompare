@@ -57,3 +57,6 @@ https://www.r-bloggers.com/2020/03/visualizing-decision-tree-partition-and-decis
 https://discrim.tidymodels.org/
 https://www.jeffdoser.com/files/for875/_book/classification.html
 https://stackoverflow.com/questions/27863171/issues-plotting-a-fitted-svm-models-decision-boundary-using-ggplot2s-stat-cont
+https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/classification.html
+
+https://rpubs.com/cliex159/885971
