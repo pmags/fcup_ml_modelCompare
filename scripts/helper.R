@@ -9,6 +9,10 @@ library(tidyr)
 library(magrittr)
 library(tidymodels)
 
+# Model specific libraries
+library(discrim)
+library(C50)
+library(rpart)
 
 
 
@@ -256,13 +260,39 @@ model_metrics <- function(test_data = NULL, model = NULL )  {
   acc <- accuracy(fit_test, truth = g, estimate = .pred_class)
   
   # Roc curve
-  roc_curve <- roc_curve(fit_test, truth = g, estimate = .pred_0) %>% 
+  roc_curve <- if (nlevels(test_data$g) > 2) {
+  
+    roc_curve(
+      fit_test, truth = g, 
+      paste0(".pred_",0):paste0(".pred_",nlevels(test_data$g)-1),
+      .level = .pred_0) %>%  
+      autoplot() 
+  
+  } else {
+    
+    roc_curve(fit_test, truth = g, estimate = .pred_0) %>% 
     autoplot()
   
-  auc_roc <- roc_auc(fit_test,
-                     truth = g, 
-                     .pred_0)
-      
+  }
+    
+  
+  auc_roc <- if (nlevels(test_data$g) > 2) {
+    
+    estimator = ifelse(nlevels(test_data$g) > 2, "macro_weighted",NULL) 
+    
+   roc_auc(fit_test,
+            truth = g, 
+            paste0(".pred_",0):paste0(".pred_",nlevels(test_data$g)-1),
+            estimator = estimator)
+    
+    
+  } else {
+  
+    roc_auc(fit_test, truth = g, .pred_0)
+  
+  }
+  
+  
   
   results <- list(fit = fit_test, 
                   cf_matrix = confusion_matrix, 
@@ -289,8 +319,8 @@ model_metrics <- function(test_data = NULL, model = NULL )  {
 model_fit_compare <- function(data, workflows, folds = 10) {
   
   # Verify if inputs are correct data types
-  stopifnot("Datasets should be a list of dataframes" = is.list(datasets))
-  stopifnot("Workflows need to be of type workflow and passed as list" = lapply(workflow, tune::is_workflow))
+  stopifnot("Datasets should be a list of dataframes" = is.list(data))
+  stopifnot("Workflows need to be of type workflow and passed as list" = is.list(workflows))
   
   # Define variables
   datasets <- lapply(data, function(f) f$dataset)
