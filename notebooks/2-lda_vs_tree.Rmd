@@ -16,7 +16,6 @@ source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
 ```{r include=FALSE}
 
 # libraries
-library(tidymodels)
 library(workflowsets)
 library(gridExtra)
 library(discrim)

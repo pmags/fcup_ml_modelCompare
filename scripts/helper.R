@@ -7,7 +7,7 @@ library(purrr)
 library(mvtnorm)
 library(tidyr)
 library(magrittr)
-
+library(tidymodels)
 
 
 
@@ -40,7 +40,8 @@ dataset_gen_unif <- function(size = 1000, nVar = 2, n_g = 2, class_fun = NULL, t
     # Applies classification function if nVar = 2
     dataset <- sample %>% 
       mutate(
-        g = purrr::pmap_dbl(., class_fun )
+        g = purrr::pmap_dbl(., class_fun ),
+        g = factor(g)
       )
     
     # Creates plot
@@ -72,7 +73,8 @@ dataset_gen_unif <- function(size = 1000, nVar = 2, n_g = 2, class_fun = NULL, t
     # conditional probability of (x1, x2) given y = 0
     grid <- grid %>% 
       mutate(
-        g = purrr::pmap_dbl(., class_fun )
+        g = purrr::pmap_dbl(., class_fun ),
+        g = factor(g)
       )
     
     l <- list()
@@ -132,13 +134,11 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
     
   }
   
-  dataset <- do.call(rbind.data.frame,l_sample) %>% magrittr::set_colnames( c(paste0("x", 1:nVar),"g" ) )
+  dataset <- do.call(rbind.data.frame,l_sample) %>% 
+    magrittr::set_colnames( c(paste0("x", 1:nVar),"g" ) ) %>% 
+    mutate(g = factor(g))
   
-  # dataset <- sample %>% 
-  #   mutate(
-  #     g = purrr::pmap_dbl(., class_fun )
-  #   )
-  
+
   # Creates plot
   dataset_plot <- ggplot(dataset, aes(x1, x2, color = factor(g))) + 
     geom_point(size = 3, shape = 1) +
@@ -168,7 +168,8 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
   # conditional probability of (x1, x2) given y = 0
   grid <- grid %>% 
     mutate(
-      g = purrr::pmap_dbl(., class_fun )
+      g = purrr::pmap_dbl(., class_fun ),
+      g = factor(g)
     )
   
   grid_merge <- merge(grid, data.frame( class = 0:(n_g-1) ), all=TRUE)
@@ -215,6 +216,16 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
 
 
 # Classification metrics function -----------------------------------------
+
+#' Calculate metrics for each model
+#'
+#' @param test_data A data frame
+#' @param model A model
+#' @return A list with fit, confusion matrix, confusion plot, accuracy, roc curve
+#' and auc roc
+#' 
+#' @examples
+#' 
 
 model_metrics <- function(test_data = NULL, model = NULL )  {
   
@@ -265,7 +276,110 @@ model_metrics <- function(test_data = NULL, model = NULL )  {
 
 
 
+# model_fit ---------------------------------------------------------------
 
+#' Fits and compare two workflows applied to 2 datasets
+#'
+#' @param datasets A list of datasets to compare
+#' @param workflows A list containing elements of type workflow
+#' @param folds Integer number of folds for cross validation, default = 10
+#' @return dsa
+#' @example 
+
+model_fit_compare <- function(data, workflows, folds = 10) {
+  
+  # Verify if inputs are correct data types
+  stopifnot("Datasets should be a list of dataframes" = is.list(datasets))
+  stopifnot("Workflows need to be of type workflow and passed as list" = lapply(workflow, tune::is_workflow))
+  
+  # Define variables
+  datasets <- lapply(data, function(f) f$dataset)
+  grids <- lapply(data, function(f) f$cond)
+  plots <- lapply(data, function(f) f$border_plot)
+  
+  names(datasets) <- paste0("dataset",1:length(datasets))
+  names(grids) <- paste0("dataset",1:length(datasets))
+  names(plots) <- paste0("dataset",1:length(datasets))
+  
+  
+  # Split train and test
+  splits <- lapply(datasets, rsample::initial_split, prop = 0.8)
+  split_dataset <- list(
+    train = lapply(splits, rsample::training),
+    test = lapply(splits, rsample::testing)
+  )
+  
+  
+  # Fit control and resamples
+  fit_control <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
+  split_dataset$folds <- lapply(split_dataset$train, vfold_cv, v = folds)
+  
+  
+  for (i in 1:length(split_dataset$folds)) {
+    
+    name = names(split_dataset$folds[i])
+    
+    # for metrics
+    split_dataset$fit_resample_train[[name]] = 
+      lapply(
+        workflows, 
+        tune::fit_resamples, 
+        resamples = split_dataset[["folds"]][[i]], 
+        verbose = TRUE, 
+        control = fit_control
+      )
+    
+    # models
+    split_dataset$fit_model[[name]] =
+      lapply(
+        workflows, 
+        parsnip::fit,
+        split_dataset[["train"]][[i]]
+      )
+    
+    # extract model
+    split_dataset$models[[name]] =
+      lapply(
+        split_dataset$fit_model[[i]],
+        workflows::extract_fit_parsnip
+      )
+  }
+
+    
+  ## Compare results
+  
+  # Define grids for plots contour
+  for (i in 1:length(grids)) {
+    
+    for (m in 1:length(split_dataset$models)){
+      grids$fitted[[paste0("dataset",i)]][[names(split_dataset$models[[i]][m])]] <- 
+        grids[[i]] %>% 
+        bind_cols(
+          predict(split_dataset$models[[i]][[m]], new_data = grids[[i]]),
+          predict(split_dataset$models[[i]][[m]], new_data = grids[[i]], type = "prob")
+        ) %>% 
+        mutate(
+          .pred_1 = round(.pred_1, 3),
+          .pred_0 = round(.pred_0, 3),
+          decision = .pred_1 - .pred_0
+        )
+    }
+  }
+  
+  # Generate new plots
+  for (p in 1:length(plots)) {
+    for (g in 1:length(grids$fitted)){
+      plots$model_decision[[paste0("dataset",p)]][[names(grids$fitted[[p]][g])]] <- 
+        plots[[p]] +
+        geom_contour(data = grids$fitted[[p]][[g]], aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
+        geom_point(data = grids$fitted[[p]][[g]], aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
+    }
+  }
+  
+  results <- (list(plots = plots, models = split_dataset, grids = grids))
+  return(results)
+  
+}
 
 
 
