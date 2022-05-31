@@ -13,8 +13,8 @@ library(tidymodels)
 library(discrim)
 library(C50)
 library(rpart)
-
-
+library(LiblineaR)
+library(kernlab)
 
 # Dataset and bayes optimal boundary plot ---------------------------------
 
