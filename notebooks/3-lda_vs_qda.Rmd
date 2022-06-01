@@ -29,42 +29,42 @@ set.seed(123)
 ```{r}
 # QDA
 
-l_mu_2 <- list(
-  "g1" = c(5,3), 
-  "g2" = c(3,5),
-  "g3" = c(1,2)
+l_mu_1 <- list(
+  "g1" = c(2,3), 
+  "g2" = c(2,4),
+  "g3" = c(3,4)
   )
 
-l_cvm_2 <- list( 
+l_cvm_1 <- list( 
   "covg1" = matrix(c(1,0,0,1),2,2),
   "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
   "covg3" = matrix(c(1,0.2,0.2,1),2,2)
   )
 
-l_w_2 <- list(
+l_w_1 <- list(
   "wg1" = 1/3, 
   "wg2" = 1/3,
   "wg3" = 1/3
   )
 
 
-decision_2 <- function(x1,x2, l_mu, l_cvm){
-  
-  l_mu <- list(
-    "g1" = c(5,3), 
-    "g2" = c(3,5),
-    "g3" = c(1,2)
+decision_1 <- function(x1,x2, l_mu_1, l_cvm_1){
+l_mu_1 <- list(
+  "g1" = c(2,3), 
+  "g2" = c(2,4),
+  "g3" = c(3,4)
   )
-  
-  l_cvm <- list( 
-    "covg1" = matrix(c(1,0,0,1),2,2),
-    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
-    "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+
+l_cvm_1 <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
+  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
   )
-  
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 1/3 
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 1/3
-  px_2 <- dmvnorm(c(x1,x2), mean = l_mu[[3]], sigma = l_cvm[[3]]) * 1/3
+
+
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_1[[1]], sigma = l_cvm_1[[1]]) * 1/3 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_1[[2]], sigma = l_cvm_1[[2]]) * 1/3
+  px_2 <- dmvnorm(c(x1,x2), mean = l_mu_1[[3]], sigma = l_cvm_1[[3]]) * 1/3
   
   g <- case_when(
     
@@ -77,7 +77,8 @@ decision_2 <- function(x1,x2, l_mu, l_cvm){
   return(g)
 }
 
-dataset_qda <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 3)
+dataset_qda <- dataset_gen_mvnorm(l_mu_1, l_cvm_1, l_w_1, class_fun = decision_1, n_g = 3)
+
 
 
 ```
@@ -85,8 +86,8 @@ dataset_qda <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2
 ```{r}
 
 l_mu_2 <- list(
-  "g1" = c(2,2), 
-  "g2" = c(2,2),
+  "g1" = c(2,5), 
+  "g2" = c(5,5),
   "g3" = c(2,2)
   )
 
@@ -103,23 +104,23 @@ l_w_2 <- list(
   )
 
 
-decision_2 <- function(x1,x2, l_mu, l_cvm){
+decision_2 <- function(x1,x2, l_mu_2, l_cvm_2){
   
-  l_mu <- list(
-    "g1" = c(5,3), 
-    "g2" = c(3,5),
-    "g3" = c(1,2)
+l_mu_2 <- list(
+  "g1" = c(2,5), 
+  "g2" = c(5,5),
+  "g3" = c(2,2)
+  )
+
+l_cvm_2 <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,0,0,1),2,2),
+  "covg3" = matrix(c(1,0,0,1),2,2)
   )
   
-  l_cvm <- list( 
-    "covg1" = matrix(c(1,0,0,1),2,2),
-    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
-    "covg3" = matrix(c(1,0.2,0.2,1),2,2)
-  )
-  
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]])  
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) 
-  px_2 <- dmvnorm(c(x1,x2), mean = l_mu[[3]], sigma = l_cvm[[3]])
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_2[[1]], sigma = l_cvm_2[[1]])  
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_2[[2]], sigma = l_cvm_2[[2]]) 
+  px_2 <- dmvnorm(c(x1,x2), mean = l_mu_2[[3]], sigma = l_cvm_2[[3]])
   
   g <- case_when(
     
@@ -146,3 +147,212 @@ grid.arrange(
 
 ```
 
+```{r}
+# define workflows
+
+### LDA
+
+# 1. specify the model
+
+discrim_linear_MASS_spec <-
+  discrim_linear() %>%
+  set_engine('MASS') %>%
+  set_mode('classification')
+
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = dataset_lda$dataset)
+  
+# 3, Buildworkflow
+discrim_linear_MASS_wflow <- 
+  workflow() %>% 
+  add_model(discrim_linear_MASS_spec) %>% 
+  add_recipe(preprocess)
+
+
+### QDA
+
+# 1. specify the model
+discrim_quad_MASS_spec <-
+  discrim_quad() %>%
+  set_engine('MASS') %>%
+  set_mode('classification')
+
+
+# 2. preprocessing 
+preprocess <- 
+  recipe(g ~ x1 + x2 , data = dataset_qda$dataset)
+  
+# 3, Buildworkflow
+discrim_quad_MASS_wflow <- 
+  workflow() %>% 
+  add_model(discrim_quad_MASS_spec) %>% 
+  add_recipe(preprocess)
+
+```
+
+
+```{r}
+
+data <- list(dataset_lda, dataset_qda)
+workflows <- list(LDA = discrim_linear_MASS_wflow , QDA = discrim_quad_MASS_wflow)
+
+compare_fit <- model_fit_compare(data = data, workflows = workflows)
+
+```
+
+
+## Compare results
+
+```{r}
+
+## Metrics logistic model:
+## using yardstick package for confusion matrix and accuracy
+## using yardstick for roc curve and plots
+
+## LDA
+
+metrics_ds1_LDA <- 
+  model_metrics(test_data = compare_fit$models$test$dataset1, 
+                model = compare_fit$models$models$dataset1$LDA)
+
+metrics_ds2_LDA <- 
+  model_metrics(test_data = compare_fit$models$test$dataset2, 
+                model = compare_fit$models$models$dataset2$LDA)
+
+
+## QDA
+
+metrics_ds1_QDA <- 
+  model_metrics(test_data = compare_fit$models$test$dataset1, 
+                model = compare_fit$models$models$dataset1$QDA)
+
+metrics_ds2_QDA <- 
+  model_metrics(test_data = compare_fit$models$test$dataset2, 
+                model = compare_fit$models$models$dataset2$QDA)
+
+```
+
+
+```{r}
+
+# logistic regression metrics during training
+
+train_metrics_ds1_LDA <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset1$LDA, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+train_metrics_ds2_LDA <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset2$LDA, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+
+# knn  performance during training
+
+train_metrics_ds1_QDA <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset1$QDA, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+train_metrics_ds2_QDA <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset2$QDA, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+```
+
+The plots below show the resulting decision boundaries
+
+```{r}
+
+## compare results
+
+grid.arrange(
+  compare_fit$plots$model_decision$dataset1$LDA + labs(title = "dataset 1 - LDA"),
+  compare_fit$plots$model_decision$dataset1$QDA + labs(title = "dataset 1 - QDA"),
+  compare_fit$plots$model_decision$dataset2$LDA + labs(title = "dataset 2 - LDA"),
+  compare_fit$plots$model_decision$dataset2$QDA + labs(title = "dataset 2 - QDA"),
+  nrow = 2,
+  top = "Aplying a svm_linearistic model to both datasets",
+  bottom = grid::textGrob(
+    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    gp = grid::gpar(fontface = 3, fontsize = 9)
+    )
+  )
+
+```
+
+The plots shows the evolution of key metrics over crossvalidation trainning
+
+
+```{r}
+
+grid.arrange(
+  train_metrics_ds1_LDA + labs(title = "dataset 1 - LDA"), 
+  train_metrics_ds1_QDA + labs(title = "dataset 1 - QDA"), 
+  train_metrics_ds2_LDA + labs(title = "dataset 2 - LDA"),
+  train_metrics_ds2_QDA + labs(title = "dataset 2 - QDA"), 
+  nrow = 2,
+  top = "Metrics over different folds",
+  bottom = grid::textGrob(
+      "Right plots reflect trainning over linear border dataset and left plots reflect a quadractic border",
+      gp = grid::gpar(fontface = 3, fontsize = 9)
+      )
+)
+
+```
+
+
+The plots show the metrics between different models
+
+```{r}
+
+grid.arrange(
+  metrics_ds1_LDA$cf_plot ,
+  metrics_ds1_QDA$cf_plot ,
+  metrics_ds2_LDA$cf_plot ,
+  metrics_ds2_QDA$cf_plot ,
+  nrow = 2,
+  top = "Confusion Matrix"
+)
+
+
+```
+
+
+```{r}
+
+grid.arrange(
+  metrics_ds1_LDA$roc_curve ,
+  metrics_ds1_QDA$roc_curve ,
+  metrics_ds2_LDA$roc_curve ,
+  metrics_ds2_QDA$roc_curve ,
+  nrow = 2,
+  top = "ROC curves"
+)
+
+  metrics_ds1_LDA$auc_roc
+  metrics_ds1_QDA$auc_roc
+  metrics_ds2_LDA$auc_roc
+  metrics_ds2_QDA$auc_roc
+
+```
