@@ -2,6 +2,8 @@
 testing.Rmd
 testing.nb.html
 
+/notebook/*.html
+
 # Environment
 /remv/
 
