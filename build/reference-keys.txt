@@ -28,3 +28,13 @@ dataset-definition-4
 model-fitting-4
 compare-results-4
 conclusion-4
+svm-radial-vs-svm-linear-1
+dataset-definition-5
+model-fitting-5
+compare-results-5
+conclusion-5
+mlp-vs-knn
+dataset-definition-6
+model-fitting-6
+compare-results-6
+conclusion-6
