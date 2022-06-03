@@ -41,8 +41,8 @@ l_cvm_1 <- list(
 
 
 l_w_1 <- list(
-  "wg1" = 0.65, 
-  "wg2" = 0.35
+  "wg1" = 1/2, 
+  "wg2" = 1/2
   )
 
 
@@ -60,12 +60,12 @@ l_cvm_1 <- list(
 
 
 l_w_1 <- list(
-  "wg1" = 0.65, 
-  "wg2" = 0.35
+  "wg1" = 1/2, 
+  "wg2" = 1/2
   )
 
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_1[[1]], sigma = l_cvm_1[[1]]) * 0.65 
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_1[[2]], sigma = l_cvm_1[[2]]) * 0.35
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_1[[1]], sigma = l_cvm_1[[1]]) * 1/2
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_1[[2]], sigma = l_cvm_1[[2]]) * 1/2
  
   
   g <- case_when(
