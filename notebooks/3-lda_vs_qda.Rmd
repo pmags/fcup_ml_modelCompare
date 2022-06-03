@@ -27,57 +27,58 @@ set.seed(123)
 
 
 ```{r}
-# QDA
+# LDA
 
 l_mu_1 <- list(
-  "g1" = c(2,3), 
-  "g2" = c(2,4),
-  "g3" = c(3,4)
+  "g1" = c(3,4), 
+  "g2" = c(1,1)
   )
 
 l_cvm_1 <- list( 
-  "covg1" = matrix(c(1,0,0,1),2,2),
-  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
-  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  "covg1" = matrix(c(1, 0, 0, 1),2,2),
+  "covg2" = matrix(c(1, 0, 0, 1),2,2)
   )
 
+
 l_w_1 <- list(
-  "wg1" = 1/3, 
-  "wg2" = 1/3,
-  "wg3" = 1/3
+  "wg1" = 0.65, 
+  "wg2" = 0.35
   )
 
 
 decision_1 <- function(x1,x2, l_mu_1, l_cvm_1){
+
 l_mu_1 <- list(
-  "g1" = c(2,3), 
-  "g2" = c(2,4),
-  "g3" = c(3,4)
+  "g1" = c(3,4), 
+  "g2" = c(1,1)
   )
 
 l_cvm_1 <- list( 
-  "covg1" = matrix(c(1,0,0,1),2,2),
-  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
-  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  "covg1" = matrix(c(1, 0, 0, 1),2,2),
+  "covg2" = matrix(c(0.5,-0.4,-0.4,0.5),2,2)
   )
 
 
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_1[[1]], sigma = l_cvm_1[[1]]) * 1/3 
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_1[[2]], sigma = l_cvm_1[[2]]) * 1/3
-  px_2 <- dmvnorm(c(x1,x2), mean = l_mu_1[[3]], sigma = l_cvm_1[[3]]) * 1/3
+l_w_1 <- list(
+  "wg1" = 0.65, 
+  "wg2" = 0.35
+  )
+
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_1[[1]], sigma = l_cvm_1[[1]]) * 0.65 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_1[[2]], sigma = l_cvm_1[[2]]) * 0.35
+ 
   
   g <- case_when(
     
-    px_0 > px_1 & px_0 > px_2 ~ 0,
-    px_1 > px_0 & px_1 > px_2 ~ 1,
-    px_2 > px_0 & px_2 > px_1 ~ 2,
-    TRUE ~ 2
+    px_0 > px_1 ~ 0,
+    px_1 > px_0 ~ 1,
+    TRUE ~ 1
   )
   
   return(g)
 }
 
-dataset_qda <- dataset_gen_mvnorm(l_mu_1, l_cvm_1, l_w_1, class_fun = decision_1, n_g = 3)
+dataset_lda <- dataset_gen_mvnorm(l_mu_1, l_cvm_1, l_w_1, class_fun = decision_1, n_g = 2)
 
 
 
@@ -86,62 +87,54 @@ dataset_qda <- dataset_gen_mvnorm(l_mu_1, l_cvm_1, l_w_1, class_fun = decision_1
 ```{r}
 
 l_mu_2 <- list(
-  "g1" = c(2,5), 
-  "g2" = c(5,5),
-  "g3" = c(2,2)
-  )
+  "g1" = c(5,5), 
+  "g2" = c(3,4))
 
 l_cvm_2 <- list( 
-  "covg1" = matrix(c(1,0,0,1),2,2),
-  "covg2" = matrix(c(1,0,0,1),2,2),
-  "covg3" = matrix(c(1,0,0,1),2,2)
+  "covg1" = matrix(c(3, 0, 0, 3),2,2),
+  "covg2" = matrix(c(0.1,0,0,0.1),2,2)
   )
 
 l_w_2 <- list(
-  "wg1" = 1/3, 
-  "wg2" = 1/3,
-  "wg3" = 1/3
+  "wg1" = 1/2, 
+  "wg2" = 1/2
   )
 
 
 decision_2 <- function(x1,x2, l_mu_2, l_cvm_2){
-  
+
 l_mu_2 <- list(
-  "g1" = c(2,5), 
-  "g2" = c(5,5),
-  "g3" = c(2,2)
-  )
+  "g1" = c(5,5), 
+  "g2" = c(3,4))
 
 l_cvm_2 <- list( 
-  "covg1" = matrix(c(1,0,0,1),2,2),
-  "covg2" = matrix(c(1,0,0,1),2,2),
-  "covg3" = matrix(c(1,0,0,1),2,2)
+  "covg1" = matrix(c(3, 0, 0, 3),2,2),
+  "covg2" = matrix(c(0.1,0,0,0.1),2,2)
   )
-  
+
+
   px_0 <- dmvnorm(c(x1,x2), mean = l_mu_2[[1]], sigma = l_cvm_2[[1]])  
   px_1 <- dmvnorm(c(x1,x2), mean = l_mu_2[[2]], sigma = l_cvm_2[[2]]) 
-  px_2 <- dmvnorm(c(x1,x2), mean = l_mu_2[[3]], sigma = l_cvm_2[[3]])
-  
+ 
   g <- case_when(
     
-    px_0 > px_1 & px_0 > px_2 ~ 0,
-    px_1 > px_0 & px_1 > px_2 ~ 1,
-    px_2 > px_0 & px_2 > px_1 ~ 2,
-    TRUE ~ 2
+    px_0 > px_1 ~ 0,
+    px_1 > px_0 ~ 1,
+    TRUE ~ 1
   )
   
   return(g)
 }
 
-dataset_lda <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 3)
+dataset_qda <- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 2)
 
 ```
 
 ```{r}
 
 grid.arrange(
-  dataset_qda$border_plot, 
   dataset_lda$border_plot, 
+  dataset_qda$border_plot, 
   nrow = 1,
   top = "Optimal decision border")
 
@@ -354,5 +347,8 @@ grid.arrange(
   metrics_ds1_QDA$auc_roc
   metrics_ds2_LDA$auc_roc
   metrics_ds2_QDA$auc_roc
-
+ metrics_ds1_LDA$acc
+  metrics_ds1_QDA$acc
+  metrics_ds2_LDA$acc
+  metrics_ds2_QDA$acc
 ```
