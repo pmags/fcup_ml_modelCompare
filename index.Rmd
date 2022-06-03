@@ -56,7 +56,7 @@ Throughtout this project the following assumptions were made and approaches were
 
 ## Environment Info {-}
 
-```{R}
+```{r}
 
 sessionInfo()
 
