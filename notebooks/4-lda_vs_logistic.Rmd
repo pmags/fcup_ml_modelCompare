@@ -43,16 +43,17 @@ dataset_linear <- dataset_gen_unif(
   class_fun = decision, 
   size = 1000)
 
+
 ## A dataset with a multivariable normal distribution and similar covariance matrix
 
 l_mu <- list(
-  "g1" = c(4,3), 
-  "g2" = c(4,4)
+  "g1" = c(6,2), 
+  "g2" = c(2,6)
   )
 
 l_cvm <- list( 
   "covg1" = matrix(c(1,0.4,0.4,1),2,2),
-  "covg2" = matrix(c(1,0,0,1),2,2)
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
   )
 
 l_w <- list(
@@ -64,13 +65,13 @@ l_w <- list(
 decision <- function(x1,x2){
   
   l_mu <- list(
-    "g1" = c(4,3), 
-    "g2" = c(4,4)
+    "g1" = c(6,2), 
+    "g2" = c(2,6)
     )
   
   l_cvm <- list( 
     "covg1" = matrix(c(1,0.4,0.4,1),2,2),
-    "covg2" = matrix(c(1,0,0,1),2,2)
+    "covg2" = matrix(c(1,-0.4,-0.4,1),2,2)
     )
   
   px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 

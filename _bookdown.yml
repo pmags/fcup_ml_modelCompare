@@ -1,6 +1,7 @@
 output_dir: build
+clean: [packages.bib, bookdown.bbl]
 before_chapter_script: ["scripts/pre_render.R"]
-delete_merged_file: true
+delete_merged_file: false
 rmd_subdir: ["notebooks"]
 language:
   label:

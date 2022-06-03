@@ -2,13 +2,15 @@
 title: "Dataset compare between models"
 subtitle: "Machine Learning"
 author: "Marta Ferreira e Pedro Magalhães"
-date: "18/04/2022"
+date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 geometry: margin=2.5cm
 documentclass: article
 link-citations: yes
 pdf-cover-image: theme/images/cover.pdf
 cover-image: theme/images/cover.pdf
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
 ---
 
 \newpage
@@ -51,6 +53,15 @@ Throughtout this project the following assumptions were made and approaches were
 
 
 ## How to run and reproduce the conclusions {-}
+
+## Environment Info {-}
+
+```{r}
+
+sessionInfo()
+
+```
+
 
 
 \newpage

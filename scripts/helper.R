@@ -15,6 +15,8 @@ library(C50)
 library(rpart)
 library(LiblineaR)
 library(kernlab)
+library(keras)
+library(nnet)
 
 # Dataset and bayes optimal boundary plot ---------------------------------
 
