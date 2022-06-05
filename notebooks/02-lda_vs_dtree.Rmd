@@ -46,6 +46,11 @@ $$\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} = 0$$
 
 ```{r echo=TRUE}
 
+decision_fun_linear <- function(x1, x2){
+  res <- ifelse(x2 >= x1, 1, 0)
+  return(res)
+}
+
 dataset_linear <- dataset_gen_unif(class_fun = decision_fun_linear, size = 1000)
 
 decision_fun_normal <- function(x1, x2){
