@@ -1,18 +1,273 @@
 ---
-title: "R Notebook"
-output: html_notebook
+editor_options:
+  chunk_output_type: console
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+# 11. MLP ReLu vs MLP sigmoid
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
-```{r}
-plot(cars)
+
+```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
+
+knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
+source("../scripts/helper.R", local = TRUE, encoding = "UTF-8")
+
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+```{r include=FALSE}
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+# libraries
+library(workflowsets)
+library(gridExtra)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+# global seed for reproducibility
+set.seed(123)
+
+```
+
+
+## Dataset definition  
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+
+
+```{r}
+
+decision_MLP_relu <- function(x1, x2){
+  res <- ifelse((-5 + x1)^2 + (5 - x2)^2 > 4, 1, 0)
+  return(res)
+}
+
+dataset_MLP_relu <- dataset_gen_unif(class_fun = decision_MLP_relu, size = 1000)
+
+decision_MLP_sigmoid <- function(x1, x2){
+  res <- ifelse((-5 + x1)^2 + (5 - x2)^2 > 4, 1, 0)
+  return(res)
+}
+
+dataset_MLP_sigmoid <- dataset_gen_unif(class_fun = decision_MLP_sigmoid, size = 1000)
+
+```
+
+## Model fitting
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+
+```{r}
+# define workflows
+
+### MLP model
+
+# 1. specify the model
+
+mlp_nnet_relu_spec <-
+  mlp() %>%
+  set_engine('nnet',learn_rate = 0.001,activation="relu") %>%
+  set_mode('classification')  %>% 
+  translate()
+
+# 2. preprocessing 
+preprocess <- 
+    recipe(g ~ x1 + x2 , data = dataset_MLP_relu$dataset)
+  
+# 3, Buildworkflow
+mlp_nnet_relu_wflow <- 
+  workflow() %>% 
+  add_model(mlp_nnet_relu_spec) %>% 
+  add_recipe(preprocess) 
+### MLP model
+
+# 1. specify the model
+
+mlp_nnet_sigmoid_spec <-
+  mlp() %>%
+  set_engine('nnet',learn_rate = 0.001) %>% acti
+  set_mode('classification')%>% 
+  translate()
+
+
+# 2. preprocessing 
+preprocess <- 
+    recipe(g ~ x1 + x2 , data = dataset_MLP_sigmoid$dataset)
+  
+# 3, Buildworkflow
+mlp_nnet_sigmoid_wflow <- 
+  workflow() %>% 
+  add_model(mlp_nnet_sigmoid_spec) %>% 
+  add_recipe(preprocess)
+
+mlp_keras_spec <-
+  mlp() %>% activation_relu() %>%
+  set_engine('keras') %>%
+  set_mode('classification')
+
+mlp_keras_wflow <- 
+  workflow() %>% 
+  add_model(mlp_keras_spec) %>% 
+  add_recipe(preprocess)
+```
+
+```{r}
+
+data <- list(dataset_MLP_relu, dataset_MLP_sigmoid)
+workflows <- list(MLPrelu = mlp_nnet_relu_wflow, MLPsigmoid = mlp_nnet_sigmoid_wflow)
+
+compare_fit <- model_fit_compare(data = data, workflows = workflows)
+
+```
+
+
+
+## Compare results
+
+```{r}
+
+## Metrics logistic model:
+## using yardstick package for confusion matrix and accuracy
+## using yardstick for roc curve and plots
+
+## Logistic model
+
+metrics_ds1_MLPrelu <-
+  model_metrics(test_data = compare_fit$models$test$dataset1, 
+                model = compare_fit$models$models$dataset1$MLPrelu)
+
+metrics_ds2_MLPrelu<- 
+  model_metrics(test_data = compare_fit$models$test$dataset2, 
+                model = compare_fit$models$models$dataset2$MLPrelu)
+
+
+## svm_radial model
+
+metrics_ds1_MLPsigmoid <- 
+  model_metrics(test_data = compare_fit$models$test$dataset1, 
+                model = compare_fit$models$models$dataset1$MLPsigmoid)
+
+metrics_ds2_MLPsigmoid <- 
+  model_metrics(test_data = compare_fit$models$test$dataset2, 
+                model = compare_fit$models$models$dataset2$MLPsigmoid)
+
+```
+
+
+```{r}
+
+# logistic regression metrics during training
+
+train_metrics_ds1_MLPrelu <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset1$MLPrelu, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+train_metrics_ds2_MLPrelu <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset2$MLPrelu, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+
+# knn  performance during training
+
+train_metrics_ds1_MLPsigmoid <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset1$MLPsigmoid, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+train_metrics_ds2_MLPsigmoid <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset2$MLPsigmoid, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
+  geom_point() +
+  theme_bw()
+
+```
+
+The plots below show the resulting decision boundaries
+
+```{r}
+
+## compare results
+
+grid.arrange(
+  compare_fit$plots$model_decision$dataset1$MLPrelu,
+  compare_fit$plots$model_decision$dataset1$MLPsigmoid,
+  compare_fit$plots$model_decision$dataset2$MLPrelu,
+  compare_fit$plots$model_decision$dataset2$MLPsigmoid,
+  nrow = 2,
+  top = "Aplying a svm_linearistic model to both datasets",
+  bottom = grid::textGrob(
+    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    gp = grid::gpar(fontface = 3, fontsize = 9)
+    )
+  )
+
+```
+
+The plots shows the evolution of key metrics over crossvalidation trainning
+
+
+```{r}
+
+grid.arrange(
+  train_metrics_ds1_MLPrelu, 
+  train_metrics_ds1_MLPsigmoid, 
+  train_metrics_ds2_MLPrelu,
+  train_metrics_ds2_MLPsigmoid, 
+  nrow = 2,
+  top = "Metrics over different folds",
+  bottom = grid::textGrob(
+      "Right plots reflect trainning over linear border dataset and left plots reflect a quadractic border",
+      gp = grid::gpar(fontface = 3, fontsize = 9)
+      )
+)
+
+```
+
+
+The plots show the metrics between different models
+
+```{r}
+
+grid.arrange(
+  metrics_ds1_MLPrelu$cf_plot ,
+  metrics_ds1_MLPsigmoid$cf_plot ,
+  metrics_ds2_MLPrelu$cf_plot ,
+  metrics_ds2_MLPsigmoid$cf_plot ,
+  nrow = 2,
+  top = "Confusion Matrix"
+)
+
+
+```
+
+
+```{r}
+
+grid.arrange(
+  metrics_ds1_MLPrelu$roc_curve ,
+  metrics_ds1_MLPsigmoid$roc_curve ,
+  metrics_ds2_MLPrelu$roc_curve ,
+  metrics_ds2_MLPsigmoid$roc_curve ,
+  nrow = 2,
+  top = "ROC curves"
+)
+
+```
+
+
+## Conclusion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
