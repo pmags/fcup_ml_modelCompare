@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# SVM Radial vs SVM linear
+# SVM Radial vs SVM Polynomial
 
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
@@ -27,39 +27,115 @@ set.seed(123)
 
 ## Dataset definition  
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+Both approaches are fitted for non linear decision borders, but how do they deal when outliers exist and the number of observations is low? Similar to what we did when comparing LDA against Logistic regression, we defined two unbalanced dataset and in one we increase the impact of outliers. 
 
 
 ```{r}
 
-## A pure linear boundary
+set.seed(123)
 
-decision <- function(x1, x2){ 
-  res <- ifelse(x2 >= -1/15 * (x1 - 5)^2 + 3 & x2 <= 0.3 * x1^2 + 3, 1,0)
-  return(res)
+l_mu <- list(
+  "g1" = c(6,3), 
+  "g2" = c(3,6)
+  )
+
+l_cvm <- list( 
+  "covg1" = matrix(c(3,0.6,0.6,3),2,2),
+  "covg2" = matrix(c(3,-0.6,-0.6,3),2,2)
+  )
+
+l_w <- list(
+  "wg1" = 0.3, 
+  "wg2" = 0.7
+  )
+
+
+decision <- function(x1,x2){
+  
+  l_mu <- list(
+    "g1" = c(6,3), 
+    "g2" = c(3,6)
+    )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(3,0.6,0.6,3),2,2),
+    "covg2" = matrix(c(3,-0.6,-0.6,3),2,2)
+    )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 0.5
+  
+  
+  g <- case_when(
+    
+    px_0 > px_1 ~ 0,
+    TRUE ~ 1
+  )
+  
+  return(g)
 }
 
-dataset_linear <- dataset_gen_unif(
-  class_fun = decision, 
-  size = 1000)
+dataset_mv <- dataset_gen_mvnorm(
+  l_mu = l_mu, 
+  l_cvm = l_cvm, 
+  l_w = l_w, 
+  class_fun = decision,
+  size = 50)
 
 
+l_mu <- list(
+  "g1" = c(6,3), 
+  "g2" = c(3,6)
+  )
 
-## A circular boundary
+l_cvm <- list( 
+  "covg1" = matrix(c(3,0.6,0.6,3),2,2),
+  "covg2" = matrix(c(3,-0.6,-0.6,3),2,2)
+  )
 
-decision <- function(x1, x2){
-  res <- ifelse((-5 + x1)^2 + (5 - x2)^2 > 4, 1, 0)
-  return(res)
+l_w <- list(
+  "wg1" = 0.3, 
+  "wg2" = 0.7
+  )
+
+
+decision <- function(x1,x2){
+  
+  l_mu <- list(
+    "g1" = c(6,3), 
+    "g2" = c(3,6)
+    )
+  
+  l_cvm <- list( 
+    "covg1" = matrix(c(3,0.6,0.6,3),2,2),
+    "covg2" = matrix(c(3,-0.6,-0.6,3),2,2)
+    )
+  
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu[[1]], sigma = l_cvm[[1]]) * 0.5 
+  px_1 <- dmvnorm(c(x1,x2), mean = l_mu[[2]], sigma = l_cvm[[2]]) * 0.5
+  
+  
+  g <- case_when(
+    
+    px_0 > px_1 ~ 0,
+    TRUE ~ 1
+  )
+  
+  return(g)
 }
 
-dataset_radial <- dataset_gen_unif(
-  class_fun = decision, 
-  size = 1000)
+dataset_mv_s_outlier <- dataset_gen_mvnorm(
+  l_mu = l_mu, 
+  l_cvm = l_cvm, 
+  l_w = l_w, 
+  class_fun = decision,
+  outlier_boost = 2,
+  size = 50)
 
 
 grid.arrange(
-  dataset_linear$border_plot, 
-  dataset_radial$border_plot, 
+  dataset_mv$border_plot + labs(subtitle ="50 obs", color = ""), 
+  dataset_mv_s_outlier$border_plot+ labs(subtitle ="50 obs + outlier", color = ""), 
   nrow = 1,
   top = "Optimal decision border")
 
@@ -68,12 +144,24 @@ grid.arrange(
 
 ## Model fitting
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+The following workflow (using @R-tidymodels) was executed in order to fit and evaluate each model given the above defined datasets:
+
+1. Train - Test split by 80% Train - 20% Test,
+
+2. Define 10 random folds splitting Train and Validation,
+
+3. Fit models to each fold,
+
+4. Calculate Fold metrics,
+
+5. Fit to all train data and extract model,
+
+6. Create plots with estimated decision boundaries 
 
 ```{r}
 # define workflows
 
-### SVM linear
+### SVM Poly
 
 # 1. specify the model
 svm_poly_kernlab_spec <-
@@ -84,10 +172,10 @@ svm_poly_kernlab_spec <-
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
+  recipe(g ~ x1 + x2 , data = dataset_mv$dataset)
   
 # 3, Buildworkflow
-svm_linear_wflow <- 
+svm_poly_wflow <- 
   workflow() %>% 
   add_model(svm_poly_kernlab_spec) %>% 
   add_recipe(preprocess)
@@ -104,7 +192,7 @@ svm_rbf_kernlab_spec <-
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
+  recipe(g ~ x1 + x2 , data = dataset_mv$dataset)
   
 # 3, Buildworkflow
 svm_radial_wflow <- 
@@ -116,9 +204,10 @@ svm_radial_wflow <-
 
 
 ```{r}
+set.seed(123)
 
-data <- list(dataset_linear, dataset_radial)
-workflows <- list(svm_linear = svm_linear_wflow, svm_radial = svm_radial_wflow)
+data <- list(dataset_mv, dataset_mv_s_outlier)
+workflows <- list(svm_poly = svm_poly_wflow, svm_radial = svm_radial_wflow)
 
 compare_fit <- model_fit_compare(data = data, workflows = workflows)
 
@@ -133,15 +222,15 @@ compare_fit <- model_fit_compare(data = data, workflows = workflows)
 ## using yardstick package for confusion matrix and accuracy
 ## using yardstick for roc curve and plots
 
-## Logistic model
+## svm_poly
 
-metrics_ds1_svm_linear <- 
+metrics_ds1_svm_poly <- 
   model_metrics(test_data = compare_fit$models$test$dataset1, 
-                model = compare_fit$models$models$dataset1$svm_linear)
+                model = compare_fit$models$models$dataset1$svm_poly)
 
-metrics_ds2_svm_linear <- 
+metrics_ds2_svm_poly <- 
   model_metrics(test_data = compare_fit$models$test$dataset2, 
-                model = compare_fit$models$models$dataset2$svm_linear)
+                model = compare_fit$models$models$dataset2$svm_poly)
 
 
 ## svm_radial model
@@ -161,19 +250,19 @@ metrics_ds2_svm_radial <-
 
 # logistic regression metrics during training
 
-train_metrics_ds1_svm_linear <- 
+train_metrics_ds1_svm_poly <- 
   ggplot(
     collect_metrics(
-      compare_fit$models$fit_resample_train$dataset1$svm_linear, 
+      compare_fit$models$fit_resample_train$dataset1$svm_poly, 
       summarize = FALSE), 
     aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
 
-train_metrics_ds2_svm_linear <- 
+train_metrics_ds2_svm_poly <- 
   ggplot(
     collect_metrics(
-      compare_fit$models$fit_resample_train$dataset2$svm_linear, 
+      compare_fit$models$fit_resample_train$dataset2$svm_poly, 
       summarize = FALSE), 
     aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
@@ -209,14 +298,14 @@ The plots below show the resulting decision boundaries
 ## compare results
 
 grid.arrange(
-  compare_fit$plots$model_decision$dataset1$svm_linear,
-  compare_fit$plots$model_decision$dataset1$svm_radial,
-  compare_fit$plots$model_decision$dataset2$svm_linear,
+  compare_fit$plots$model_decision$dataset1$svm_poly  + labs(subtitle = "SVM Polynomial"),
+  compare_fit$plots$model_decision$dataset1$svm_radial + labs(subtitle = "SVM Radial"),
+  compare_fit$plots$model_decision$dataset2$svm_poly,
   compare_fit$plots$model_decision$dataset2$svm_radial,
   nrow = 2,
-  top = "Aplying a svm_linearistic model to both datasets",
+  top = "SVM Radial vs SVM Polynomial",
   bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    "Colored region represents the decision area of the model. Purple line represents the decision border.",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
@@ -229,14 +318,14 @@ The plots shows the evolution of key metrics over crossvalidation trainning
 ```{r}
 
 grid.arrange(
-  train_metrics_ds1_svm_linear, 
-  train_metrics_ds1_svm_radial, 
-  train_metrics_ds2_svm_linear,
-  train_metrics_ds2_svm_radial, 
+  train_metrics_ds1_svm_poly + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds1_svm_radial + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds2_svm_poly + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)),
+  train_metrics_ds2_svm_radial + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
   nrow = 2,
   top = "Metrics over different folds",
   bottom = grid::textGrob(
-      "Right plots reflect trainning over linear border dataset and left plots reflect a quadractic border",
+      "Right plots reflect trainning over poly border dataset and left plots reflect a quadractic border",
       gp = grid::gpar(fontface = 3, fontsize = 9)
       )
 )
@@ -249,9 +338,9 @@ The plots show the metrics between different models
 ```{r}
 
 grid.arrange(
-  metrics_ds1_svm_linear$cf_plot ,
+  metrics_ds1_svm_poly$cf_plot ,
   metrics_ds1_svm_radial$cf_plot ,
-  metrics_ds2_svm_linear$cf_plot ,
+  metrics_ds2_svm_poly$cf_plot ,
   metrics_ds2_svm_radial$cf_plot ,
   nrow = 2,
   top = "Confusion Matrix"
@@ -264,9 +353,9 @@ grid.arrange(
 ```{r}
 
 grid.arrange(
-  metrics_ds1_svm_linear$roc_curve ,
+  metrics_ds1_svm_poly$roc_curve ,
   metrics_ds1_svm_radial$roc_curve ,
-  metrics_ds2_svm_linear$roc_curve ,
+  metrics_ds2_svm_poly$roc_curve ,
   metrics_ds2_svm_radial$roc_curve ,
   nrow = 2,
   top = "ROC curves"
@@ -277,4 +366,18 @@ grid.arrange(
 
 ## Conclusion
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+As expected the presence of outliers decreased the performance of radial svm
+
+```{r}
+
+knitr::kable(
+  
+  data.frame(
+    ds2_svm_poly = metrics_ds2_svm_poly$auc_roc$.estimate,
+    ds2_svm_radial = metrics_ds2_svm_radial$auc_roc$.estimate,
+    ds1_svm_poly = metrics_ds1_svm_poly$auc_roc$.estimate,
+    ds1_svm_radial = metrics_ds1_svm_radial$auc_roc$.estimate
+    )
+)
+
+```
