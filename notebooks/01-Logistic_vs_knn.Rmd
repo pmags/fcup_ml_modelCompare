@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# logistic vs knn
+# Logistic regression vs Nearest Neighbour
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
@@ -27,12 +27,15 @@ set.seed(123)
 
 ## Dataset definition  
 
-When comparing a Logistic regression model agains a Nearest Neighbour model we are comparing a highly biased and a very flexible approach. While a logostic regression assumes a linear border between both classes, NN makes no assumptions and and relies on local information (by k neighbours) to predict a class. 
+Logistic regressions and Nearest Neighbor methods are oposing extremes of the Bias-Variance scale. A logistic regression estimates $Pr(G = 1 | X)$ using the *Logistic function* $p(X) = \frac{e^{\beta_{0} + \beta_{1}X}}{1+\beta_{0} + \beta_{1}X }$. This translates to a linear classification boundary when ploting with independent variables.
 
-Given the base assumption of a linear boundary by logistic regression, a model whose border differs, substantially from a line we expect will performe badly. On the other hand the lack of linearity won't an issue for knn. 
+On the other hand, Nearest Neighbor makes no assumptions and relies solely on local (neighbor) information to predict the $Pr(G = 1 | X)$. This approach makes for a very flexible model but highly sensitive to newer information.
 
-Therefore, we built two datasets with 1000 observations from a `Uniform Distribution`, one with a classification provided by a linear model of $X1 >= X2$ and a narrow quadratic function $abs(1,2 * X_{1} - 5)^2 + 2$. 
+Given each approach oposing characteristics, our initial hypothesis is that, given a dataset with a perfectly linear decision boundary, will be a easily estimated by the biased Logistic regression but the NN approach, given its nature, will struggle since points close to the border will have a strong influence. Therefore, we defined the comparing datasets as follows:
 
+1. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $X_{1} - X_{2} = 0$ are classified as **1** and **0** if below;
+
+2. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $abs(1,2X_{1} - 5)^2 + 2 - X_{2} = 0$ are classified as **1** and **0** if below;
 
 ```{r echo=TRUE}
 
@@ -50,12 +53,12 @@ dataset_linear <- dataset_gen_unif(class_fun = decision_fun_linear, size = 1000)
 dataset_quadratic <- dataset_gen_unif(class_fun = decision_fun_quadratic, size = 1000)
 
 grid.arrange(
-  dataset_linear$border_plot, 
-  dataset_quadratic$border_plot, 
+  dataset_linear$border_plot + labs(subtitle ="Linear decision"  ), 
+  dataset_quadratic$border_plot + labs(subtitle = "Quadratic decision"), 
   nrow = 1,
   top = "Synthetic Generated Datasets",
   bottom = grid::textGrob(
-    "Dashed line represent optimal bayes decision border",
+    "Dashed line represent optimal bayes decision boundary",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
@@ -65,261 +68,78 @@ grid.arrange(
 
 ## Model fitting
 
-Each dataset was divided on training and test dataset using a 80/20 split. 
+The following workflow (using @R-tidymodels) was executed in order to fit and evaluate each model given the above defined datasets:
+
+1. Train - Test split by 80% Train - 20% Test,
+
+2. Define 10 random folds splitting Train and Validation,
+
+3. Fit models to each fold,
+
+4. Calculate Fold metrics,
+
+5. Fit to all train data and extract model,
+
+6. Create plots with estimated decision boundaries
 
 
-```{r echo=TRUE}
-
-# 0. Separate test and train
-
-data_linear <- dataset_linear$dataset
-data_linear$g <- factor(data_linear$g)
-
-split <- initial_split(data_linear, prop = 0.8)
-
-train_data_linear <- training(split)
-test_data_linear <- testing(split)
-
-
-
-
-data_quadratic <- dataset_quadratic$dataset
-data_quadratic$g <- factor(data_quadratic$g)
-
-split <- initial_split(data_quadratic, prop = 0.8)
-
-train_data_quadratic <- training(split)
-test_data_quadratic <- testing(split)
-
-```
-
+```{r}
+# define workflows
 
 ### Logistic regression
 
-
-```{r echo=TRUE}
-
-## Create workflow
-
-### Logistic regression -------------------------
-
- 
 # 1. specify the model
 logistic_reg_glm_spec <-
-  logistic_reg(mode = "classification") %>%
-  set_engine('glm', family = "binomial") 
+  parsnip::logistic_reg(mode = "classification") %>%
+  parsnip::set_engine('glm', family = "binomial") 
+
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(g ~ x1 + x2 , data = train_data_linear)
+  recipes::recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
   
+
 # 3, Buildworkflow
 logit_wflow <- 
-  workflow() %>% 
-  add_model(logistic_reg_glm_spec) %>% 
-  add_recipe(preprocess)
-
-# 4. Fit model
-fit_control <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
-
-folds_linear <- vfold_cv(train_data_linear, v = 10)
-folds_quadratic <- vfold_cv(train_data_quadratic, v = 10)
+  workflows::workflow() %>% 
+  workflows::add_model(logistic_reg_glm_spec) %>% 
+  workflows::add_recipe(preprocess)
 
 
-logit_metrics_linear <- 
-  logit_wflow %>% 
-  fit_resamples(folds_linear, verbose = TRUE, control = fit_control)
+### SVM radial
 
-logit_metrics_quadratic <- 
-  logit_wflow %>% 
-  fit_resamples(folds_quadratic, verbose = TRUE, control = fit_control)
+# 1. specify the model
+nearest_neighbor_kknn_spec <-
+  parsnip::nearest_neighbor() %>%
+  parsnip::set_engine('kknn') %>% # Defaultk = 5
+  parsnip::set_mode('classification')
 
-# 5. Performance metrics over the validation set
-logit_metrics_linear <- collect_metrics(logit_metrics_linear, summarize = FALSE)
-logit_metrics_quadratic <- collect_metrics(logit_metrics_quadratic, summarize = FALSE)
-
-
-# 6. Fits final model
-logit_linear_fit <- 
-  logit_wflow %>% 
-  fit(train_data_linear)
-
-logit_linear_model <- extract_fit_parsnip(logit_linear_fit)
-
-logit_quadratic_fit <- 
-  logit_wflow %>% 
-  fit(train_data_quadratic)
-
-logit_quadratic_model <- extract_fit_parsnip(logit_quadratic_fit)
+# 2. preprocessing 
+preprocess <- 
+  recipes::recipe(g ~ x1 + x2 , data = dataset_linear$dataset) # just to set the relation, irrelevant which dataset used
+  
+# 3, Buildworkflow
+knn_wflow <- 
+  workflows::workflow() %>% 
+  workflows::add_model(nearest_neighbor_kknn_spec) %>% 
+  workflows::add_recipe(preprocess)
 
 ```
 
 
-### KNN
-
 ```{r}
 
-### Knn--------------- -------------------------
+data <- list(dataset_linear, dataset_quadratic)
+workflows <- list(logistic = logit_wflow, knn = knn_wflow)
 
-# 1. specify the model
-nearest_neighbor_kknn_spec <-
-  nearest_neighbor() %>%
-  set_engine('kknn') %>% # Defaultk = 5
-  set_mode('classification')
-
-# 2. preprocessing 
-preprocess <- 
-  recipe(g ~ x1 + x2 , data = train_data_linear) # just to set the relation, irrelevante which dataset used
-  
-# 3, Buildworkflow
-knn_wflow <- 
-  workflow() %>% 
-  add_model(nearest_neighbor_kknn_spec) %>% 
-  add_recipe(preprocess)
-
-# 4. Fit model
-
-knn_metrics_linear <- 
-  knn_wflow %>% 
-  fit_resamples(folds_linear, verbose = TRUE, control = fit_control) # folds and fit control defined above
-
-knn_metrics_quadratic <- 
-  knn_wflow %>% 
-  fit_resamples(folds_quadratic, verbose = TRUE, control = fit_control)
-
-# 5. Performance metrics over the validation set
-knn_metrics_linear <- collect_metrics(knn_metrics_linear, summarize = FALSE)
-knn_metrics_quadratic <- collect_metrics(knn_metrics_quadratic, summarize = FALSE)
-
-
-# 6. Fits final model
-knn_linear_fit <- 
-  knn_wflow %>% 
-  fit(train_data_linear)
-
-knn_linear_model <- extract_fit_parsnip(knn_linear_fit)
-
-knn_quadratic_fit <- 
-  knn_wflow %>% 
-  fit(train_data_quadratic)
-
-knn_quadratic_model <- extract_fit_parsnip(knn_quadratic_fit)
-
-
+compare_fit <- model_fit_compare(data = data, workflows = workflows)
 
 ```
 
 
 ## Compare results
 
-```{r}
-
-# logistic regression decision boundary
-
-# fit model to grid to find border linear
-
-grid_linear <-
-  dataset_linear$cond %>%
-  bind_cols(
-    predict(logit_linear_model, new_data = dataset_linear$cond),
-    predict(logit_linear_model, new_data = dataset_linear$cond, type = "prob"),
-  ) %>%
-  mutate(
-    .pred_1 = round(.pred_1, 3),
-    .pred_0 = round(.pred_0, 3),
-    decision = .pred_1 - .pred_0
-  )
-
-plot_logistic_decision_linear <- dataset_linear$border_plot +
-  geom_contour(data = grid_linear, 
-               aes(x = x1, y = x2, z = decision), 
-               color = "Purple", 
-               breaks = 0, 
-               size = 1, 
-               alpha = 0.5) +
-  geom_point(data = grid_linear, 
-             aes(x = x1, y = x2, color = .pred_class), 
-             size = 0.1, 
-             alpha = 0.1)
-
-
-# fit model to grid to find border quadratic
-
-grid_quadratic <-
-  dataset_quadratic$cond %>%
-  bind_cols(
-    predict(logit_linear_model, new_data = dataset_quadratic$cond),
-    predict(logit_linear_model, new_data = dataset_quadratic$cond, type = "prob"),
-  ) %>%
-  mutate(
-    .pred_1 = round(.pred_1, 3),
-    .pred_0 = round(.pred_0, 3),
-    decision = .pred_1 - .pred_0
-  )
-
-plot_logistic_decision_quadratic <- dataset_quadratic$border_plot +
-  geom_contour(data = grid_quadratic, 
-               aes(x = x1, y = x2, z = decision), 
-               color = "Purple", 
-               breaks = 0, 
-               size = 1, 
-               alpha = 0.5) +
-  geom_point(data = grid_quadratic, 
-             aes(x = x1, y = x2, color = .pred_class), 
-             size = 0.1, 
-             alpha = 0.1)
-
-
-```
-
-
-```{r}
-
-# logistic regression decision boundary
-
-# fit model to grid to find border linear
-
-knn_grid_linear <- 
-  dataset_linear$cond %>% 
-  bind_cols(
-    predict(knn_linear_model, new_data = dataset_linear$cond),
-    predict(knn_linear_model, new_data = dataset_linear$cond, type = "prob"),
-  ) %>% 
-  mutate(
-    .pred_1 = round(.pred_1, 3),
-    .pred_0 = round(.pred_0, 3),
-    decision = .pred_1 - .pred_0
-  )
-
-plot_knn_decision_linear <- dataset_linear$border_plot +
-   geom_contour(data = knn_grid_linear, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
-  geom_point(data = knn_grid_linear, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
-
-
-# fit model to grid to find border quadratic
-
-knn_grid_quadratic <- 
-  dataset_quadratic$cond %>% 
-  bind_cols(
-    predict(knn_quadratic_model, new_data = dataset_quadratic$cond),
-    predict(knn_quadratic_model, new_data = dataset_quadratic$cond, type = "prob"),
-  ) %>% 
-  mutate(
-    .pred_1 = round(.pred_1, 3),
-    .pred_0 = round(.pred_0, 3),
-    decision = .pred_1 - .pred_0
-  )
-
-plot_knn_decision_quadratic <- dataset_quadratic$border_plot +
-   geom_contour(data = knn_grid_quadratic, aes(x = x1,y = x2, z = decision), color = "Purple", breaks = 0, size = 1, alpha = 0.5) +
-  geom_point(data = knn_grid_quadratic, aes(x = x1, y = x2, color =.pred_class ), size = 0.1, alpha = 0.1)
-
-
-```
-
-
-
-```{r}
+```{r message=TRUE, warning=TRUE, include=FALSE}
 
 ## Metrics logistic model:
 ## using yardstick package for confusion matrix and accuracy
@@ -327,92 +147,104 @@ plot_knn_decision_quadratic <- dataset_quadratic$border_plot +
 
 ## Logistic model
 
-logistic_linear_dataset_metrics <- 
-  model_metrics(test_data = test_data_linear, 
-                model = logit_linear_model)
+metrics_ds1_logistic <- 
+  model_metrics(test_data = compare_fit$models$test$dataset1, 
+                model = compare_fit$models$models$dataset1$logistic)
 
-logistic_quadratic_dataset_metrics <- 
-  model_metrics(test_data = test_data_quadratic, 
-                model = logit_quadratic_model)
+metrics_ds2_logistic <- 
+  model_metrics(test_data = compare_fit$models$test$dataset2, 
+                model = compare_fit$models$models$dataset2$logistic)
+
 
 ## knn model
 
-knn_linear_dataset_metrics <- 
-  model_metrics(test_data = test_data_linear, 
-                model = knn_linear_model)
+metrics_ds1_knn <- 
+  model_metrics(test_data = compare_fit$models$test$dataset1, 
+                model = compare_fit$models$models$dataset1$knn)
 
-knn_quadratic_dataset_metrics <- 
-  model_metrics(test_data = test_data_quadratic, 
-                model = knn_quadratic_model)
+metrics_ds2_knn <- 
+  model_metrics(test_data = compare_fit$models$test$dataset2, 
+                model = compare_fit$models$models$dataset2$knn)
 
 ```
 
 
-
-
-```{r echo=FALSE}
+```{r message=TRUE, warning=TRUE, include=FALSE}
 
 # logistic regression metrics during training
 
-log_linear_training_metrics_plot <- 
-  ggplot(logit_metrics_linear, aes(x = id, y = .estimate, color= .metric)) + 
+train_metrics_ds1_logistic <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset1$logistic, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
 
-log_quadratic_training_metrics_plot <- 
-  ggplot(logit_metrics_quadratic, aes(x = id, y = .estimate, color= .metric)) + 
+train_metrics_ds2_logistic <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset2$logistic, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
 
 
 # knn  performance during training
 
-
-knn_linear_training_metrics_plot <- 
-  ggplot(knn_metrics_linear, aes(x = id, y = .estimate, color= .metric)) + 
+train_metrics_ds1_knn <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset1$knn, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
 
-knn_quadratic_training_metrics_plot <- 
-  ggplot(knn_metrics_quadratic, aes(x = id, y = .estimate, color= .metric)) + 
+train_metrics_ds2_knn <- 
+  ggplot(
+    collect_metrics(
+      compare_fit$models$fit_resample_train$dataset2$knn, 
+      summarize = FALSE), 
+    aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
-
 
 ```
 
-
-The plots below show the resulting decision bondaries
 
 ```{r}
 
 ## compare results
 
 grid.arrange(
-  plot_logistic_decision_linear, 
-  plot_logistic_decision_quadratic, 
-  plot_knn_decision_linear,
-  plot_knn_decision_quadratic,
+  compare_fit$plots$model_decision$dataset1$logistic + labs(subtitle = "Linear decision"),
+  compare_fit$plots$model_decision$dataset1$knn + labs(subtitle = "Quadratic decision"),
+  compare_fit$plots$model_decision$dataset2$logistic ,
+  compare_fit$plots$model_decision$dataset2$knn,
   nrow = 2,
-  top = "Aplying a logistic model to both datasets",
+  top = "Logistic vs Knn (k = 3)",
   bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the logistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    "Colored region represents the decision area of the model. Purple line represents the decision border.",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
 
 ```
 
-The plots shows the evolution of key metrics over crossvalidation trainning
+From the above plots we can conclude that the results are much in line with our initial hypothesis. Given a linear boundary, the logistic regression was able to match to perfection while the knn with k = 3 was influenced by observations closer to the border. On the other hand, the logistic regression was unable to classify when a border was a quadratic function.
 
+The following plot showcases the performance of each model calculated on each of the 10 validation folds. It is clear the struggle of the logistic model on a quadratic boundary.
 
-```{r}
+```{r echo=FALSE}
 
 grid.arrange(
-  log_linear_training_metrics_plot, 
-  log_quadratic_training_metrics_plot, 
-  knn_linear_training_metrics_plot,
-  knn_quadratic_training_metrics_plot,
+  train_metrics_ds1_logistic + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds1_knn+ theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds2_logistic+ theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)),
+  train_metrics_ds2_knn+ theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
   nrow = 2,
   top = "Metrics over different folds",
   bottom = grid::textGrob(
@@ -423,31 +255,30 @@ grid.arrange(
 
 ```
 
-
-The plots show the metrics between different models
+Below the results on the test set which confirm our preliminary conclusions
 
 ```{r}
 
 grid.arrange(
-  logistic_linear_dataset_metrics$cf_plot + labs(title = "logistic linear"),
-  logistic_quadratic_dataset_metrics$cf_plot + labs(title = "Logistic quadratic"),
-  knn_linear_dataset_metrics$cf_plot + labs(title = "knn linear"),
-  knn_quadratic_dataset_metrics$cf_plot + labs(title= "knn quadratic"),
+  metrics_ds1_logistic$cf_plot ,
+  metrics_ds1_knn$cf_plot ,
+  metrics_ds2_logistic$cf_plot ,
+  metrics_ds2_knn$cf_plot ,
   nrow = 2,
   top = "Confusion Matrix"
 )
 
-```
 
+```
 
 
 ```{r}
 
 grid.arrange(
-  logistic_linear_dataset_metrics$roc_curve + labs(title = "logistic linear"),
-  logistic_quadratic_dataset_metrics$roc_curve + labs(title = "Logistic quadratic"),
-  knn_linear_dataset_metrics$roc_curve + labs(title = "knn linear"),
-  knn_quadratic_dataset_metrics$roc_curve + labs(title= "knn quadratic"),
+  metrics_ds1_logistic$roc_curve ,
+  metrics_ds1_knn$roc_curve ,
+  metrics_ds2_logistic$roc_curve ,
+  metrics_ds2_knn$roc_curve ,
   nrow = 2,
   top = "ROC curves"
 )
@@ -459,6 +290,3 @@ grid.arrange(
 
 Given is simplicity and explicit difference between each class, both model perform very well on a dataset with a clear linear bondary. That is visible on both the training and test dataset although with an edge towards the logistic regression. 
 
-It is when the boundary aliviates the linearity condition that knn really outshines the logistic output.
-
-It is important to notice that given the fact that the data derive from such strong definitions, it lakes randomness and therefore it's not easy to identify signs of overfitting.

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Dataset compare between models" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/theme/images/cover.pdf" />
+
+
+
+<meta name="author" content="Marta Ferreira e Pedro Magalhães" />
+
+<meta name="date" content="2022-06-04" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Dataset compare between models">
+
+<title>Dataset compare between models</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="_theme/style.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<!--bookdown:title:start-->
+<div id="header">
+<h1 class="title">Dataset compare between models</h1>
+<h3 class="subtitle"><em>Machine Learning</em></h3>
+<h4 class="author"><em>Marta Ferreira e Pedro Magalhães</em></h4>
+<h4 class="date"><em>2022-06-04</em></h4>
+</div>
+<!--bookdown:title:end-->
+
+<!--bookdown:toc:start-->
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a>
+<ul>
+<li><a href="#project-structure">Project structure</a></li>
+<li><a href="#approaches-and-assumptions">Approaches and Assumptions</a></li>
+<li><a href="#how-to-run-and-reproduce-the-conclusions">How to run and reproduce the conclusions</a></li>
+<li><a href="#environment-info">Environment Info</a></li>
+</ul></li>
+<li><a href="#logistic-regression-vs-nearest-neighbour"><span class="toc-section-number">1</span> Logistic regression vs Nearest Neighbour</a>
+<ul>
+<li><a href="#dataset-definition"><span class="toc-section-number">1.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting"><span class="toc-section-number">1.2</span> Model fitting</a></li>
+<li><a href="#compare-results"><span class="toc-section-number">1.3</span> Compare results</a></li>
+<li><a href="#conclusion"><span class="toc-section-number">1.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#linear-discriminante-analysis-vs-decision-tree"><span class="toc-section-number">2</span> Linear Discriminante Analysis vs Decision tree</a>
+<ul>
+<li><a href="#dataset-definition-1"><span class="toc-section-number">2.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-1"><span class="toc-section-number">2.2</span> Model fitting</a>
+<ul>
+<li><a href="#lda"><span class="toc-section-number">2.2.1</span> LDA</a></li>
+</ul></li>
+<li><a href="#decision-tree"><span class="toc-section-number">2.3</span> Decision tree</a></li>
+<li><a href="#compare-results-1"><span class="toc-section-number">2.4</span> Compare results</a></li>
+<li><a href="#conclusion-1"><span class="toc-section-number">2.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#linear-discriminante-analysis-vs-decision-tree-1"><span class="toc-section-number">3</span> Linear Discriminante Analysis vs Decision tree</a></li>
+<li><a href="#linear-discriminante-analysis-vs-logistic-regression"><span class="toc-section-number">4</span> Linear Discriminante Analysis vs Logistic Regression</a>
+<ul>
+<li><a href="#dataset-definition-2"><span class="toc-section-number">4.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-2"><span class="toc-section-number">4.2</span> Model fitting</a></li>
+<li><a href="#compare-results-2"><span class="toc-section-number">4.3</span> Compare results</a></li>
+<li><a href="#conclusion-2"><span class="toc-section-number">4.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#decision-tree-vs-tree-boosting"><span class="toc-section-number">5</span> Decision tree vs tree boosting</a>
+<ul>
+<li><a href="#dataset-definition-3"><span class="toc-section-number">5.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-3"><span class="toc-section-number">5.2</span> Model fitting</a></li>
+<li><a href="#compare-results-3"><span class="toc-section-number">5.3</span> Compare results</a></li>
+<li><a href="#conclusion-3"><span class="toc-section-number">5.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#svm-radial-vs-svm-linear"><span class="toc-section-number">6</span> SVM Radial vs SVM linear</a>
+<ul>
+<li><a href="#dataset-definition-4"><span class="toc-section-number">6.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-4"><span class="toc-section-number">6.2</span> Model fitting</a></li>
+<li><a href="#compare-results-4"><span class="toc-section-number">6.3</span> Compare results</a></li>
+<li><a href="#conclusion-4"><span class="toc-section-number">6.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#svm-radial-vs-svm-linear-1"><span class="toc-section-number">7</span> SVM Radial vs SVM linear</a>
+<ul>
+<li><a href="#dataset-definition-5"><span class="toc-section-number">7.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-5"><span class="toc-section-number">7.2</span> Model fitting</a></li>
+<li><a href="#compare-results-5"><span class="toc-section-number">7.3</span> Compare results</a></li>
+<li><a href="#conclusion-5"><span class="toc-section-number">7.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#mlp-vs-knn"><span class="toc-section-number">8</span> MLP vs knn</a>
+<ul>
+<li><a href="#dataset-definition-6"><span class="toc-section-number">8.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-6"><span class="toc-section-number">8.2</span> Model fitting</a></li>
+<li><a href="#compare-results-6"><span class="toc-section-number">8.3</span> Compare results</a></li>
+<li><a href="#conclusion-6"><span class="toc-section-number">8.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#svm-radial-vs-svm-linear-2"><span class="toc-section-number">9</span> SVM Radial vs SVM linear</a>
+<ul>
+<li><a href="#dataset-definition-7"><span class="toc-section-number">9.1</span> Dataset definition</a></li>
+<li><a href="#model-fitting-7"><span class="toc-section-number">9.2</span> Model fitting</a></li>
+<li><a href="#compare-results-7"><span class="toc-section-number">9.3</span> Compare results</a></li>
+<li><a href="#conclusion-7"><span class="toc-section-number">9.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+<!--bookdown:toc:end-->
+
+<!--bookdown:body:start-->
+<div style="page-break-after: always;"></div>
+<div id="introduction" class="section level1 unnumbered">
+<h1 class="unnumbered">Introduction</h1>
+<p>This projects aims at comparing the performance of several Machine Learning models (ML models) under different data contexts.</p>
+<p>To achieve our goal we stacked against each other pairs of different models using Synthetic Datasets represents often polarizing and extreme situations and therefore exposing the main “decision” characteristics of each model.</p>
+<p>The focus will be solely on classification problems and models will be compared againts each other using Accuracy and Area under the Roc Curve (AUC ROC) as metrics. Since we have full control over the dataset distributuion, the optimal Bayes Boundary willbe used as baseline</p>
+<div id="project-structure" class="section level2 unnumbered">
+<h2 class="unnumbered">Project structure</h2>
+<p>This project is organized in the following way:</p>
+<ol style="list-style-type: decimal">
+<li><p>An introduction containing general assumptions and how to reproduce the results,</p></li>
+<li><p>A chapter for each model pair containing the sythetic data rules, the bayes optimal boundary (BOB), a small models explanation and rational for each dataset, model fit and metrics as well as the prediction area and discussion of the results,</p></li>
+<li><p>An overall conclusion</p></li>
+</ol>
+</div>
+<div id="approaches-and-assumptions" class="section level2 unnumbered">
+<h2 class="unnumbered">Approaches and Assumptions</h2>
+<p>Throughtout this project the following assumptions were made and approaches were used:</p>
+<ul>
+<li><p>Dependent variables (target) are of date type <code>factor</code> and all Independent variables (features) are of type <code>numeric</code>,</p></li>
+<li><p>Since the datasets are syntheticly generated, no pre-processing was made,</p></li>
+<li><p>Datasets were built using statistical distributions and/or classification rules which may have no resemblance to reality,</p></li>
+<li><p>To the extant it is possible a dataset was created using a binomial categorical variable and a two features,</p></li>
+<li><p>For the sake of molde comparing, the default hyperparameter value were used. This are provided by <code>Parsnip R package</code> without post-processing and hyperparameter optimzation. It is possible, although unlikely, that a different package or under different hyperparameters could result different conclusions,</p></li>
+<li><p>For calculating metrics a cross-validations with 10 folds and no repetition was used.</p></li>
+</ul>
+<p><span class="citation">R Core Team (<a href="#ref-R-base" role="doc-biblioref">2022</a>)</span></p>
+</div>
+<div id="how-to-run-and-reproduce-the-conclusions" class="section level2 unnumbered">
+<h2 class="unnumbered">How to run and reproduce the conclusions</h2>
+</div>
+<div id="environment-info" class="section level2 unnumbered">
+<h2 class="unnumbered">Environment Info</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>## R version 4.1.3 (2022-03-10)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 19044)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=Portuguese_Portugal.1252  LC_CTYPE=Portuguese_Portugal.1252   
+## [3] LC_MONETARY=Portuguese_Portugal.1252 LC_NUMERIC=C                        
+## [5] LC_TIME=Portuguese_Portugal.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices datasets  utils     methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] bookdown_0.26   digest_0.6.29   R6_2.5.1        jsonlite_1.8.0 
+##  [5] magrittr_2.0.3  evaluate_0.15   stringi_1.7.6   rlang_1.0.2    
+##  [9] cli_3.3.0       renv_0.15.5     rstudioapi_0.13 jquerylib_0.1.4
+## [13] bslib_0.3.1     rmarkdown_2.14  tools_4.1.3     stringr_1.4.0  
+## [17] xfun_0.31       yaml_2.3.5      fastmap_1.1.0   compiler_4.1.3 
+## [21] htmltools_0.5.2 knitr_1.39      sass_0.4.1</code></pre>
+<div style="page-break-after: always;"></div>
+<!--chapter:end:index.Rmd-->
+</div>
+</div>
+<div id="logistic-regression-vs-nearest-neighbour" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Logistic regression vs Nearest Neighbour</h1>
+<div id="dataset-definition" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Dataset definition</h2>
+<p>Logistic regressions and Nearest Neighbor methods are oposing extremes of the Bias-Variance scale. A logistic regression estimates <span class="math inline">\(Pr(G = 1 | X)\)</span> using the <em>Logistic function</em> <span class="math inline">\(p(X) = \frac{e^{\beta_{0} + \beta_{1}X}}{1+\beta_{0} + \beta_{1}X }\)</span>. This translates to a linear classification boundary when ploting with independent variables.</p>
+<p>On the other hand, Nearest Neighbor makes no assumptions and relies solely on local (neighbor) information to predict the <span class="math inline">\(Pr(G = 1 | X)\)</span>. This approach makes for a very flexible model but highly sensitive to newer information.</p>
+<p>Given each approach oposing characteristics, our initial hypothesis is that, given a dataset with a perfectly linear decision boundary, will be a easily estimated by the biased Logistic regression but the NN approach, given its nature, will struggle since points close to the border will have a strong influence. Therefore, we defined the comparing datasets as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above <span class="math inline">\(X_{1} - X_{2} = 0\)</span> are classified as <strong>1</strong> and <strong>0</strong> if below;</p></li>
+<li><p>A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above <span class="math inline">\(abs(1,2X_{1} - 5)^2 + 2 - X_{2} = 0\)</span> are classified as <strong>1</strong> and <strong>0</strong> if below;</p></li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>decision_fun_linear <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, x2){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x2 <span class="sc">&gt;=</span> x1, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>decision_fun_quadratic <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, x2){</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(x2 <span class="sc">&gt;=</span> <span class="fu">abs</span>( (<span class="fl">1.2</span> <span class="sc">*</span> x1 <span class="sc">-</span> <span class="dv">5</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span> ), <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>dataset_linear <span class="ot">&lt;-</span> <span class="fu">dataset_gen_unif</span>(<span class="at">class_fun =</span> decision_fun_linear, <span class="at">size =</span> <span class="dv">1000</span>)</span></code></pre></div>
+<pre><code>## Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if `.name_repair` is omitted as of tibble 2.0.0.
+## Using compatibility `.name_repair`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dataset_quadratic <span class="ot">&lt;-</span> <span class="fu">dataset_gen_unif</span>(<span class="at">class_fun =</span> decision_fun_quadratic, <span class="at">size =</span> <span class="dv">1000</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  dataset_linear<span class="sc">$</span>border_plot <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span><span class="st">&quot;Linear decision&quot;</span>  ), </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  dataset_quadratic<span class="sc">$</span>border_plot <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">subtitle =</span> <span class="st">&quot;Quadratic decision&quot;</span>), </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">nrow =</span> <span class="dv">1</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">top =</span> <span class="st">&quot;Synthetic Generated Datasets&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">bottom =</span> grid<span class="sc">::</span><span class="fu">textGrob</span>(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Dashed line represent optimal bayes decision boundary&quot;</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">gp =</span> grid<span class="sc">::</span><span class="fu">gpar</span>(<span class="at">fontface =</span> <span class="dv">3</span>, <span class="at">fontsize =</span> <span class="dv">9</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Model fitting</h2>
+<p>The following workflow (using <span class="citation">Kuhn and Wickham (<a href="#ref-R-tidymodels" role="doc-biblioref">2021</a>)</span>) was executed in order to fit and evaluate each model given the above defined datasets:</p>
+<ol style="list-style-type: decimal">
+<li><p>Train - Test split by 80% Train - 20% Test,</p></li>
+<li><p>Define 10 random folds splitting Train and Validation,</p></li>
+<li><p>Fit models to each fold,</p></li>
+<li><p>Calculate Fold metrics,</p></li>
+<li><p>Fit to all train data and extract model,</p></li>
+<li><p>Create plots with estimated decision boundaries</p></li>
+</ol>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<pre><code>## ! Fold01: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold02: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold03: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold04: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold05: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold06: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold07: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold08: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold09: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold10: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+</div>
+<div id="compare-results" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Compare results</h2>
+<p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>From the above plots we can conclude that the results are much in line with our initial hypothesis. Given a linear boundary, the logistic regression was able to match to perfection while the knn with k = 3 was influenced by observations closer to the border. On the other hand, the logistic regression was unable to classify when a border was a quadratic function.</p>
+<p>The following plot showcases the performance of each model calculated on each of the 10 validation folds. It is clear the struggle of the logistic model on a quadratic boundary.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Below the results on the test set which confirm our preliminary conclusions</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion" class="section level2" number="1.4">
+<h2><span class="header-section-number">1.4</span> Conclusion</h2>
+<p>Given is simplicity and explicit difference between each class, both model perform very well on a dataset with a clear linear bondary. That is visible on both the training and test dataset although with an edge towards the logistic regression.</p>
+<!--chapter:end:notebooks/01-Logistic_vs_knn.Rmd-->
+</div>
+</div>
+<div id="linear-discriminante-analysis-vs-decision-tree" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Linear Discriminante Analysis vs Decision tree</h1>
+<div id="dataset-definition-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-1" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 0. Separate test and train</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>data_lda <span class="ot">&lt;-</span> dataset_lda<span class="sc">$</span>dataset</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>data_lda<span class="sc">$</span>g <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_lda<span class="sc">$</span>g)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_lda, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>train_data_lda <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>test_data_lda <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>data_dtree <span class="ot">&lt;-</span> dataset_dtree<span class="sc">$</span>dataset</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>data_dtree<span class="sc">$</span>g <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_dtree<span class="sc">$</span>g)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(data_dtree, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>train_data_dtree <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>test_data_dtree <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span></code></pre></div>
+<div id="lda" class="section level3" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> LDA</h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Create workflow</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="do">### LDA regression -------------------------</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. specify the model</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>discrim_linear_MASS_spec <span class="ot">&lt;-</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">discrim_linear</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;classification&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;MASS&quot;</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. preprocessing </span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>preprocess <span class="ot">&lt;-</span> </span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(g <span class="sc">~</span> x1 <span class="sc">+</span> x2 , <span class="at">data =</span> train_data_lda)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 3, Buildworkflow</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>lda_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(discrim_linear_MASS_spec) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(preprocess)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Fit model</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>fit_control <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>folds_lda <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data_lda, <span class="at">v =</span> <span class="dv">10</span>)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>folds_dtree <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train_data_dtree, <span class="at">v =</span> <span class="dv">10</span>)</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>lda_metrics_dataset_lda <span class="ot">&lt;-</span> </span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>  lda_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(folds_lda, <span class="at">verbose =</span> <span class="cn">TRUE</span>, <span class="at">control =</span> fit_control)</span></code></pre></div>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>lda_metrics_dataset_dtree <span class="ot">&lt;-</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  lda_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(folds_dtree, <span class="at">verbose =</span> <span class="cn">TRUE</span>, <span class="at">control =</span> fit_control)</span></code></pre></div>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Performance metrics over the validation set</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>lda_metrics_dataset_lda <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(lda_metrics_dataset_lda, <span class="at">summarize =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>lda_metrics_dataset_dtree <span class="ot">&lt;-</span> <span class="fu">collect_metrics</span>(lda_metrics_dataset_dtree, <span class="at">summarize =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Fits final model</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>lda_ldaFit <span class="ot">&lt;-</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  lda_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(train_data_lda)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>lda_ldaModel <span class="ot">&lt;-</span> <span class="fu">extract_fit_parsnip</span>(lda_ldaFit)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>lda_dtreeFit <span class="ot">&lt;-</span> </span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  lda_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(train_data_dtree)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>lda_dtreeModel <span class="ot">&lt;-</span> <span class="fu">extract_fit_parsnip</span>(lda_dtreeFit)</span></code></pre></div>
+</div>
+</div>
+<div id="decision-tree" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Decision tree</h2>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+</div>
+<div id="compare-results-1" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Compare results</h2>
+<p>The plots below show the resulting decision bondaries</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-1" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/2-lda_vs_tree.Rmd-->
+</div>
+</div>
+<div id="linear-discriminante-analysis-vs-decision-tree-1" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Linear Discriminante Analysis vs Decision tree</h1>
+<p><img src="_main_files/figure-html/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<!--chapter:end:notebooks/3-lda_vs_qda.Rmd-->
+</div>
+<div id="linear-discriminante-analysis-vs-logistic-regression" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Linear Discriminante Analysis vs Logistic Regression</h1>
+<div id="dataset-definition-2" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-2" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<pre><code>## ! Fold01: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold02: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold03: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold04: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold05: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold06: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold07: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold08: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold09: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## ! Fold10: preprocessor 1/1, model 1/1: glm.fit: algorithm did not converge, glm.fi...</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<pre><code>## Warning: glm.fit: algorithm did not converge</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<pre><code>## ! Fold01: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold02: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold03: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold04: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold05: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold06: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold07: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold08: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold09: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## ! Fold10: preprocessor 1/1, model 1/1: glm.fit: fitted probabilities numerically 0...</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were
+## passed: &#39;verbose&#39;</code></pre>
+<pre><code>## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+</div>
+<div id="compare-results-2" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Compare results</h2>
+<p>The plots below show the resulting decision boundaries</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-2" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/4-lda_vs_logistic.Rmd-->
+</div>
+</div>
+<div id="decision-tree-vs-tree-boosting" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Decision tree vs tree boosting</h1>
+<div id="dataset-definition-3" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-3" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+</div>
+<div id="compare-results-3" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Compare results</h2>
+<p>The plots below show the resulting decision boundaries</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-3" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/5-tree_vs_boosting.Rmd-->
+</div>
+</div>
+<div id="svm-radial-vs-svm-linear" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> SVM Radial vs SVM linear</h1>
+<div id="dataset-definition-4" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-4" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+<pre><code>##  Setting default kernel parameters</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+<pre><code>##  Setting default kernel parameters  
+## maximum number of iterations reached 0.0006068825 -0.0006062308</code></pre>
+</div>
+<div id="compare-results-4" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Compare results</h2>
+<p>The plots below show the resulting decision boundaries</p>
+<pre><code>## Warning: stat_contour(): Zero contours were generated</code></pre>
+<pre><code>## Warning in min(x): no non-missing arguments to min; returning Inf</code></pre>
+<pre><code>## Warning in max(x): no non-missing arguments to max; returning -Inf</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-63-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-65-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-4" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/6-svm_radial_vs_svm_linear.Rmd-->
+</div>
+</div>
+<div id="svm-radial-vs-svm-linear-1" class="section level1" number="7">
+<h1><span class="header-section-number">7</span> SVM Radial vs SVM linear</h1>
+<div id="dataset-definition-5" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-68-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-5" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+<pre><code>##  Setting default kernel parameters</code></pre>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+<pre><code>##  Setting default kernel parameters  
+## maximum number of iterations reached 0.0006068825 -0.0006062308</code></pre>
+</div>
+<div id="compare-results-5" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Compare results</h2>
+<p>The plots below show the resulting decision boundaries</p>
+<pre><code>## Warning: stat_contour(): Zero contours were generated</code></pre>
+<pre><code>## Warning in min(x): no non-missing arguments to min; returning Inf</code></pre>
+<pre><code>## Warning in max(x): no non-missing arguments to max; returning -Inf</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-76-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-5" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/7-lda_vs_qda.Rmd-->
+</div>
+</div>
+<div id="mlp-vs-knn" class="section level1" number="8">
+<h1><span class="header-section-number">8</span> MLP vs knn</h1>
+<div id="dataset-definition-6" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-79-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-6" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+</div>
+<div id="compare-results-6" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Compare results</h2>
+<p>The plots below show the resulting decision boundaries</p>
+<pre><code>## Warning: stat_contour(): Zero contours were generated</code></pre>
+<pre><code>## Warning in min(x): no non-missing arguments to min; returning Inf</code></pre>
+<pre><code>## Warning in max(x): no non-missing arguments to max; returning -Inf</code></pre>
+<p><img src="_main_files/figure-html/unnamed-chunk-84-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-85-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-86-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-87-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-6" class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/7-mlp_vs_knn.Rmd-->
+</div>
+</div>
+<div id="svm-radial-vs-svm-linear-2" class="section level1" number="9">
+<h1><span class="header-section-number">9</span> SVM Radial vs SVM linear</h1>
+<div id="dataset-definition-7" class="section level2" number="9.1">
+<h2><span class="header-section-number">9.1</span> Dataset definition</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-90-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="model-fitting-7" class="section level2" number="9.2">
+<h2><span class="header-section-number">9.2</span> Model fitting</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<pre><code>## Warning: The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;
+## The `...` are not used in this function but one or more objects were passed: &#39;verbose&#39;</code></pre>
+</div>
+<div id="compare-results-7" class="section level2" number="9.3">
+<h2><span class="header-section-number">9.3</span> Compare results</h2>
+<p>The plots below show the resulting decision boundaries</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-95-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-96-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-97-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-98-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion-7" class="section level2" number="9.4">
+<h2><span class="header-section-number">9.4</span> Conclusion</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
+<!--chapter:end:notebooks/8-SVM_linear_vs_radial.Rmd-->
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<!--chapter:end:notebooks/9-references.Rmd-->
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-tidymodels" class="csl-entry">
+Kuhn, Max, and Hadley Wickham. 2021. <em>Tidymodels: Easily Install and Load the Tidymodels Packages</em>. <a href="https://CRAN.R-project.org/package=tidymodels">https://CRAN.R-project.org/package=tidymodels</a>.
+</div>
+<div id="ref-R-base" class="csl-entry">
+R Core Team. 2022. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+</div>
+</div>
+<!--bookdown:body:end-->
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

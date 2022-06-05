@@ -23,7 +23,7 @@
 <meta name="author" content="Marta Ferreira e Pedro Magalhães" />
 
 
-<meta name="date" content="2022-06-03" />
+<meta name="date" content="2022-06-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -119,6 +119,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="_theme/style.css" type="text/css" />
 </head>
@@ -141,6 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#project-structure"><i class="fa fa-check"></i>Project structure</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#approaches-and-assumptions"><i class="fa fa-check"></i>Approaches and Assumptions</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-run-and-reproduce-the-conclusions"><i class="fa fa-check"></i>How to run and reproduce the conclusions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-info"><i class="fa fa-check"></i>Environment Info</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html"><i class="fa fa-check"></i><b>1</b> logistic vs knn</a>
 <ul>
@@ -153,7 +176,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#compare-results"><i class="fa fa-check"></i><b>1.3</b> Compare results</a></li>
 <li class="chapter" data-level="1.4" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#conclusion"><i class="fa fa-check"></i><b>1.4</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="2" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html"><i class="fa fa-check"></i><b>2</b> Linear Discriminante Analysis vs Decision tree</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#dataset-definition-1"><i class="fa fa-check"></i><b>2.1</b> Dataset definition</a></li>
@@ -201,6 +223,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#compare-results-6"><i class="fa fa-check"></i><b>8.3</b> Compare results</a></li>
 <li class="chapter" data-level="8.4" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#conclusion-6"><i class="fa fa-check"></i><b>8.4</b> Conclusion</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html"><i class="fa fa-check"></i><b>9</b> SVM Radial vs SVM linear</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#dataset-definition-7"><i class="fa fa-check"></i><b>9.1</b> Dataset definition</a></li>
+<li class="chapter" data-level="9.2" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#model-fitting-7"><i class="fa fa-check"></i><b>9.2</b> Model fitting</a></li>
+<li class="chapter" data-level="9.3" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#compare-results-7"><i class="fa fa-check"></i><b>9.3</b> Compare results</a></li>
+<li class="chapter" data-level="9.4" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#conclusion-7"><i class="fa fa-check"></i><b>9.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://www.fcup.up.pt" target="blank"></a></li>
 
@@ -225,7 +256,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1 class="title">Dataset compare between models</h1>
 <h2 class="subtitle"><em>Machine Learning</em></h2>
 <p class="author"><em>Marta Ferreira e Pedro Magalhães</em></p>
-<p class="date"><em>2022-06-03</em></p>
+<p class="date"><em>2022-06-04</em></p>
 </div>
 <div id="introduction" class="section level1 unnumbered hasAnchor">
 <h1>Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -250,13 +281,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Datasets were built using statistical distributions and/or classification rules which may have no resemblance to reality,</p></li>
 <li><p>To the extant it is possible a dataset was created using a binomial categorical variable and a two features,</p></li>
 <li><p>For the sake of molde comparing, the default hyperparameter value were used. This are provided by <code>Parsnip R package</code> without post-processing and hyperparameter optimzation. It is possible, although unlikely, that a different package or under different hyperparameters could result different conclusions,</p></li>
-<li><p>For calculating metrics a crossvalidatios with 10 folds and no repetition was used.</p></li>
+<li><p>For calculating metrics a cross-validations with 10 folds and no repetition was used.</p></li>
 </ul>
+<p><span class="citation">R Core Team (<a href="#ref-R-base" role="doc-biblioref">2022</a>)</span></p>
 </div>
 <div id="how-to-run-and-reproduce-the-conclusions" class="section level2 unnumbered hasAnchor">
 <h2>How to run and reproduce the conclusions<a href="index.html#how-to-run-and-reproduce-the-conclusions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="environment-info" class="section level2 unnumbered hasAnchor">
+<h2>Environment Info<a href="index.html#environment-info" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>## R version 4.1.3 (2022-03-10)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 19044)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=Portuguese_Portugal.1252  LC_CTYPE=Portuguese_Portugal.1252   
+## [3] LC_MONETARY=Portuguese_Portugal.1252 LC_NUMERIC=C                        
+## [5] LC_TIME=Portuguese_Portugal.1252    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices datasets  utils     methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] bookdown_0.26   digest_0.6.29   R6_2.5.1        jsonlite_1.8.0 
+##  [5] magrittr_2.0.3  evaluate_0.15   stringi_1.7.6   rlang_1.0.2    
+##  [9] cli_3.3.0       renv_0.15.5     rstudioapi_0.13 jquerylib_0.1.4
+## [13] bslib_0.3.1     rmarkdown_2.14  tools_4.1.3     stringr_1.4.0  
+## [17] xfun_0.31       yaml_2.3.5      fastmap_1.1.0   compiler_4.1.3 
+## [21] htmltools_0.5.2 knitr_1.39      sass_0.4.1</code></pre>
 <div style="page-break-after: always;"></div>
 
+</div>
+</div>
+<h3>References<a href="references-1.html#references-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-base" class="csl-entry">
+R Core Team. 2022. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
 </div>
 </div>
             </section>

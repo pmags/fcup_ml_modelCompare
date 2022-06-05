@@ -23,7 +23,7 @@
 <meta name="author" content="Marta Ferreira e Pedro Magalhães" />
 
 
-<meta name="date" content="2022-06-03" />
+<meta name="date" content="2022-06-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -119,6 +119,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="_theme/style.css" type="text/css" />
 </head>
@@ -141,6 +163,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#project-structure"><i class="fa fa-check"></i>Project structure</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#approaches-and-assumptions"><i class="fa fa-check"></i>Approaches and Assumptions</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-run-and-reproduce-the-conclusions"><i class="fa fa-check"></i>How to run and reproduce the conclusions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-info"><i class="fa fa-check"></i>Environment Info</a></li>
 </ul></li>
 <li class="chapter" data-level="1" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html"><i class="fa fa-check"></i><b>1</b> logistic vs knn</a>
 <ul>
@@ -153,7 +176,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#compare-results"><i class="fa fa-check"></i><b>1.3</b> Compare results</a></li>
 <li class="chapter" data-level="1.4" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#conclusion"><i class="fa fa-check"></i><b>1.4</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="2" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html"><i class="fa fa-check"></i><b>2</b> Linear Discriminante Analysis vs Decision tree</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#dataset-definition-1"><i class="fa fa-check"></i><b>2.1</b> Dataset definition</a></li>
@@ -201,6 +223,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#compare-results-6"><i class="fa fa-check"></i><b>8.3</b> Compare results</a></li>
 <li class="chapter" data-level="8.4" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#conclusion-6"><i class="fa fa-check"></i><b>8.4</b> Conclusion</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html"><i class="fa fa-check"></i><b>9</b> SVM Radial vs SVM linear</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#dataset-definition-7"><i class="fa fa-check"></i><b>9.1</b> Dataset definition</a></li>
+<li class="chapter" data-level="9.2" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#model-fitting-7"><i class="fa fa-check"></i><b>9.2</b> Model fitting</a></li>
+<li class="chapter" data-level="9.3" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#compare-results-7"><i class="fa fa-check"></i><b>9.3</b> Compare results</a></li>
+<li class="chapter" data-level="9.4" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#conclusion-7"><i class="fa fa-check"></i><b>9.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://www.fcup.up.pt" target="blank"></a></li>
 
@@ -226,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="dataset-definition-4" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Dataset definition<a href="svm-radial-vs-svm-linear.html#dataset-definition-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt.</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-67-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-66-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="model-fitting-4" class="section level2 hasAnchor" number="6.2">
 <h2><span class="header-section-number">6.2</span> Model fitting<a href="svm-radial-vs-svm-linear.html#model-fitting-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -245,12 +276,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Warning: stat_contour(): Zero contours were generated</code></pre>
 <pre><code>## Warning in min(x): no non-missing arguments to min; returning Inf</code></pre>
 <pre><code>## Warning in max(x): no non-missing arguments to max; returning -Inf</code></pre>
-<p><img src="_main_files/figure-html/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The plots shows the evolution of key metrics over crossvalidation trainning</p>
-<p><img src="_main_files/figure-html/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="_main_files/figure-html/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>The plots show the metrics between different models</p>
+<p><img src="_main_files/figure-html/unnamed-chunk-73-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><img src="_main_files/figure-html/unnamed-chunk-74-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p><img src="_main_files/figure-html/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="conclusion-4" class="section level2 hasAnchor" number="6.4">
 <h2><span class="header-section-number">6.4</span> Conclusion<a href="svm-radial-vs-svm-linear.html#conclusion-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
