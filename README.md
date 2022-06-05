@@ -50,7 +50,6 @@ Para iniciar packages num novo ambiente `renv::restore()`
 https://rpubs.com/ppaquay/65566
 https://stackoverflow.com/questions/24052643/how-to-plot-non-linear-decision-boundaries-with-a-grid-in-r
 https://mathformachines.com/posts/decision/
-https://mathformachines.com/posts/decision/
 https://www.phinguyen.me/blog/visualizing-decision-boundaries/
 https://www.r-bloggers.com/2020/03/visualizing-decision-tree-partition-and-decision-boundaries/
 

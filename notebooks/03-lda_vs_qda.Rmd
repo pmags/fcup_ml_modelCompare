@@ -3,7 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Linear Discriminante Analysis vs Decision tree
+# Linear Discriminante Analysis vs Quadratic Discriminate Analysis
 
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
@@ -14,13 +14,13 @@ source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
 ```
 
 ```{r include=FALSE}
+
 # libraries
-library(tidyverse)
 library(tidymodels)
 library(workflowsets)
 library(gridExtra)
 
-# set global seed for reproducibility
+# global seed for reproducibility
 set.seed(123)
 
 ```
@@ -79,8 +79,6 @@ l_w_1 <- list(
 }
 
 dataset_lda <- dataset_gen_mvnorm(l_mu_1, l_cvm_1, l_w_1, class_fun = decision_1, n_g = 2)
-
-
 
 ```
 
