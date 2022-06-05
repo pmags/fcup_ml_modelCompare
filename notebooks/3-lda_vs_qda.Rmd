@@ -284,7 +284,6 @@ train_metrics_ds2_QDA <-
 
 ```
 
-The plots below show the resulting decision boundaries
 
 ```{r}
 
@@ -304,9 +303,9 @@ grid.arrange(
   )
 
 ```
+From the above plots we can conclude that the results are in line with our initial hypothesis. LDA models shows better results with the the LDA dataset, but not so different of QDA. While, it is strong the power of QDA model in the QDA dataset, because the different covariance between the classes.
 
-The plots shows the evolution of key metrics over crossvalidation trainning
-
+The following plot show the metrics of each model calculated on each of the 10 validation folds. 
 
 ```{r}
 
@@ -325,8 +324,6 @@ grid.arrange(
 
 ```
 
-
-The plots show the metrics between different models
 
 ```{r}
 
@@ -355,3 +352,6 @@ grid.arrange(
 )
 
 ```
+## Conclusion
+
+Given the strong assumptions of LDA models on the covariance of the classes it is easy to understand that results. The QDA relaxation in relation to this allow the good performance in the QDA dataset, but also a good result in the LDA dataset.
