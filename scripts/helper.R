@@ -144,7 +144,7 @@ dataset_gen_mvnorm <- function(l_mu,
   
   for (i in 1:length(l_mu)) {
     
-    s <- cbind(rmvnorm(size*l_w[[i]], l_mu[[i]], l_cvm[[i]]),i-1)
+    s <- cbind(rmvnorm(size * l_w[[i]], l_mu[[i]], l_cvm[[i]]),i-1)
     l_sample[[i]] <- s
     
   }
