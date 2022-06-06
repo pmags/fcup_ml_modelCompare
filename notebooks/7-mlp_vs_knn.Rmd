@@ -26,8 +26,10 @@ set.seed(123)
 
 
 ## Dataset definition  
+The Nearest-Neighbor method (K-NN): The K-NN method is a non-parametric statistical pattern recognition procedure and among the various non-parametric techniques is the most intuitive, but nevertheless possesses powerful statistical properties (Toth et al., 2000).
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+ANN methodology: There are many ways of using ANNs in the context of RR models (Anctil et al., 2004) like network topology, training algorithm, input selection and network size optimization and each of them has a priori experience-based assumptions. Neural Networks distribute computations to processing units called neurons, grouped in layers. Three different layer types can be distinguished: input layer, connecting the input information to the network, one or more hidden layer and acting as intermediate computational layers between input and output and output layer, producing the final output (Toth et al., 2000). 
+
 
 
 ```{r}
@@ -68,7 +70,6 @@ grid.arrange(
 
 ## Model fitting
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
 
 ```{r}
 # define workflows

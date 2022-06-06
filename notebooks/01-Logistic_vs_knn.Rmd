@@ -33,7 +33,11 @@ On the other hand, Nearest Neighbor makes no assumptions and relies solely on lo
 
 Given each approach oposing characteristics, our initial hypothesis is that, given a dataset with a perfectly linear decision boundary, will be a easily estimated by the biased Logistic regression but the NN approach, given its nature, will struggle since points close to the border will have a strong influence. Therefore, we defined the comparing datasets as follows:
 
-1. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $X_{1} - X_{2} = 0$ are classified as **1** and **0** if below;
+1. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $X_{1} - X_{2} = 0$ are classified as **1** and **0** if below. In other words, we defined a hyperplane through the data and defined each class based on each point position towards that hyper plane.
+
+> @James2013 In a p-dimensional space, a *hyperplane* is a flat affline subspace of dimension p-1. For instance, in two dimensions, a hyperplane is a flat one-dimensional subspace-in other words, a line. In two dimensions the hyperplane is defined as 
+
+$$\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} = 0$$
 
 2. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $abs(1,2X_{1} - 5)^2 + 2 - X_{2} = 0$ are classified as **1** and **0** if below;
 
@@ -53,8 +57,8 @@ dataset_linear <- dataset_gen_unif(class_fun = decision_fun_linear, size = 1000)
 dataset_quadratic <- dataset_gen_unif(class_fun = decision_fun_quadratic, size = 1000)
 
 grid.arrange(
-  dataset_linear$border_plot + labs(subtitle ="Linear decision"  ), 
-  dataset_quadratic$border_plot + labs(subtitle = "Quadratic decision"), 
+  dataset_linear$border_plot + labs(subtitle ="Linear border", color = "" ), 
+  dataset_quadratic$border_plot + labs(subtitle = "Quadratic border", color = ""), 
   nrow = 1,
   top = "Synthetic Generated Datasets",
   bottom = grid::textGrob(
@@ -83,7 +87,7 @@ The following workflow (using @R-tidymodels) was executed in order to fit and ev
 6. Create plots with estimated decision boundaries
 
 
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 # define workflows
 
 ### Logistic regression
@@ -127,7 +131,7 @@ knn_wflow <-
 ```
 
 
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 
 data <- list(dataset_linear, dataset_quadratic)
 workflows <- list(logistic = logit_wflow, knn = knn_wflow)
