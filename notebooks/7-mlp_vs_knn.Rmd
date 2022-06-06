@@ -31,21 +31,67 @@ The Nearest-Neighbor method (K-NN): The K-NN method is a non-parametric statisti
 ANN methodology: There are many ways of using ANNs in the context of RR models (Anctil et al., 2004) like network topology, training algorithm, input selection and network size optimization and each of them has a priori experience-based assumptions. Neural Networks distribute computations to processing units called neurons, grouped in layers. Three different layer types can be distinguished: input layer, connecting the input information to the network, one or more hidden layer and acting as intermediate computational layers between input and output and output layer, producing the final output (Toth et al., 2000). 
 
 
-
+The MLP dataset is basedon a normal distibution but without clearly separated boundaries, so we expected that MLP model works well in this data.
+On the other hand the knn dataset have a circular perfect boundary, so we expect that knn will be better in this dataset, even the diferences in this case is lower, because the MLP leads also weel with this boundary because can be seen as a linear boundary.
 ```{r}
 
 ## A pure linear boundary
 
-decision <- function(x1, x2){
-  res <- ifelse(x2 >= x1, 1, 0)
-  return(res)
+
+l_mu_2 <- list(
+    "g1" = c(1,2), 
+    "g2" = c(2,2),
+    "g3" = c(3,4)
+  )
+
+l_cvm_2 <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
+  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  )
+  
+l_w_2 <- list(
+  "wg1" = 0.3, 
+  "wg2" = 0.5,
+  "wg3" = 0.2
+  )
+
+
+decision_2 <- function(x1,x2, l_mu_2, l_cvm_2,l_w_2, size=1000){
+  
+l_mu_2 <- list(
+    "g1" = c(1,2), 
+    "g2" = c(2,2),
+    "g3" = c(3,4)
+  )
+
+l_cvm_2 <- list( 
+  "covg1" = matrix(c(1,0,0,1),2,2),
+  "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
+  "covg3" = matrix(c(1,0.2,0.2,1),2,2)
+  )
+l_w_2 <- list(
+  "wg1" = 0.3, 
+  "wg2" = 0.5,
+  "wg3" = 0.2
+  )
+
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_2[[1]], sigma = l_cvm_2[[1]])
+  px_1 <- dmvnorm(c(x1,x2),mean = l_mu_2[[2]], sigma = l_cvm_2[[2]])
+  px_2 <- dmvnorm(c(x1,x2), mean = l_mu_2[[3]], sigma = l_cvm_2[[3]])
+  
+  g <- case_when(
+    
+    px_0 > px_1 & px_0 > px_2 ~ 0,
+    px_1 > px_0 & px_1 > px_2 ~ 1,
+    px_2 > px_0 & px_2 > px_1 ~ 2,
+    TRUE ~ 2
+  )
+  
+  return(g)
 }
 
-dataset_linear <- dataset_gen_unif(
-  class_fun = decision, 
-  size = 1000)
-
-
+dataset_MLP<- dataset_gen_mvnorm(l_mu_2, l_cvm_2, l_w_2, class_fun = decision_2, n_g = 3)
 
 ## A circular boundary
 
@@ -54,14 +100,14 @@ decision <- function(x1, x2){
   return(res)
 }
 
-dataset_radial <- dataset_gen_unif(
+dataset_knn <- dataset_gen_unif(
   class_fun = decision, 
   size = 1000)
 
 
 grid.arrange(
-  dataset_linear$border_plot, 
-  dataset_radial$border_plot, 
+  dataset_MLP$border_plot, 
+  dataset_knn$border_plot, 
   nrow = 1,
   top = "Optimal decision border")
 
@@ -78,49 +124,53 @@ grid.arrange(
 
 # 1. specify the model
 
-mlp_keras_spec <-
+mlp_nnet_spec <-
   mlp() %>%
-  set_engine("nnet") %>%
+  set_engine('nnet',learn_rate=0.001) %>%
   set_mode('classification')
-
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
+    recipe(g ~ x1 + x2 , data = dataset_MLP$dataset)
   
 # 3, Buildworkflow
-svm_linear_wflow <- 
+mlp_nnet_wflow <- 
   workflow() %>% 
-  add_model(mlp_keras_spec) %>% 
+  add_model(mlp_nnet_spec) %>% 
   add_recipe(preprocess)
 
 
-### Knn
+### knn
 
 # 1. specify the model
+
 nearest_neighbor_kknn_spec <-
   nearest_neighbor() %>%
-  set_engine('kknn') %>% # Defaultk = 5
+  set_engine('kknn',nearest_neighbor=3) %>%
   set_mode('classification')
+
+
 
 
 # 2. preprocessing 
 preprocess <- 
-  recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
+  recipe(g ~ x1 + x2 , data = dataset_knn$dataset)
   
 # 3, Buildworkflow
-svm_radial_wflow <- 
+nearest_neighbor_kknn_wflow <- 
   workflow() %>% 
   add_model(nearest_neighbor_kknn_spec) %>% 
   add_recipe(preprocess)
+
+
 
 ```
 
 
 ```{r}
 
-data <- list(dataset_linear, dataset_radial)
-workflows <- list(svm_linear = svm_linear_wflow, svm_radial = svm_radial_wflow)
+data <- list(dataset_MLP, dataset_knn)
+workflows <- list(MLP = mlp_nnet_wflow, knn = nearest_neighbor_kknn_wflow)
 
 compare_fit <- model_fit_compare(data = data, workflows = workflows)
 
@@ -137,24 +187,24 @@ compare_fit <- model_fit_compare(data = data, workflows = workflows)
 
 ## Logistic model
 
-metrics_ds1_svm_linear <- 
+metrics_ds1_MLP <- 
   model_metrics(test_data = compare_fit$models$test$dataset1, 
-                model = compare_fit$models$models$dataset1$svm_linear)
+                model = compare_fit$models$models$dataset1$MLP)
 
-metrics_ds2_svm_linear <- 
+metrics_ds2_MLP <- 
   model_metrics(test_data = compare_fit$models$test$dataset2, 
-                model = compare_fit$models$models$dataset2$svm_linear)
+                model = compare_fit$models$models$dataset2$MLP)
 
 
-## svm_radial model
+## knn model
 
-metrics_ds1_svm_radial <- 
+metrics_ds1_knn <- 
   model_metrics(test_data = compare_fit$models$test$dataset1, 
-                model = compare_fit$models$models$dataset1$svm_radial)
+                model = compare_fit$models$models$dataset1$knn)
 
-metrics_ds2_svm_radial <- 
+metrics_ds2_knn <- 
   model_metrics(test_data = compare_fit$models$test$dataset2, 
-                model = compare_fit$models$models$dataset2$svm_radial)
+                model = compare_fit$models$models$dataset2$knn)
 
 ```
 
@@ -163,19 +213,19 @@ metrics_ds2_svm_radial <-
 
 # logistic regression metrics during training
 
-train_metrics_ds1_svm_linear <- 
+train_metrics_ds1_MLP <- 
   ggplot(
     collect_metrics(
-      compare_fit$models$fit_resample_train$dataset1$svm_linear, 
+      compare_fit$models$fit_resample_train$dataset1$MLP, 
       summarize = FALSE), 
     aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
 
-train_metrics_ds2_svm_linear <- 
+train_metrics_ds2_MLP <- 
   ggplot(
     collect_metrics(
-      compare_fit$models$fit_resample_train$dataset2$svm_linear, 
+      compare_fit$models$fit_resample_train$dataset2$MLP, 
       summarize = FALSE), 
     aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
@@ -184,19 +234,19 @@ train_metrics_ds2_svm_linear <-
 
 # knn  performance during training
 
-train_metrics_ds1_svm_radial <- 
+train_metrics_ds1_knn <- 
   ggplot(
     collect_metrics(
-      compare_fit$models$fit_resample_train$dataset1$svm_radial, 
+      compare_fit$models$fit_resample_train$dataset1$knn, 
       summarize = FALSE), 
     aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
   theme_bw()
 
-train_metrics_ds2_svm_radial <- 
+train_metrics_ds2_knn <- 
   ggplot(
     collect_metrics(
-      compare_fit$models$fit_resample_train$dataset2$svm_radial, 
+      compare_fit$models$fit_resample_train$dataset2$knn, 
       summarize = FALSE), 
     aes(x = id, y = .estimate, color= .metric)) + 
   geom_point() +
@@ -211,14 +261,14 @@ The plots below show the resulting decision boundaries
 ## compare results
 
 grid.arrange(
-  compare_fit$plots$model_decision$dataset1$svm_linear,
-  compare_fit$plots$model_decision$dataset1$svm_radial,
-  compare_fit$plots$model_decision$dataset2$svm_linear,
-  compare_fit$plots$model_decision$dataset2$svm_radial,
+  compare_fit$plots$model_decision$dataset1$MLP + labs(title = "dataset 1 - MLP"),
+  compare_fit$plots$model_decision$dataset1$knn + labs(title = "dataset 1 - knn"),
+  compare_fit$plots$model_decision$dataset2$MLP + labs(title = "dataset 2 - MLP"),
+  compare_fit$plots$model_decision$dataset2$knn + labs(title = "dataset 2 - knn"),
   nrow = 2,
-  top = "Aplying a svm_linearistic model to both datasets",
+  top = "Aplying a MLPistic model to both datasets",
   bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the MLPistic model fits better a linear  frontier while struggling when facing a curved frontier",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
@@ -231,10 +281,10 @@ The plots shows the evolution of key metrics over crossvalidation trainning
 ```{r}
 
 grid.arrange(
-  train_metrics_ds1_svm_linear, 
-  train_metrics_ds1_svm_radial, 
-  train_metrics_ds2_svm_linear,
-  train_metrics_ds2_svm_radial, 
+  train_metrics_ds1_MLP, 
+  train_metrics_ds1_knn, 
+  train_metrics_ds2_MLP,
+  train_metrics_ds2_knn, 
   nrow = 2,
   top = "Metrics over different folds",
   bottom = grid::textGrob(
@@ -251,10 +301,10 @@ The plots show the metrics between different models
 ```{r}
 
 grid.arrange(
-  metrics_ds1_svm_linear$cf_plot ,
-  metrics_ds1_svm_radial$cf_plot ,
-  metrics_ds2_svm_linear$cf_plot ,
-  metrics_ds2_svm_radial$cf_plot ,
+  metrics_ds1_MLP$cf_plot ,
+  metrics_ds1_knn$cf_plot ,
+  metrics_ds2_MLP$cf_plot ,
+  metrics_ds2_knn$cf_plot ,
   nrow = 2,
   top = "Confusion Matrix"
 )
@@ -266,10 +316,10 @@ grid.arrange(
 ```{r}
 
 grid.arrange(
-  metrics_ds1_svm_linear$roc_curve ,
-  metrics_ds1_svm_radial$roc_curve ,
-  metrics_ds2_svm_linear$roc_curve ,
-  metrics_ds2_svm_radial$roc_curve ,
+  metrics_ds1_MLP$roc_curve ,
+  metrics_ds1_knn$roc_curve ,
+  metrics_ds2_MLP$roc_curve ,
+  metrics_ds2_knn$roc_curve ,
   nrow = 2,
   top = "ROC curves"
 )
@@ -279,4 +329,4 @@ grid.arrange(
 
 ## Conclusion
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+As we so in the above plots, the results are in line with our expectations, and we have better performance in MLP with dataset 1 (MLP dataset), a a bit better in knn with dataset 2 (knn dataset), but as refered the diference are not huge, so if we tune the parameters we can achieve a good performance with MLP for this dataset as well.
