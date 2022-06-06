@@ -10,7 +10,7 @@ editor_options:
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
 knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
-source("../scripts/helper.R", local = TRUE, encoding = "UTF-8")
+source("./scripts/helper.R", local = TRUE, encoding = "UTF-8")
 
 ```
 
@@ -27,9 +27,21 @@ set.seed(123)
 
 
 ## Dataset definition  
+A neural network will almost always have the same activation function in all hidden layers.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+It is most unusual to vary the activation function through a network model.
 
+Traditionally, the sigmoid activation function was the default activation function in the 1990s. Perhaps through the mid to late 1990s to 2010s, the Tanh function was the default activation function for hidden layers.
+
+The hyperbolic tangent activation function typically performs better than the logistic sigmoid.(Page 195, Deep Learning, 2016)
+
+Both the sigmoid and Tanh functions can make the model more susceptible to problems during training, via the so-called vanishing gradients problem.
+
+The activation function used in hidden layers is typically chosen based on the type of neural network architecture.
+
+Modern neural network models with common architectures, such as MLP and CNN, will make use of the ReLU activation function, or extensions.
+
+In modern neural networks, the default recommendation is to use the rectified linear unit or ReLU (Page 174, Deep Learning, 2016.)
 
 ```{r}
 
@@ -41,30 +53,33 @@ decision_MLP_relu <- function(x1, x2){
 dataset_MLP_relu <- dataset_gen_unif(class_fun = decision_MLP_relu, size = 1000)
 
 decision_MLP_sigmoid <- function(x1, x2){
-  res <- ifelse((-5 + x1)^2 + (5 - x2)^2 > 4, 1, 0)
+  res <- ifelse(x2 >= abs( (1.2 * x1 - 5)^2 + 2 ), 1, 0)
   return(res)
 }
-
 dataset_MLP_sigmoid <- dataset_gen_unif(class_fun = decision_MLP_sigmoid, size = 1000)
+
+grid.arrange(
+  dataset_MLP_relu$border_plot, 
+  dataset_MLP_sigmoid$border_plot, 
+  nrow = 1,
+  top = "Optimal decision border")
 
 ```
 
 ## Model fitting
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
 
 ```{r}
 # define workflows
 
-### MLP model
+### MLP relu model 
 
 # 1. specify the model
 
 mlp_nnet_relu_spec <-
   mlp() %>%
-  set_engine('nnet',learn_rate = 0.001,activation="relu") %>%
-  set_mode('classification')  %>% 
-  translate()
+  set_engine('nnet',hidden_units=2, learn_rate=0.01,activation="relu") %>%
+  set_mode('classification')
 
 # 2. preprocessing 
 preprocess <- 
@@ -75,36 +90,29 @@ mlp_nnet_relu_wflow <-
   workflow() %>% 
   add_model(mlp_nnet_relu_spec) %>% 
   add_recipe(preprocess) 
-### MLP model
+
+
+### MLP sigmoid model
 
 # 1. specify the model
 
 mlp_nnet_sigmoid_spec <-
   mlp() %>%
-  set_engine('nnet',learn_rate = 0.001) %>% acti
-  set_mode('classification')%>% 
-  translate()
+  set_engine('nnet',hidden_units=2, learn_rate=0.01,activation="linear") %>%
+  set_mode('classification')
 
 
 # 2. preprocessing 
 preprocess <- 
     recipe(g ~ x1 + x2 , data = dataset_MLP_sigmoid$dataset)
   
-# 3, Buildworkflow
+# 3. Buildworkflow
 mlp_nnet_sigmoid_wflow <- 
   workflow() %>% 
   add_model(mlp_nnet_sigmoid_spec) %>% 
   add_recipe(preprocess)
 
-mlp_keras_spec <-
-  mlp() %>% activation_relu() %>%
-  set_engine('keras') %>%
-  set_mode('classification')
 
-mlp_keras_wflow <- 
-  workflow() %>% 
-  add_model(mlp_keras_spec) %>% 
-  add_recipe(preprocess)
 ```
 
 ```{r}
@@ -208,8 +216,7 @@ grid.arrange(
   compare_fit$plots$model_decision$dataset2$MLPsigmoid,
   nrow = 2,
   top = "Aplying a svm_linearistic model to both datasets",
-  bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+  bottom = grid::textGrob("",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
@@ -229,7 +236,7 @@ grid.arrange(
   nrow = 2,
   top = "Metrics over different folds",
   bottom = grid::textGrob(
-      "Right plots reflect trainning over linear border dataset and left plots reflect a quadractic border",
+      "",
       gp = grid::gpar(fontface = 3, fontsize = 9)
       )
 )
