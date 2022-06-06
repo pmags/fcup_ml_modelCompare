@@ -30,6 +30,7 @@ set.seed(123)
 ```
 
 ## Dataset definition  
+## Dataset definition  
 Linear Discriminant Analysis
 LDA assumes normally distributed data,a class-specific mean vector and assumes a common covariance matrix. So, a covariance matrix that is common to all classes in a data set.
 When these assumptions hold, then LDA approximates the Bayes classifier very closely and the discriminant function produces a linear decision boundary. 
@@ -45,6 +46,7 @@ So, we construct two datasets:
 2. QDA dataset: The dataset have 1000 samples and two variables that follows a different covariance between them.
 
 Therefore we are expecting that the LDA models shows better results with the the LDA dataset, even though the QDA do not show a huge diference in this dataset. The QDA model will work better in the QDA dataset, because the assumptions of LDA model do not hold in this dataset.
+
 
 ```{r}
 # LDA
@@ -359,3 +361,6 @@ grid.arrange(
 )
 
 ```
+## Conclusion
+
+Given the strong assumptions of LDA models on the covariance of the classes it is easy to understand that results. The QDA relaxation in relation to this allow the good performance in the QDA dataset, but also a good result in the LDA dataset.
