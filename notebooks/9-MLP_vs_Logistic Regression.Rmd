@@ -3,8 +3,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-# MLP vs knn
-
+# MLP vs Logistic Regression
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
@@ -25,10 +24,13 @@ set.seed(123)
 ```
 
 
-## Dataset definition  
+## Dataset definition
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+In general ANN methods as semi-parametric methods have many advantages such as, allow a large number of variables in the model, no need to assumptions such as normality and…, finding the models despite missing data, detection of complex and nonlinear relationship between independent and dependent variables.
 
+Although in theory and practical studies have been hinted ANN have better performance than statistical methods, but it has some disadvantage such as, the accuracy of the results depends largely on the size of the training set, requires the initialization and adjustment of many individual parameters to optimize the classification performance, standardized coefficients and odds ratios corresponding to each independent variable cannot be easily calculated, weights are generated in a neural network analysis, but their interpretation is difficult, the weights may be influenced by the program used to generate them.(Teshnizi SH, Ayatollahi SM. A Comparison of Logistic Regression Model and Artificial Neural Networks in Predicting of Student's Academic Failure. Acta Inform Med. 2015 Oct;23(5):296-300. doi: 10.5455/aim.2015.23.296-300. Epub 2015 Oct 5. PMID: 26635438; PMCID: PMC4639347.)
+
+So, we expect that a MLP works better in a dataset with non-linear boundary, and the logistic regression will fits weel in a dataset with a linear boundary.
 
 ```{r}
 
@@ -101,7 +103,6 @@ grid.arrange(
 
 ## Model fitting
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
 
 ```{r}
 # define workflows
@@ -244,16 +245,17 @@ grid.arrange(
   compare_fit$plots$model_decision$dataset2$MLP,
   compare_fit$plots$model_decision$dataset2$LR,
   nrow = 2,
-  top = "Aplying a svm_linearistic model to both datasets",
+  top = "",
   bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    "",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
 
 ```
+As expected, the MLP model had better result in the non-linear bondary dataset, while the other dataset had better results in the logistic regression, evan these difference is not so huge that in the case of the other dataset.
 
-The plots shows the evolution of key metrics over crossvalidation trainning
+The plots shows the evolution of key metrics over crossvalidation trainning.
 
 
 ```{r}
@@ -306,5 +308,4 @@ grid.arrange(
 
 
 ## Conclusion
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+In comparison with the conventional LR model, the ANN model was more accurate in general predicting tasks. Therefore, based on the results, it seems that for classification of a dichotomous dependent variable, artificial neural network methods are appropriate to be used.
