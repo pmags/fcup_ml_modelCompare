@@ -4,28 +4,62 @@ editor_options:
 ---
 
 # Nearest neighbour vs. decision tree
-K-nearest neighbors
-K-nearest neighbors is a non-parametric method used for classification and regression. It is one of the most easy ML technique used. It is a lazy learning model, with local approximation.
-Assumptions :
-There should be clear understanding about the input domain.
-feasibly moderate sample size (due to space and time constraints).
-colinearity and outliers should be treated prior to training.
-Comparison with other models :
 
-Decision Tree
-Decision tree is a tree based algorithm used to solve regression and classification problems. An inverted tree is framed which is branched off from a homogeneous probability distributed root node, to highly heterogeneous leaf nodes, for deriving the output. Regression trees are used for dependent variable with continuous values and classification trees are used for dependent variable with discrete values.
-Advantages :
-No preprocessing needed on data.
-No assumptions on distribution of data.
-Handles colinearity efficiently.
-Decision trees can provide understandable explanation over the prediction.
 
-Decision tree vs KNN :
+Both are non-parametric. This means that the data distribution cannot be defined in a few parameters. In other words, Decision trees and KNN’s don’t have an assumption on the distribution of the data. While decision tree supports automatic feature interaction, KNN doesn’t.Moreover decision trees can be faster, however, KNN tends to be slower with large datasets because it scans the whole dataset to predict as it doesn’t generalize the data in advance.
 
-Both are non-parametric methods.
-Decision tree supports automatic feature interaction, whereas KNN cant.
-Decision tree is faster due to KNN’s expensive real time execution.
 
+Decision Trees:
+Advantages:
+
+* Decision trees are effective in capturing non-linear relationships which can be difficult to achieve with other algorithms like Support Vector Machine and Linear Regression.
+
+* Easy to explain to people: This is a great aspect of decision trees. The outputs are easy to read without requiring statistical knowledge or complex concepts.
+
+* Some people believe decision trees more closely mirror human decision-making than others like regression and classification approaches.
+
+* Trees can be displayed graphically and can be easily interpreted by non-experts.
+
+* Decision trees can easily handle qualitative (categorical) features without the need to create dummy variables.
+
+Disadvantages:
+
+* don’t have the same level of predictive accuracy as some of other regression and classification approaches
+
+* trees can be non-robust. Eg. small change in the data can cause a large change in the final estimated tree
+
+* As the tree grows in size, it becomes prone to overfitting and requires pruning
+
+KNN:
+Advantages:
+
+* Simple and intuitive: Similar to decision trees it is simple and easy to explain to laypeople.
+
+* Non-parametric, therefore, it doesn’t have any assumptions on the data distribution
+
+* No training step: KNN is more of an exception to the general machine learning workflow. It doesn’t have a training/validation/test set. The model created with KNN is available in a labeled dataset, placed in metric space. Say, if you want to classify any object, the model has to read through all the data and compare the distances of the closest objects.
+
+* Easy to implement for multi-class problems: Compared to other algorithms, it is very easy to predict multiclass problems. Just supply the ‘k’ a value that is equivalent to the number of classes and you are good to go.
+
+* Few hyperparameters: When working with K-NN, you just need to provide two parameters, k (the numbers of neighbors to consider) and the choice of Distance Function (e.g. Euclidean, Manhattan distance).
+
+* Used for classification and regression: It can be used for classification and regression
+
+* Instance-based learning (lazy learning): You don’t need to fit a model in advance, just provide the data point and it will give you the prediction.
+
+Disadvantages:
+
+* Slow with a larger dataset. If it is going to classify a new sample, it will have to read the whole dataset, hence, it becomes very slow as the dataset increases.
+
+* Curse of dimensionality: KNN is more appropriate to use when you have a small number of inputs. If the number of variables grows, the KNN algorithm will have a hard time predicting the output of a new data point.
+
+* Feature inputs need to be scaled: It is a must that the features should be scaled. KNN uses distance criteria, like Euclidean or Manhattan distances, therefore, it is very important that all the features have the same scale.
+
+* Outlier sensitivity: KNN is very sensitive to outliers. Since it is an instance-based algorithm based on the distance criteria, if we have some outliers in the data, it is liable to create a biased outcome.
+
+* Missing Value not treated: It is not capable of treating or dealing with missing values
+
+* Class imbalance can be an issue: If we have an imbalanced class data, the algorithm might wrongly pick the majority class.
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
 knitr::opts_chunk$set(fig.align="center", echo=FALSE, fig.show = "hold")
@@ -45,8 +79,11 @@ set.seed(123)
 
 ```
 
+
+
 For dataset of KNN we chose a dataset with a similar distribution and dispersion between the class, to avoid the confusion of the model in the bodaries areas.
-For dataset for decision tree,we use points with diffewrnet distribution and a very similar mean because the model do not have assumption in the variance of the datasets.
+For dataset for decision tree,we generate data without clear boundaries and a unbalanced number of samples between the classes, because we kwon this can affect the perform of KNN.
+
 ```{r}
 # knn
 
@@ -118,13 +155,13 @@ l_cvm_2 <- list(
   )
   
 l_w_2 <- list(
-  "wg1" = 1/3, 
-  "wg2" = 1/3,
-  "wg3" = 1/3
+  "wg1" = 0.3, 
+  "wg2" = 0.5,
+  "wg3" = 0.2
   )
 
 
-decision_2 <- function(x1,x2, l_mu_2, l_cvm_2){
+decision_2 <- function(x1,x2, l_mu_2, l_cvm_2,l_w_2, size=1000){
   
 l_mu_2 <- list(
     "g1" = c(1,2), 
@@ -137,9 +174,14 @@ l_cvm_2 <- list(
   "covg2" = matrix(c(1,-0.4,-0.4,1),2,2),
   "covg3" = matrix(c(1,0.2,0.2,1),2,2)
   )
-  
-  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_2[[1]], sigma = l_cvm_2[[1]])  
-  px_1 <- dmvnorm(c(x1,x2), mean = l_mu_2[[2]], sigma = l_cvm_2[[2]]) 
+l_w_2 <- list(
+  "wg1" = 0.3, 
+  "wg2" = 0.5,
+  "wg3" = 0.2
+  )
+
+  px_0 <- dmvnorm(c(x1,x2), mean = l_mu_2[[1]], sigma = l_cvm_2[[1]])
+  px_1 <- dmvnorm(c(x1,x2),mean = l_mu_2[[2]], sigma = l_cvm_2[[2]])
   px_2 <- dmvnorm(c(x1,x2), mean = l_mu_2[[3]], sigma = l_cvm_2[[3]])
   
   g <- case_when(
@@ -385,4 +427,6 @@ grid.arrange(
 
 ```
 
+## Conclusion
+Decision tree is used to partition the data to find accurate result but in KNN it used to find similar values from the data. Each and every algorithm has its own merits and demerits and never ever all algorithms have satisfied all criteria and requirements. Each algorithm has its own specification, so algorithms should be chosen according to the requirements. 
 
