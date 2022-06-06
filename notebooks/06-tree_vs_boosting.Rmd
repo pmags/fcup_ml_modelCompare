@@ -27,8 +27,19 @@ set.seed(123)
 
 ## Dataset definition  
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+> Boosting works by growing trees sequentially, each tree is grown using information from previously grown trees. Boosting does not involve bootstrap sampling, instead each tree fit on a modified version of the original dataset. (@James2013)
 
+When compared to a simple decision tree we expect that a boosting model will be able to tackle more complex problems. We previously demonstrated that decesion trees strugle in the case of perfectly linear boundary. How will a boosted tree performe? Therefore we generated the following datasets:
+
+
+1. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $X_{1} - X_{2} = 0$ are classified as **1** and **0** if below. In other words, we defined a hyperplane through the data and defined each class based on each point position towards that hyper plane.
+
+> @James2013 In a p-dimensional space, a *hyperplane* is a flat affline subspace of dimension p-1. For instance, in two dimensions, a hyperplane is a flat one-dimensional subspace-in other words, a line. In two dimensions the hyperplane is defined as 
+
+$$\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} = 0$$
+
+
+2. A dataset of 1000 pair of (x1,x2) observations from 3 multivariable normal distribution each representing a class. The dataset is perfectly balanced;
 
 ```{r}
 
@@ -103,8 +114,8 @@ dataset_normal_dist <- dataset_gen_mvnorm(
 
 
 grid.arrange(
-  dataset_linear$border_plot, 
-  dataset_normal_dist$border_plot, 
+  dataset_linear$border_plot + labs(subtitle ="Linear border", color = ""), 
+  dataset_normal_dist$border_plot + labs(subtitle ="Multiclass", color = ""), 
   nrow = 1,
   top = "Optimal decision border")
 
@@ -113,7 +124,32 @@ grid.arrange(
 
 ## Model fitting
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+The following workflow (using @R-tidymodels) was executed in order to fit and evaluate each model given the above defined datasets:
+
+1. Train - Test split by 80% Train - 20% Test,
+
+2. Define 10 random folds splitting Train and Validation,
+
+3. Fit models to each fold,
+
+4. Calculate Fold metrics,
+
+5. Fit to all train data and extract model,
+
+6. Create plots with estimated decision boundaries
+
+The decision tree is fitted using the following default parameters:
+
+ - Tree depth = 30
+ - Minimal Node size = 2
+ - Cost complexity = 0.01
+
+Boosted tree:
+
+- trials: 15 => Number of trees
+- shinkrage: 0.25
+
+> Attention: adaBoost package is not implemented out the box in Parsnip, the fitting package and approach used on this project. Instead of going for a manual implementation we opted to use the C5.0 implementation on boosted trees which very mush resembles the same approach as adaboost.
 
 ```{r}
 # define workflows
@@ -133,7 +169,7 @@ preprocess <-
   recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
   
 # 3, Buildworkflow
-lda_wflow <- 
+dtree_wflow <- 
   workflow() %>% 
   add_model(decision_tree_rpart_spec ) %>% 
   add_recipe(preprocess)
@@ -153,7 +189,7 @@ preprocess <-
   recipe(g ~ x1 + x2 , data = dataset_linear$dataset)
   
 # 3, Buildworkflow
-log_wflow <- 
+boosted_wflow <- 
   workflow() %>% 
   add_model(boost_tree_C5.0_spec) %>% 
   add_recipe(preprocess)
@@ -163,8 +199,8 @@ log_wflow <-
 
 ```{r}
 
-data <- list(dataset_linear, dataset_normal_dist)
-workflows <- list(boosting = log_wflow, dtree = lda_wflow)
+data <- list(dataset_linear, )
+workflows <- list(boosting = bosted_wflow, dtree = dtree_wflow)
 
 compare_fit <- model_fit_compare(data = data, workflows = workflows)
 
@@ -248,37 +284,34 @@ train_metrics_ds2_dtree <-
 
 ```
 
-The plots below show the resulting decision boundaries
 
 ```{r}
 
 ## compare results
 
 grid.arrange(
-  compare_fit$plots$model_decision$dataset1$boosting,
-  compare_fit$plots$model_decision$dataset1$dtree,
+  compare_fit$plots$model_decision$dataset1$boosting + labs(subtitle = "Boosting"),
+  compare_fit$plots$model_decision$dataset1$dtree + labs(subtitle = "Decision tree"),
   compare_fit$plots$model_decision$dataset2$boosting,
   compare_fit$plots$model_decision$dataset2$dtree,
   nrow = 2,
-  top = "Aplying a boostingistic model to both datasets",
+  top = "Decision Tree vs Boosting",
   bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the boostingistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    "Colored region represents the decision area of the model. Purple line represents the decision border.",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
 
 ```
 
-The plots shows the evolution of key metrics over crossvalidation trainning
-
 
 ```{r}
 
 grid.arrange(
-  train_metrics_ds1_boosting, 
-  train_metrics_ds1_dtree, 
-  train_metrics_ds2_boosting,
-  train_metrics_ds2_dtree, 
+  train_metrics_ds1_boosting + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds1_dtree + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds2_boosting + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)),
+  train_metrics_ds2_dtree + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
   nrow = 2,
   top = "Metrics over different folds",
   bottom = grid::textGrob(
@@ -323,4 +356,20 @@ grid.arrange(
 
 ## Conclusion
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+Undoubtedly the boosted approach outperformed a decision tree when a linear border scenario (although still behind lda or logistic). 
+
+
+```{r}
+
+knitr::kable(
+  
+  data.frame(
+    ds2_boosting = metrics_ds2_boosting$auc_roc$.estimate,
+    ds2_dtree = metrics_ds2_dtree$auc_roc$.estimate,
+    ds1_boosting = metrics_ds1_boosting$auc_roc$.estimate,
+    ds1_dtree = metrics_ds1_dtree$auc_roc$.estimate
+    )
+  
+)
+
+```

@@ -79,8 +79,6 @@ set.seed(123)
 
 ```
 
-
-
 For dataset of KNN we chose a dataset with a similar distribution and dispersion between the class, to avoid the confusion of the model in the bodaries areas.
 For dataset for decision tree,we generate data without clear boundaries and a unbalanced number of samples between the classes, because we kwon this can affect the perform of KNN.
 

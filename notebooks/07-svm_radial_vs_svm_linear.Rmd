@@ -27,7 +27,15 @@ set.seed(123)
 
 ## Dataset definition  
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+We expect support vector machines with a linear kernel to perform very weel in case where the classification border follows a perfect line. On the other hand, non linear boundaries will lead to poor performance. For this example we set a very extrem case where a boundary is a perfectly centered circle.
+
+1. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs above $X_{1} - X_{2} = 0$ are classified as **1** and **0** if below. In other words, we defined a hyperplane through the data and defined each class based on each point position towards that hyper plane.
+
+> @James2013 In a p-dimensional space, a *hyperplane* is a flat affline subspace of dimension p-1. For instance, in two dimensions, a hyperplane is a flat one-dimensional subspace-in other words, a line. In two dimensions the hyperplane is defined as 
+
+$$\beta_{0} + \beta_{1}X_{1} + \beta_{2}X_{2} = 0$$
+
+2. A dataset of 1000 experiments extracting, with repetition, pair of real numbers 1:100 all of them with equal probability (uniform distribution). Pairs inside the circle $(X_{1}-5)^2 + (5 - X_{2})^2 = 4$ are classified as **1** and **0** if below. 
 
 
 ```{r}
@@ -58,8 +66,8 @@ dataset_radial <- dataset_gen_unif(
 
 
 grid.arrange(
-  dataset_linear$border_plot, 
-  dataset_radial$border_plot, 
+  dataset_linear$border_plot + labs(subtitle ="Linear border", color = "" ), 
+  dataset_radial$border_plot + labs(subtitle ="Circle border", color = "" ), 
   nrow = 1,
   top = "Optimal decision border")
 
@@ -68,7 +76,20 @@ grid.arrange(
 
 ## Model fitting
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+The following workflow (using @R-tidymodels) was executed in order to fit and evaluate each model given the above defined datasets:
+
+1. Train - Test split by 80% Train - 20% Test,
+
+2. Define 10 random folds splitting Train and Validation,
+
+3. Fit models to each fold,
+
+4. Calculate Fold metrics,
+
+5. Fit to all train data and extract model,
+
+6. Create plots with estimated decision boundaries 
+
 
 ```{r}
 # define workflows
@@ -205,35 +226,34 @@ train_metrics_ds2_svm_radial <-
 
 The plots below show the resulting decision boundaries
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 
 ## compare results
 
 grid.arrange(
-  compare_fit$plots$model_decision$dataset1$svm_linear,
-  compare_fit$plots$model_decision$dataset1$svm_radial,
+  compare_fit$plots$model_decision$dataset1$svm_linear + labs(subtitle = "Linear decision"),
+  compare_fit$plots$model_decision$dataset1$svm_radial + labs(subtitle = "Radial decision"),
   compare_fit$plots$model_decision$dataset2$svm_linear,
   compare_fit$plots$model_decision$dataset2$svm_radial,
   nrow = 2,
-  top = "Aplying a svm_linearistic model to both datasets",
+  top = "SVM linear vs SVM radial",
   bottom = grid::textGrob(
-    "Colored region represents the decision area of the model. Purple line represents the decision border. Visually is possible to conclude that the svm_linearistic model fits better a linear  frontier while struggling when facing a curved frontier",
+    "Colored region represents the decision area of the model. Purple line represents the decision border.",
     gp = grid::gpar(fontface = 3, fontsize = 9)
     )
   )
 
 ```
 
-The plots shows the evolution of key metrics over crossvalidation trainning
 
 
 ```{r}
 
 grid.arrange(
-  train_metrics_ds1_svm_linear, 
-  train_metrics_ds1_svm_radial, 
-  train_metrics_ds2_svm_linear,
-  train_metrics_ds2_svm_radial, 
+  train_metrics_ds1_svm_linear + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds1_svm_radial + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
+  train_metrics_ds2_svm_linear + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)),
+  train_metrics_ds2_svm_radial + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)), 
   nrow = 2,
   top = "Metrics over different folds",
   bottom = grid::textGrob(
@@ -278,4 +298,18 @@ grid.arrange(
 
 ## Conclusion
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+As expected, a linear kernel performed very poorly in the case where a non linear border existed. So poorly that in our experiment it couldn't even fit a model to the data since it couldn't find a single model which minimized the loss function.
+
+```{r}
+
+knitr::kable(
+  
+  data.frame(
+    ds2_svm_linear = metrics_ds2_svm_linear$auc_roc$.estimate,
+    ds2_svm_radial = metrics_ds2_svm_radial$auc_roc$.estimate,
+    ds1_svm_linear = metrics_ds1_svm_linear$auc_roc$.estimate,
+    ds1_svm_radial = metrics_ds1_svm_radial$auc_roc$.estimate
+    )
+)
+
+```
