@@ -3,21 +3,28 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Linear Discriminante Analysis vs Quadratic Discriminant Analysis
-Linear Discriminant Analysis
-Assumptions:
+# Nearest neighbour vs. decision tree
+K-nearest neighbors
+K-nearest neighbors is a non-parametric method used for classification and regression. It is one of the most easy ML technique used. It is a lazy learning model, with local approximation.
+Assumptions :
+There should be clear understanding about the input domain.
+feasibly moderate sample size (due to space and time constraints).
+colinearity and outliers should be treated prior to training.
+Comparison with other models :
 
-  knn assumes normally distributed data and a class-specific mean vector.
-knn assumes a common covariance matrix. So, a covariance matrix that is common to all classes in a data set.
-When these assumptions hold, then knn approximates the Bayes classifier very closely and the discriminant function produces a linear decision boundary. However, knn also achieves good performances when these assumptions do not hold and a common covariance matrix among groups and normality are often violated.
+Decision Tree
+Decision tree is a tree based algorithm used to solve regression and classification problems. An inverted tree is framed which is branched off from a homogeneous probability distributed root node, to highly heterogeneous leaf nodes, for deriving the output. Regression trees are used for dependent variable with continuous values and classification trees are used for dependent variable with discrete values.
+Advantages :
+No preprocessing needed on data.
+No assumptions on distribution of data.
+Handles colinearity efficiently.
+Decision trees can provide understandable explanation over the prediction.
 
-Quadratic Discriminant Analysis
-Assumptions:
+Decision tree vs KNN :
 
-  Observation of each class is drawn from a normal distribution (same as knn).
-DT assumes that each class has its own covariance matrix (different from knn).
-When these assumptions hold, DT approximates the Bayes classifier very closely and the discriminant function produces a quadratic decision boundary.
-
+Both are non-parametric methods.
+Decision tree supports automatic feature interaction, whereas KNN cant.
+Decision tree is faster due to KNN’s expensive real time execution.
 
 ```{r  echo=FALSE, message=FALSE, warning=FALSE, cache=FALSE}
 
@@ -38,7 +45,8 @@ set.seed(123)
 
 ```
 
-
+For dataset of KNN we chose a dataset with a similar distribution and dispersion between the class, to avoid the confusion of the model in the bodaries areas.
+For dataset for decision tree,we use points with diffewrnet distribution and a very similar mean because the model do not have assumption in the variance of the datasets.
 ```{r}
 # knn
 
@@ -161,8 +169,7 @@ grid.arrange(
 
 
 ## Model fitting
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dictum lorem, et placerat dui. Donec porttitor posuere nisi, non tempor tellus ornare ut. Vestibulum vehicula libero eget consequat lobortis. Suspendisse vel arcu et urna iaculis mattis. Nulla ut mattis est. Pellentesque eu eleifend augue. Maecenas placerat tortor tincidunt risus rutrum tincidunt. 
+ 
 
 ```{r}
 # define workflows
@@ -320,6 +327,7 @@ grid.arrange(
   )
 
 ```
+In the above graphs
 
 The plots shows the evolution of key metrics over crossvalidation trainning
 
