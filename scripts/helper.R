@@ -8,6 +8,7 @@ library(mvtnorm)
 library(tidyr)
 library(magrittr)
 library(tidymodels)
+library(rpart.plot)
 
 # Model specific libraries
 library(discrim)
@@ -127,7 +128,15 @@ dataset_gen_unif <- function(size = 1000, nVar = 2, n_g = 2, class_fun = NULL, t
 #' @return 
 
 
-dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, class_fun = NULL, treshold = 0.5) {
+dataset_gen_mvnorm <- function(l_mu, 
+                               l_cvm,
+                               l_w, 
+                               size = 1000, 
+                               nVar = 2, 
+                               n_g = 2, 
+                               class_fun = NULL, 
+                               treshold = 0.5,
+                               outlier_boost = NULL) {
   
   # generates samples
   
@@ -135,7 +144,7 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
   
   for (i in 1:length(l_mu)) {
     
-    s <- cbind(rmvnorm(size/length(l_w), l_mu[[i]], l_cvm[[i]]),i-1)
+    s <- cbind(rmvnorm(size*l_w[[i]], l_mu[[i]], l_cvm[[i]]),i-1)
     l_sample[[i]] <- s
     
   }
@@ -144,7 +153,20 @@ dataset_gen_mvnorm <- function(l_mu, l_cvm,l_w, size = 1000, nVar = 2, n_g = 2, 
     magrittr::set_colnames( c(paste0("x", 1:nVar),"g" ) ) %>% 
     mutate(g = factor(g))
   
-
+  # Creat outilers
+  
+  if (!is.null(outlier_boost)) {
+    
+    dataset <- dataset %>% 
+      mutate_if( is.numeric, ~( ifelse(. > 8.5 | . < -0.5, . * outlier_boost, .)) )
+    
+  } else {
+    
+    dataset
+    
+  }
+  
+  
   # Creates plot
   dataset_plot <- ggplot(dataset, aes(x1, x2, color = factor(g))) + 
     geom_point(size = 3, shape = 1) +
