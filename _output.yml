@@ -21,5 +21,6 @@ bookdown::pdf_book:
   toc_depth: 3
   toc_appendix: yes
 bookdown::html_book:
-  css: "_theme/style.css"
-  
+  css: "theme/style.css"
+bookdown::html_document2:
+  css: "theme/style.css"

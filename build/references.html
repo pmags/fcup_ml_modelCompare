@@ -2,64 +2,56 @@
 <html lang="" xml:lang="">
 <head>
 
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>References | Dataset compare between models</title>
-  <meta name="description" content="References | Dataset compare between models" />
-  <meta name="generator" content="bookdown 0.26 and GitBook 2.6.7" />
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="References | Dataset compare between models" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/theme/images/cover.pdf" />
 
-  <meta property="og:title" content="References | Dataset compare between models" />
-  <meta property="og:type" content="book" />
-  <meta property="og:image" content="/theme/images/cover.pdf" />
-  
-  
 
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="References | Dataset compare between models" />
-  
-  
-  <meta name="twitter:image" content="/theme/images/cover.pdf" />
 
 <meta name="author" content="Marta Ferreira e Pedro Magalhães" />
 
+<meta name="date" content="2022-06-07" />
 
-<meta name="date" content="2022-06-04" />
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="svm-radial-vs-svm-linear-2.html"/>
-<link rel="next" href="references-1.html"/>
+<meta name="description" content="References | Dataset compare between models">
+
+<title>References | Dataset compare between models</title>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
 
 
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-
-
+<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -118,6 +110,12 @@ code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
 
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
@@ -143,235 +141,151 @@ div.csl-indent {
 </style>
 
 <link rel="stylesheet" href="_theme/style.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
 </head>
 
 <body>
 
+<div class="container-fluid main-container">
 
 
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li><a href="./">Machine Learning: compare different models</a></li>
-
-<li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a>
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
 <ul>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#project-structure"><i class="fa fa-check"></i>Project structure</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#approaches-and-assumptions"><i class="fa fa-check"></i>Approaches and Assumptions</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#how-to-run-and-reproduce-the-conclusions"><i class="fa fa-check"></i>How to run and reproduce the conclusions</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#environment-info"><i class="fa fa-check"></i>Environment Info</a></li>
-</ul></li>
-<li class="chapter" data-level="1" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html"><i class="fa fa-check"></i><b>1</b> logistic vs knn</a>
+<li class="has-sub"><a href="index.html#introduction">Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#dataset-definition"><i class="fa fa-check"></i><b>1.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="1.2" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#model-fitting"><i class="fa fa-check"></i><b>1.2</b> Model fitting</a>
+<li><a href="project-structure.html#project-structure">Project structure</a></li>
+<li><a href="approaches-and-assumptions.html#approaches-and-assumptions">Approaches and Assumptions</a></li>
+<li><a href="how-to-run-and-reproduce-the-conclusions.html#how-to-run-and-reproduce-the-conclusions">How to run and reproduce the conclusions</a></li>
+<li><a href="environment-info.html#environment-info">Environment Info</a></li>
+</ul></li>
+<li class="has-sub"><a href="1-logistic-regression-vs-nearest-neighbour.html#logistic-regression-vs-nearest-neighbour"><span class="toc-section-number">1</span> Logistic regression vs Nearest Neighbour</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#logistic-regression"><i class="fa fa-check"></i><b>1.2.1</b> Logistic regression</a></li>
-<li class="chapter" data-level="1.2.2" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#knn"><i class="fa fa-check"></i><b>1.2.2</b> KNN</a></li>
+<li><a href="1.1-dataset-definition.html#dataset-definition"><span class="toc-section-number">1.1</span> Dataset definition</a></li>
+<li><a href="1.2-model-fitting.html#model-fitting"><span class="toc-section-number">1.2</span> Model fitting</a></li>
+<li><a href="1.3-compare-results.html#compare-results"><span class="toc-section-number">1.3</span> Compare results</a></li>
+<li><a href="1.4-conclusion.html#conclusion"><span class="toc-section-number">1.4</span> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#compare-results"><i class="fa fa-check"></i><b>1.3</b> Compare results</a></li>
-<li class="chapter" data-level="1.4" data-path="logistic-vs-knn.html"><a href="logistic-vs-knn.html#conclusion"><i class="fa fa-check"></i><b>1.4</b> Conclusion</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html"><i class="fa fa-check"></i><b>2</b> Linear Discriminante Analysis vs Decision tree</a>
+<li class="has-sub"><a href="2-mlp-vs-knn.html#mlp-vs-knn"><span class="toc-section-number">2</span> MLP vs knn</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#dataset-definition-1"><i class="fa fa-check"></i><b>2.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="2.2" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#model-fitting-1"><i class="fa fa-check"></i><b>2.2</b> Model fitting</a>
+<li><a href="2.1-dataset-definition-1.html#dataset-definition-1"><span class="toc-section-number">2.1</span> Dataset definition</a></li>
+<li><a href="2.2-model-fitting-1.html#model-fitting-1"><span class="toc-section-number">2.2</span> Model fitting</a></li>
+<li><a href="2.3-compare-results-1.html#compare-results-1"><span class="toc-section-number">2.3</span> Compare results</a></li>
+<li><a href="2.4-conclusion-1.html#conclusion-1"><span class="toc-section-number">2.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-mlp-relu-vs-mlp-sigmoid.html#mlp-relu-vs-mlp-sigmoid"><span class="toc-section-number">3</span> 11. MLP ReLu vs MLP sigmoid</a>
 <ul>
-<li class="chapter" data-level="2.2.1" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#lda"><i class="fa fa-check"></i><b>2.2.1</b> LDA</a></li>
+<li><a href="3.1-dataset-definition-2.html#dataset-definition-2"><span class="toc-section-number">3.1</span> Dataset definition</a></li>
+<li><a href="3.2-model-fitting-2.html#model-fitting-2"><span class="toc-section-number">3.2</span> Model fitting</a></li>
+<li><a href="3.3-compare-results-2.html#compare-results-2"><span class="toc-section-number">3.3</span> Compare results</a></li>
+<li><a href="3.4-conclusion-2.html#conclusion-2"><span class="toc-section-number">3.4</span> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#decision-tree"><i class="fa fa-check"></i><b>2.3</b> Decision tree</a></li>
-<li class="chapter" data-level="2.4" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#compare-results-1"><i class="fa fa-check"></i><b>2.4</b> Compare results</a></li>
-<li class="chapter" data-level="2.5" data-path="linear-discriminante-analysis-vs-decision-tree.html"><a href="linear-discriminante-analysis-vs-decision-tree.html#conclusion-1"><i class="fa fa-check"></i><b>2.5</b> Conclusion</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="linear-discriminante-analysis-vs-decision-tree-1.html"><a href="linear-discriminante-analysis-vs-decision-tree-1.html"><i class="fa fa-check"></i><b>3</b> Linear Discriminante Analysis vs Decision tree</a></li>
-<li class="chapter" data-level="4" data-path="linear-discriminante-analysis-vs-logistic-regression.html"><a href="linear-discriminante-analysis-vs-logistic-regression.html"><i class="fa fa-check"></i><b>4</b> Linear Discriminante Analysis vs Logistic Regression</a>
+<li><a href="references.html#references">References</a></li>
+<li class="has-sub"><a href="4-linear-discriminante-analysis-vs-decision-tree.html#linear-discriminante-analysis-vs-decision-tree"><span class="toc-section-number">4</span> Linear Discriminante Analysis vs Decision tree</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="linear-discriminante-analysis-vs-logistic-regression.html"><a href="linear-discriminante-analysis-vs-logistic-regression.html#dataset-definition-2"><i class="fa fa-check"></i><b>4.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="4.2" data-path="linear-discriminante-analysis-vs-logistic-regression.html"><a href="linear-discriminante-analysis-vs-logistic-regression.html#model-fitting-2"><i class="fa fa-check"></i><b>4.2</b> Model fitting</a></li>
-<li class="chapter" data-level="4.3" data-path="linear-discriminante-analysis-vs-logistic-regression.html"><a href="linear-discriminante-analysis-vs-logistic-regression.html#compare-results-2"><i class="fa fa-check"></i><b>4.3</b> Compare results</a></li>
-<li class="chapter" data-level="4.4" data-path="linear-discriminante-analysis-vs-logistic-regression.html"><a href="linear-discriminante-analysis-vs-logistic-regression.html#conclusion-2"><i class="fa fa-check"></i><b>4.4</b> Conclusion</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="decision-tree-vs-tree-boosting.html"><a href="decision-tree-vs-tree-boosting.html"><i class="fa fa-check"></i><b>5</b> Decision tree vs tree boosting</a>
+<li><a href="4.1-dataset-definition-3.html#dataset-definition-3"><span class="toc-section-number">4.1</span> Dataset definition</a></li>
+<li><a href="4.2-model-fitting-3.html#model-fitting-3"><span class="toc-section-number">4.2</span> Model fitting</a></li>
+<li><a href="4.3-compare-results-3.html#compare-results-3"><span class="toc-section-number">4.3</span> Compare results</a></li>
+<li><a href="4.4-conclusion-3.html#conclusion-3"><span class="toc-section-number">4.4</span> Conclusion</a></li>
+<li><a href="4.5-dataset-definition-4.html#dataset-definition-4"><span class="toc-section-number">4.5</span> Dataset definition</a></li>
+<li class="has-sub"><a href="4.6-dataset-definition-5.html#dataset-definition-5"><span class="toc-section-number">4.6</span> Dataset definition</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="decision-tree-vs-tree-boosting.html"><a href="decision-tree-vs-tree-boosting.html#dataset-definition-3"><i class="fa fa-check"></i><b>5.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="5.2" data-path="decision-tree-vs-tree-boosting.html"><a href="decision-tree-vs-tree-boosting.html#model-fitting-3"><i class="fa fa-check"></i><b>5.2</b> Model fitting</a></li>
-<li class="chapter" data-level="5.3" data-path="decision-tree-vs-tree-boosting.html"><a href="decision-tree-vs-tree-boosting.html#compare-results-3"><i class="fa fa-check"></i><b>5.3</b> Compare results</a></li>
-<li class="chapter" data-level="5.4" data-path="decision-tree-vs-tree-boosting.html"><a href="decision-tree-vs-tree-boosting.html#conclusion-3"><i class="fa fa-check"></i><b>5.4</b> Conclusion</a></li>
+<li><a href="4.6-dataset-definition-5.html#lda"><span class="toc-section-number">4.6.1</span> LDA</a></li>
+<li><a href="4.6-dataset-definition-5.html#qda"><span class="toc-section-number">4.6.2</span> QDA</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="svm-radial-vs-svm-linear.html"><a href="svm-radial-vs-svm-linear.html"><i class="fa fa-check"></i><b>6</b> SVM Radial vs SVM linear</a>
+<li><a href="4.7-compare-results-4.html#compare-results-4"><span class="toc-section-number">4.7</span> Compare results</a></li>
+</ul></li>
+<li class="has-sub"><a href="5-linear-discriminante-analysis-vs-logistic-regression.html#linear-discriminante-analysis-vs-logistic-regression"><span class="toc-section-number">5</span> Linear Discriminante Analysis vs Logistic Regression</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="svm-radial-vs-svm-linear.html"><a href="svm-radial-vs-svm-linear.html#dataset-definition-4"><i class="fa fa-check"></i><b>6.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="6.2" data-path="svm-radial-vs-svm-linear.html"><a href="svm-radial-vs-svm-linear.html#model-fitting-4"><i class="fa fa-check"></i><b>6.2</b> Model fitting</a></li>
-<li class="chapter" data-level="6.3" data-path="svm-radial-vs-svm-linear.html"><a href="svm-radial-vs-svm-linear.html#compare-results-4"><i class="fa fa-check"></i><b>6.3</b> Compare results</a></li>
-<li class="chapter" data-level="6.4" data-path="svm-radial-vs-svm-linear.html"><a href="svm-radial-vs-svm-linear.html#conclusion-4"><i class="fa fa-check"></i><b>6.4</b> Conclusion</a></li>
+<li><a href="5.1-dataset-definition-6.html#dataset-definition-6"><span class="toc-section-number">5.1</span> Dataset definition</a></li>
+<li><a href="5.2-model-fitting-4.html#model-fitting-4"><span class="toc-section-number">5.2</span> Model fitting</a></li>
+<li><a href="5.3-compare-results-5.html#compare-results-5"><span class="toc-section-number">5.3</span> Compare results</a></li>
+<li><a href="5.4-conclusion-4.html#conclusion-4"><span class="toc-section-number">5.4</span> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="svm-radial-vs-svm-linear-1.html"><a href="svm-radial-vs-svm-linear-1.html"><i class="fa fa-check"></i><b>7</b> SVM Radial vs SVM linear</a>
+<li class="has-sub"><a href="6-nearest-neighbour-vs.-decision-tree.html#nearest-neighbour-vs.-decision-tree"><span class="toc-section-number">6</span> Nearest neighbour vs. decision tree</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="svm-radial-vs-svm-linear-1.html"><a href="svm-radial-vs-svm-linear-1.html#dataset-definition-5"><i class="fa fa-check"></i><b>7.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="7.2" data-path="svm-radial-vs-svm-linear-1.html"><a href="svm-radial-vs-svm-linear-1.html#model-fitting-5"><i class="fa fa-check"></i><b>7.2</b> Model fitting</a></li>
-<li class="chapter" data-level="7.3" data-path="svm-radial-vs-svm-linear-1.html"><a href="svm-radial-vs-svm-linear-1.html#compare-results-5"><i class="fa fa-check"></i><b>7.3</b> Compare results</a></li>
-<li class="chapter" data-level="7.4" data-path="svm-radial-vs-svm-linear-1.html"><a href="svm-radial-vs-svm-linear-1.html#conclusion-5"><i class="fa fa-check"></i><b>7.4</b> Conclusion</a></li>
+<li><a href="6.1-model-fitting-5.html#model-fitting-5"><span class="toc-section-number">6.1</span> Model fitting</a></li>
+<li><a href="6.2-compare-results-6.html#compare-results-6"><span class="toc-section-number">6.2</span> Compare results</a></li>
+<li><a href="6.3-conclusion-5.html#conclusion-5"><span class="toc-section-number">6.3</span> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html"><i class="fa fa-check"></i><b>8</b> MLP vs knn</a>
+<li class="has-sub"><a href="7-decision-tree-vs-tree-boosting.html#decision-tree-vs-tree-boosting"><span class="toc-section-number">7</span> Decision tree vs tree boosting</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#dataset-definition-6"><i class="fa fa-check"></i><b>8.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="8.2" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#model-fitting-6"><i class="fa fa-check"></i><b>8.2</b> Model fitting</a></li>
-<li class="chapter" data-level="8.3" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#compare-results-6"><i class="fa fa-check"></i><b>8.3</b> Compare results</a></li>
-<li class="chapter" data-level="8.4" data-path="mlp-vs-knn.html"><a href="mlp-vs-knn.html#conclusion-6"><i class="fa fa-check"></i><b>8.4</b> Conclusion</a></li>
+<li><a href="7.1-dataset-definition-7.html#dataset-definition-7"><span class="toc-section-number">7.1</span> Dataset definition</a></li>
+<li><a href="7.2-model-fitting-6.html#model-fitting-6"><span class="toc-section-number">7.2</span> Model fitting</a></li>
+<li><a href="7.3-compare-results-7.html#compare-results-7"><span class="toc-section-number">7.3</span> Compare results</a></li>
+<li><a href="7.4-conclusion-6.html#conclusion-6"><span class="toc-section-number">7.4</span> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html"><i class="fa fa-check"></i><b>9</b> SVM Radial vs SVM linear</a>
+<li class="has-sub"><a href="8-svm-radial-vs-svm-linear.html#svm-radial-vs-svm-linear"><span class="toc-section-number">8</span> SVM Radial vs SVM linear</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#dataset-definition-7"><i class="fa fa-check"></i><b>9.1</b> Dataset definition</a></li>
-<li class="chapter" data-level="9.2" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#model-fitting-7"><i class="fa fa-check"></i><b>9.2</b> Model fitting</a></li>
-<li class="chapter" data-level="9.3" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#compare-results-7"><i class="fa fa-check"></i><b>9.3</b> Compare results</a></li>
-<li class="chapter" data-level="9.4" data-path="svm-radial-vs-svm-linear-2.html"><a href="svm-radial-vs-svm-linear-2.html#conclusion-7"><i class="fa fa-check"></i><b>9.4</b> Conclusion</a></li>
+<li><a href="8.1-dataset-definition-8.html#dataset-definition-8"><span class="toc-section-number">8.1</span> Dataset definition</a></li>
+<li><a href="8.2-model-fitting-7.html#model-fitting-7"><span class="toc-section-number">8.2</span> Model fitting</a></li>
+<li><a href="8.3-compare-results-8.html#compare-results-8"><span class="toc-section-number">8.3</span> Compare results</a></li>
+<li><a href="8.4-conclusion-7.html#conclusion-7"><span class="toc-section-number">8.4</span> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="chapter" data-level="" data-path="references-1.html"><a href="references-1.html"><i class="fa fa-check"></i>References</a></li>
-<li class="divider"></li>
-<li><a href="https://www.fcup.up.pt" target="blank"></a></li>
-
+<li class="has-sub"><a href="9-svm-radial-vs-svm-polynomial.html#svm-radial-vs-svm-polynomial"><span class="toc-section-number">9</span> SVM Radial vs SVM Polynomial</a>
+<ul>
+<li><a href="9.1-dataset-definition-9.html#dataset-definition-9"><span class="toc-section-number">9.1</span> Dataset definition</a></li>
+<li><a href="9.2-model-fitting-8.html#model-fitting-8"><span class="toc-section-number">9.2</span> Model fitting</a></li>
+<li><a href="9.3-compare-results-9.html#compare-results-9"><span class="toc-section-number">9.3</span> Compare results</a></li>
+<li><a href="9.4-conclusion-8.html#conclusion-8"><span class="toc-section-number">9.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="10-mlp-vs-knn-1.html#mlp-vs-knn-1"><span class="toc-section-number">10</span> MLP vs knn</a>
+<ul>
+<li><a href="10.1-dataset-definition-10.html#dataset-definition-10"><span class="toc-section-number">10.1</span> Dataset definition</a></li>
+<li><a href="10.2-model-fitting-9.html#model-fitting-9"><span class="toc-section-number">10.2</span> Model fitting</a></li>
+<li><a href="10.3-compare-results-10.html#compare-results-10"><span class="toc-section-number">10.3</span> Compare results</a></li>
+<li><a href="10.4-conclusion-9.html#conclusion-9"><span class="toc-section-number">10.4</span> Conclusion</a></li>
+</ul></li>
 </ul>
-
-      </nav>
-    </div>
-
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Dataset compare between models</a>
-          </h1>
-        </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="references" class="section level1 unnumbered hasAnchor">
-<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<pre><code>## @Manual{R-knitr,
-##   title = {knitr: A General-Purpose Package for Dynamic
-##     Report Generation in R},
-##   author = {Yihui Xie},
-##   year = {2022},
-##   note = {R package version 1.39},
-##   url = {https://yihui.org/knitr/},
-## }
-## 
-## @Manual{R-stringr,
-##   title = {stringr: Simple, Consistent Wrappers for Common
-##     String Operations},
-##   author = {Hadley Wickham},
-##   year = {2019},
-##   note = {R package version 1.4.0},
-##   url = {https://CRAN.R-project.org/package=stringr},
-## }
-## 
-## @Book{knitr2015,
-##   title = {Dynamic Documents with {R} and knitr},
-##   author = {Yihui Xie},
-##   publisher = {Chapman and Hall/CRC},
-##   address = {Boca Raton, Florida},
-##   year = {2015},
-##   edition = {2nd},
-##   note = {ISBN 978-1498716963},
-##   url = {https://yihui.org/knitr/},
-## }
-## 
-## @InCollection{knitr2014,
-##   booktitle = {Implementing Reproducible Computational
-##     Research},
-##   editor = {Victoria Stodden and Friedrich Leisch and Roger
-##     D. Peng},
-##   title = {knitr: A Comprehensive Tool for Reproducible
-##     Research in {R}},
-##   author = {Yihui Xie},
-##   publisher = {Chapman and Hall/CRC},
-##   year = {2014},
-##   note = {ISBN 978-1466561595},
-##   url = {http://www.crcpress.com/product/isbn/
-##     9781466561595},
-## }</code></pre>
 </div>
-            </section>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
 
-          </div>
-        </div>
-      </div>
-<a href="svm-radial-vs-svm-linear-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
-  </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+</div>
+<p style="text-align: center;">
+<a href="3.4-conclusion-2.html"><button class="btn btn-default">Previous</button></a>
+<a href="4-linear-discriminante-analysis-vs-decision-tree.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
 <script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": null,
-"text": null
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["_main.pdf"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
-});
+
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
-
 </html>

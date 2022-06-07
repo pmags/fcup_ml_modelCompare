@@ -14,6 +14,8 @@ bookdown::render_book("index.Rmd", "bookdown::gitbook")
 
 bookdown::render_book("index.Rmd", "bookdown::html_book")
 
+# HTML single file
+bookdown::render_book("index.Rmd", "bookdown::html_document2")
 
 # pdf
 bookdown::render_book("index.Rmd", "bookdown::pdf_book")

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="Approaches and Assumptions | Dataset compare between models" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/theme/images/cover.pdf" />
+
+
+
+<meta name="author" content="Marta Ferreira e Pedro Magalhães" />
+
+<meta name="date" content="2022-06-07" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="Approaches and Assumptions | Dataset compare between models">
+
+<title>Approaches and Assumptions | Dataset compare between models</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="_theme/style.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#introduction">Introduction</a>
+<ul>
+<li><a href="project-structure.html#project-structure">Project structure</a></li>
+<li><a href="approaches-and-assumptions.html#approaches-and-assumptions">Approaches and Assumptions</a></li>
+<li><a href="how-to-run-and-reproduce-the-conclusions.html#how-to-run-and-reproduce-the-conclusions">How to run and reproduce the conclusions</a></li>
+<li><a href="environment-info.html#environment-info">Environment Info</a></li>
+</ul></li>
+<li class="has-sub"><a href="1-logistic-regression-vs-nearest-neighbour.html#logistic-regression-vs-nearest-neighbour"><span class="toc-section-number">1</span> Logistic regression vs Nearest Neighbour</a>
+<ul>
+<li><a href="1.1-dataset-definition.html#dataset-definition"><span class="toc-section-number">1.1</span> Dataset definition</a></li>
+<li><a href="1.2-model-fitting.html#model-fitting"><span class="toc-section-number">1.2</span> Model fitting</a></li>
+<li><a href="1.3-compare-results.html#compare-results"><span class="toc-section-number">1.3</span> Compare results</a></li>
+<li><a href="1.4-conclusion.html#conclusion"><span class="toc-section-number">1.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-mlp-vs-knn.html#mlp-vs-knn"><span class="toc-section-number">2</span> MLP vs knn</a>
+<ul>
+<li><a href="2.1-dataset-definition-1.html#dataset-definition-1"><span class="toc-section-number">2.1</span> Dataset definition</a></li>
+<li><a href="2.2-model-fitting-1.html#model-fitting-1"><span class="toc-section-number">2.2</span> Model fitting</a></li>
+<li><a href="2.3-compare-results-1.html#compare-results-1"><span class="toc-section-number">2.3</span> Compare results</a></li>
+<li><a href="2.4-conclusion-1.html#conclusion-1"><span class="toc-section-number">2.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-mlp-relu-vs-mlp-sigmoid.html#mlp-relu-vs-mlp-sigmoid"><span class="toc-section-number">3</span> 11. MLP ReLu vs MLP sigmoid</a>
+<ul>
+<li><a href="3.1-dataset-definition-2.html#dataset-definition-2"><span class="toc-section-number">3.1</span> Dataset definition</a></li>
+<li><a href="3.2-model-fitting-2.html#model-fitting-2"><span class="toc-section-number">3.2</span> Model fitting</a></li>
+<li><a href="3.3-compare-results-2.html#compare-results-2"><span class="toc-section-number">3.3</span> Compare results</a></li>
+<li><a href="3.4-conclusion-2.html#conclusion-2"><span class="toc-section-number">3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="references.html#references">References</a></li>
+<li class="has-sub"><a href="4-linear-discriminante-analysis-vs-decision-tree.html#linear-discriminante-analysis-vs-decision-tree"><span class="toc-section-number">4</span> Linear Discriminante Analysis vs Decision tree</a>
+<ul>
+<li><a href="4.1-dataset-definition-3.html#dataset-definition-3"><span class="toc-section-number">4.1</span> Dataset definition</a></li>
+<li><a href="4.2-model-fitting-3.html#model-fitting-3"><span class="toc-section-number">4.2</span> Model fitting</a></li>
+<li><a href="4.3-compare-results-3.html#compare-results-3"><span class="toc-section-number">4.3</span> Compare results</a></li>
+<li><a href="4.4-conclusion-3.html#conclusion-3"><span class="toc-section-number">4.4</span> Conclusion</a></li>
+<li><a href="4.5-dataset-definition-4.html#dataset-definition-4"><span class="toc-section-number">4.5</span> Dataset definition</a></li>
+<li class="has-sub"><a href="4.6-dataset-definition-5.html#dataset-definition-5"><span class="toc-section-number">4.6</span> Dataset definition</a>
+<ul>
+<li><a href="4.6-dataset-definition-5.html#lda"><span class="toc-section-number">4.6.1</span> LDA</a></li>
+<li><a href="4.6-dataset-definition-5.html#qda"><span class="toc-section-number">4.6.2</span> QDA</a></li>
+</ul></li>
+<li><a href="4.7-compare-results-4.html#compare-results-4"><span class="toc-section-number">4.7</span> Compare results</a></li>
+</ul></li>
+<li class="has-sub"><a href="5-linear-discriminante-analysis-vs-logistic-regression.html#linear-discriminante-analysis-vs-logistic-regression"><span class="toc-section-number">5</span> Linear Discriminante Analysis vs Logistic Regression</a>
+<ul>
+<li><a href="5.1-dataset-definition-6.html#dataset-definition-6"><span class="toc-section-number">5.1</span> Dataset definition</a></li>
+<li><a href="5.2-model-fitting-4.html#model-fitting-4"><span class="toc-section-number">5.2</span> Model fitting</a></li>
+<li><a href="5.3-compare-results-5.html#compare-results-5"><span class="toc-section-number">5.3</span> Compare results</a></li>
+<li><a href="5.4-conclusion-4.html#conclusion-4"><span class="toc-section-number">5.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="6-nearest-neighbour-vs.-decision-tree.html#nearest-neighbour-vs.-decision-tree"><span class="toc-section-number">6</span> Nearest neighbour vs. decision tree</a>
+<ul>
+<li><a href="6.1-model-fitting-5.html#model-fitting-5"><span class="toc-section-number">6.1</span> Model fitting</a></li>
+<li><a href="6.2-compare-results-6.html#compare-results-6"><span class="toc-section-number">6.2</span> Compare results</a></li>
+<li><a href="6.3-conclusion-5.html#conclusion-5"><span class="toc-section-number">6.3</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="7-decision-tree-vs-tree-boosting.html#decision-tree-vs-tree-boosting"><span class="toc-section-number">7</span> Decision tree vs tree boosting</a>
+<ul>
+<li><a href="7.1-dataset-definition-7.html#dataset-definition-7"><span class="toc-section-number">7.1</span> Dataset definition</a></li>
+<li><a href="7.2-model-fitting-6.html#model-fitting-6"><span class="toc-section-number">7.2</span> Model fitting</a></li>
+<li><a href="7.3-compare-results-7.html#compare-results-7"><span class="toc-section-number">7.3</span> Compare results</a></li>
+<li><a href="7.4-conclusion-6.html#conclusion-6"><span class="toc-section-number">7.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="8-svm-radial-vs-svm-linear.html#svm-radial-vs-svm-linear"><span class="toc-section-number">8</span> SVM Radial vs SVM linear</a>
+<ul>
+<li><a href="8.1-dataset-definition-8.html#dataset-definition-8"><span class="toc-section-number">8.1</span> Dataset definition</a></li>
+<li><a href="8.2-model-fitting-7.html#model-fitting-7"><span class="toc-section-number">8.2</span> Model fitting</a></li>
+<li><a href="8.3-compare-results-8.html#compare-results-8"><span class="toc-section-number">8.3</span> Compare results</a></li>
+<li><a href="8.4-conclusion-7.html#conclusion-7"><span class="toc-section-number">8.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="9-svm-radial-vs-svm-polynomial.html#svm-radial-vs-svm-polynomial"><span class="toc-section-number">9</span> SVM Radial vs SVM Polynomial</a>
+<ul>
+<li><a href="9.1-dataset-definition-9.html#dataset-definition-9"><span class="toc-section-number">9.1</span> Dataset definition</a></li>
+<li><a href="9.2-model-fitting-8.html#model-fitting-8"><span class="toc-section-number">9.2</span> Model fitting</a></li>
+<li><a href="9.3-compare-results-9.html#compare-results-9"><span class="toc-section-number">9.3</span> Compare results</a></li>
+<li><a href="9.4-conclusion-8.html#conclusion-8"><span class="toc-section-number">9.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="10-mlp-vs-knn-1.html#mlp-vs-knn-1"><span class="toc-section-number">10</span> MLP vs knn</a>
+<ul>
+<li><a href="10.1-dataset-definition-10.html#dataset-definition-10"><span class="toc-section-number">10.1</span> Dataset definition</a></li>
+<li><a href="10.2-model-fitting-9.html#model-fitting-9"><span class="toc-section-number">10.2</span> Model fitting</a></li>
+<li><a href="10.3-compare-results-10.html#compare-results-10"><span class="toc-section-number">10.3</span> Compare results</a></li>
+<li><a href="10.4-conclusion-9.html#conclusion-9"><span class="toc-section-number">10.4</span> Conclusion</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="approaches-and-assumptions" class="section level2 unnumbered">
+<h2>Approaches and Assumptions</h2>
+<p>Throughout this project the following assumptions were made and approaches were used:</p>
+<ul>
+<li><p>Dependent variables (target) are of date type <code>factor</code> and all Independent variables (features) are of type <code>numeric</code>,</p></li>
+<li><p>Since the datasets are synthetically generated, no pre-processing was made,</p></li>
+<li><p>Datasets were built using statistical distributions and/or classification rules which may have no resemblance to reality,</p></li>
+<li><p>To the extant it is possible a dataset was created using a binomial categorical variable and a two features,</p></li>
+<li><p>For the sake of model comparing, the default hyper parameter value were used. This are provided by <code>Parsnip R package</code> without post-processing and hyper parameter optimization. It is possible, although unlikely, that a different package or under different hyper parameters could result different conclusions,</p></li>
+<li><p>For calculating metrics a cross-validations with 10 folds and no repetition was used.</p></li>
+</ul>
+<p><span class="citation">R Core Team (<a href="#ref-R-base" role="doc-biblioref">2022</a>)</span></p>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-R-base" class="csl-entry">
+R Core Team. 2022. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+</div>
+<p style="text-align: center;">
+<a href="project-structure.html"><button class="btn btn-default">Previous</button></a>
+<a href="how-to-run-and-reproduce-the-conclusions.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

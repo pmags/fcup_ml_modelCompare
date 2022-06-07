@@ -1,0 +1,12 @@
+---
+editor_options:
+  chunk_output_type: console
+---
+
+`r if (knitr::is_html_output()) '# References {-}'`
+
+```{r create_reference_list, include=FALSE}
+
+write_bib(x = .packages(), file = 'packages.bib')
+```
+```

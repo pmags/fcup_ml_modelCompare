@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:title" content="How to run and reproduce the conclusions | Dataset compare between models" />
+<meta property="og:type" content="book" />
+<meta property="og:image" content="/theme/images/cover.pdf" />
+
+
+
+<meta name="author" content="Marta Ferreira e Pedro Magalhães" />
+
+<meta name="date" content="2022-06-07" />
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="description" content="How to run and reproduce the conclusions | Dataset compare between models">
+
+<title>How to run and reproduce the conclusions | Dataset compare between models</title>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="_theme/style.css" type="text/css" />
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+/* show arrow before summary tag as in bootstrap
+TODO: remove if boostrap in updated in html_document (rmarkdown#1485) */
+details > summary {
+  display: list-item;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li class="has-sub"><a href="index.html#introduction">Introduction</a>
+<ul>
+<li><a href="project-structure.html#project-structure">Project structure</a></li>
+<li><a href="approaches-and-assumptions.html#approaches-and-assumptions">Approaches and Assumptions</a></li>
+<li><a href="how-to-run-and-reproduce-the-conclusions.html#how-to-run-and-reproduce-the-conclusions">How to run and reproduce the conclusions</a></li>
+<li><a href="environment-info.html#environment-info">Environment Info</a></li>
+</ul></li>
+<li class="has-sub"><a href="1-logistic-regression-vs-nearest-neighbour.html#logistic-regression-vs-nearest-neighbour"><span class="toc-section-number">1</span> Logistic regression vs Nearest Neighbour</a>
+<ul>
+<li><a href="1.1-dataset-definition.html#dataset-definition"><span class="toc-section-number">1.1</span> Dataset definition</a></li>
+<li><a href="1.2-model-fitting.html#model-fitting"><span class="toc-section-number">1.2</span> Model fitting</a></li>
+<li><a href="1.3-compare-results.html#compare-results"><span class="toc-section-number">1.3</span> Compare results</a></li>
+<li><a href="1.4-conclusion.html#conclusion"><span class="toc-section-number">1.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-mlp-vs-knn.html#mlp-vs-knn"><span class="toc-section-number">2</span> MLP vs knn</a>
+<ul>
+<li><a href="2.1-dataset-definition-1.html#dataset-definition-1"><span class="toc-section-number">2.1</span> Dataset definition</a></li>
+<li><a href="2.2-model-fitting-1.html#model-fitting-1"><span class="toc-section-number">2.2</span> Model fitting</a></li>
+<li><a href="2.3-compare-results-1.html#compare-results-1"><span class="toc-section-number">2.3</span> Compare results</a></li>
+<li><a href="2.4-conclusion-1.html#conclusion-1"><span class="toc-section-number">2.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-mlp-relu-vs-mlp-sigmoid.html#mlp-relu-vs-mlp-sigmoid"><span class="toc-section-number">3</span> 11. MLP ReLu vs MLP sigmoid</a>
+<ul>
+<li><a href="3.1-dataset-definition-2.html#dataset-definition-2"><span class="toc-section-number">3.1</span> Dataset definition</a></li>
+<li><a href="3.2-model-fitting-2.html#model-fitting-2"><span class="toc-section-number">3.2</span> Model fitting</a></li>
+<li><a href="3.3-compare-results-2.html#compare-results-2"><span class="toc-section-number">3.3</span> Compare results</a></li>
+<li><a href="3.4-conclusion-2.html#conclusion-2"><span class="toc-section-number">3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="references.html#references">References</a></li>
+<li class="has-sub"><a href="4-linear-discriminante-analysis-vs-decision-tree.html#linear-discriminante-analysis-vs-decision-tree"><span class="toc-section-number">4</span> Linear Discriminante Analysis vs Decision tree</a>
+<ul>
+<li><a href="4.1-dataset-definition-3.html#dataset-definition-3"><span class="toc-section-number">4.1</span> Dataset definition</a></li>
+<li><a href="4.2-model-fitting-3.html#model-fitting-3"><span class="toc-section-number">4.2</span> Model fitting</a></li>
+<li><a href="4.3-compare-results-3.html#compare-results-3"><span class="toc-section-number">4.3</span> Compare results</a></li>
+<li><a href="4.4-conclusion-3.html#conclusion-3"><span class="toc-section-number">4.4</span> Conclusion</a></li>
+<li><a href="4.5-dataset-definition-4.html#dataset-definition-4"><span class="toc-section-number">4.5</span> Dataset definition</a></li>
+<li class="has-sub"><a href="4.6-dataset-definition-5.html#dataset-definition-5"><span class="toc-section-number">4.6</span> Dataset definition</a>
+<ul>
+<li><a href="4.6-dataset-definition-5.html#lda"><span class="toc-section-number">4.6.1</span> LDA</a></li>
+<li><a href="4.6-dataset-definition-5.html#qda"><span class="toc-section-number">4.6.2</span> QDA</a></li>
+</ul></li>
+<li><a href="4.7-compare-results-4.html#compare-results-4"><span class="toc-section-number">4.7</span> Compare results</a></li>
+</ul></li>
+<li class="has-sub"><a href="5-linear-discriminante-analysis-vs-logistic-regression.html#linear-discriminante-analysis-vs-logistic-regression"><span class="toc-section-number">5</span> Linear Discriminante Analysis vs Logistic Regression</a>
+<ul>
+<li><a href="5.1-dataset-definition-6.html#dataset-definition-6"><span class="toc-section-number">5.1</span> Dataset definition</a></li>
+<li><a href="5.2-model-fitting-4.html#model-fitting-4"><span class="toc-section-number">5.2</span> Model fitting</a></li>
+<li><a href="5.3-compare-results-5.html#compare-results-5"><span class="toc-section-number">5.3</span> Compare results</a></li>
+<li><a href="5.4-conclusion-4.html#conclusion-4"><span class="toc-section-number">5.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="6-nearest-neighbour-vs.-decision-tree.html#nearest-neighbour-vs.-decision-tree"><span class="toc-section-number">6</span> Nearest neighbour vs. decision tree</a>
+<ul>
+<li><a href="6.1-model-fitting-5.html#model-fitting-5"><span class="toc-section-number">6.1</span> Model fitting</a></li>
+<li><a href="6.2-compare-results-6.html#compare-results-6"><span class="toc-section-number">6.2</span> Compare results</a></li>
+<li><a href="6.3-conclusion-5.html#conclusion-5"><span class="toc-section-number">6.3</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="7-decision-tree-vs-tree-boosting.html#decision-tree-vs-tree-boosting"><span class="toc-section-number">7</span> Decision tree vs tree boosting</a>
+<ul>
+<li><a href="7.1-dataset-definition-7.html#dataset-definition-7"><span class="toc-section-number">7.1</span> Dataset definition</a></li>
+<li><a href="7.2-model-fitting-6.html#model-fitting-6"><span class="toc-section-number">7.2</span> Model fitting</a></li>
+<li><a href="7.3-compare-results-7.html#compare-results-7"><span class="toc-section-number">7.3</span> Compare results</a></li>
+<li><a href="7.4-conclusion-6.html#conclusion-6"><span class="toc-section-number">7.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="8-svm-radial-vs-svm-linear.html#svm-radial-vs-svm-linear"><span class="toc-section-number">8</span> SVM Radial vs SVM linear</a>
+<ul>
+<li><a href="8.1-dataset-definition-8.html#dataset-definition-8"><span class="toc-section-number">8.1</span> Dataset definition</a></li>
+<li><a href="8.2-model-fitting-7.html#model-fitting-7"><span class="toc-section-number">8.2</span> Model fitting</a></li>
+<li><a href="8.3-compare-results-8.html#compare-results-8"><span class="toc-section-number">8.3</span> Compare results</a></li>
+<li><a href="8.4-conclusion-7.html#conclusion-7"><span class="toc-section-number">8.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="9-svm-radial-vs-svm-polynomial.html#svm-radial-vs-svm-polynomial"><span class="toc-section-number">9</span> SVM Radial vs SVM Polynomial</a>
+<ul>
+<li><a href="9.1-dataset-definition-9.html#dataset-definition-9"><span class="toc-section-number">9.1</span> Dataset definition</a></li>
+<li><a href="9.2-model-fitting-8.html#model-fitting-8"><span class="toc-section-number">9.2</span> Model fitting</a></li>
+<li><a href="9.3-compare-results-9.html#compare-results-9"><span class="toc-section-number">9.3</span> Compare results</a></li>
+<li><a href="9.4-conclusion-8.html#conclusion-8"><span class="toc-section-number">9.4</span> Conclusion</a></li>
+</ul></li>
+<li class="has-sub"><a href="10-mlp-vs-knn-1.html#mlp-vs-knn-1"><span class="toc-section-number">10</span> MLP vs knn</a>
+<ul>
+<li><a href="10.1-dataset-definition-10.html#dataset-definition-10"><span class="toc-section-number">10.1</span> Dataset definition</a></li>
+<li><a href="10.2-model-fitting-9.html#model-fitting-9"><span class="toc-section-number">10.2</span> Model fitting</a></li>
+<li><a href="10.3-compare-results-10.html#compare-results-10"><span class="toc-section-number">10.3</span> Compare results</a></li>
+<li><a href="10.4-conclusion-9.html#conclusion-9"><span class="toc-section-number">10.4</span> Conclusion</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="how-to-run-and-reproduce-the-conclusions" class="section level2 unnumbered">
+<h2>How to run and reproduce the conclusions</h2>
+<p>The file <code>_main.rmd</code> compiles all work. In order to run the following script should be copied into a R script and sourced on the notebook.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">######## Copy of script to run &quot;./scripts/helper.R&quot;</span></span>
+<span id="cb1-2"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># libraries ---------------------------------------------------------------</span></span>
+<span id="cb1-4"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-6"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb1-8"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mvtnorm)</span>
+<span id="cb1-9"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-10"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb1-11"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-12"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Model specific libraries</span></span>
+<span id="cb1-14"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(discrim)</span>
+<span id="cb1-15"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(C50)</span>
+<span id="cb1-16"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart)</span>
+<span id="cb1-17"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LiblineaR)</span>
+<span id="cb1-18"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kernlab)</span>
+<span id="cb1-19"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb1-20"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nnet)</span>
+<span id="cb1-21"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataset and bayes optimal boundary plot ---------------------------------</span></span>
+<span id="cb1-23"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @name: dataset generator</span></span>
+<span id="cb1-25"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb1-26"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param size numeric:</span></span>
+<span id="cb1-27"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param nVar numeric:</span></span>
+<span id="cb1-28"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param n_g numeric:</span></span>
+<span id="cb1-29"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param class_fun function:</span></span>
+<span id="cb1-30"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param treshold numeric:</span></span>
+<span id="cb1-31"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return results list: list(dataset_plot = dataset_plot, dataset = dataset, cond = grid, border_plot = dataset_plot_border)</span></span>
+<span id="cb1-32"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-34" aria-hidden="true" tabindex="-1"></a>dataset_gen_unif <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">size =</span> <span class="dv">1000</span>, <span class="at">nVar =</span> <span class="dv">2</span>, <span class="at">n_g =</span> <span class="dv">2</span>, <span class="at">class_fun =</span> <span class="cn">NULL</span>, <span class="at">treshold =</span> <span class="fl">0.5</span>) </span>
+<span id="cb1-35"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-35" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb1-36"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-37"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verify if inputs are correct data types</span></span>
+<span id="cb1-38"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="st">&quot;A numeric value needs to be provided for the size of the dataset&quot;</span> <span class="ot">=</span> <span class="fu">is.numeric</span>(size))</span>
+<span id="cb1-39"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="st">&quot;A numeric value needs to be provided for the number of variables to be produced&quot;</span> <span class="ot">=</span> <span class="fu">is.numeric</span>(nVar))</span>
+<span id="cb1-40"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="st">&quot;The classification function needs to be of the type function&quot;</span> <span class="ot">=</span> <span class="fu">is.function</span>(class_fun))</span>
+<span id="cb1-41"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stopifnot</span>(<span class="st">&quot;Number of variables needs to be equal or above 2&quot;</span> <span class="ot">=</span> nVar <span class="sc">&gt;=</span> <span class="dv">2</span>)</span>
+<span id="cb1-42"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-43"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Random sample of data</span></span>
+<span id="cb1-44"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-44" aria-hidden="true" tabindex="-1"></a>    sample <span class="ot">&lt;-</span> <span class="fu">replicate</span>(nVar,stats<span class="sc">::</span><span class="fu">runif</span>(size, <span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">10</span>))</span>
+<span id="cb1-45"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-45" aria-hidden="true" tabindex="-1"></a>    sample <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">as_tibble</span>(sample) <span class="sc">%&gt;%</span> magrittr<span class="sc">::</span><span class="fu">set_colnames</span>(<span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, <span class="dv">1</span><span class="sc">:</span>nVar))</span>
+<span id="cb1-46"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-47"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Applies classification function if nVar = 2</span></span>
+<span id="cb1-48"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-48" aria-hidden="true" tabindex="-1"></a>    dataset <span class="ot">&lt;-</span> sample <span class="sc">%&gt;%</span> </span>
+<span id="cb1-49"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb1-50"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-50" aria-hidden="true" tabindex="-1"></a>        <span class="at">g =</span> purrr<span class="sc">::</span><span class="fu">pmap_dbl</span>(., class_fun ),</span>
+<span id="cb1-51"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">g =</span> <span class="fu">factor</span>(g)</span>
+<span id="cb1-52"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-52" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-53"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-54"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Creates plot</span></span>
+<span id="cb1-55"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-55" aria-hidden="true" tabindex="-1"></a>    dataset_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dataset, <span class="fu">aes</span>(x1, x2, <span class="at">color =</span> <span class="fu">factor</span>(g))) <span class="sc">+</span> </span>
+<span id="cb1-56"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-56" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-57"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-57" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> </span>
+<span id="cb1-58"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-58" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb1-59"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-59" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-60"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-60" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(</span>
+<span id="cb1-61"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-62"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-62" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-63"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-64"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-64" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-65"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-65" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-66"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-66" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb1-67"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-67" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">size=</span><span class="dv">1</span>),</span>
+<span id="cb1-68"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-68" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-69"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-69" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-70"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-70" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.caption.position =</span> <span class="st">&quot;plot&quot;</span></span>
+<span id="cb1-71"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-71" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb1-72"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-72" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set1&quot;</span>)</span>
+<span id="cb1-73"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-74"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-74" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-75"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-75" aria-hidden="true" tabindex="-1"></a>    <span class="do">## Build grid for contour</span></span>
+<span id="cb1-76"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-76" aria-hidden="true" tabindex="-1"></a>    x1_range <span class="ot">&lt;-</span>  <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb1-77"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-77" aria-hidden="true" tabindex="-1"></a>    x2_range <span class="ot">&lt;-</span>  <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="at">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb1-78"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-78" aria-hidden="true" tabindex="-1"></a>    grid <span class="ot">&lt;-</span>  <span class="fu">expand.grid</span>(<span class="at">x1 =</span> x1_range, <span class="at">x2 =</span> x2_range)</span>
+<span id="cb1-79"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-79" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-80"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-80" aria-hidden="true" tabindex="-1"></a>    <span class="co"># conditional probability of (x1, x2) given y = 0</span></span>
+<span id="cb1-81"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-81" aria-hidden="true" tabindex="-1"></a>    grid <span class="ot">&lt;-</span> grid <span class="sc">%&gt;%</span> </span>
+<span id="cb1-82"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-82" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb1-83"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-83" aria-hidden="true" tabindex="-1"></a>        <span class="at">g =</span> purrr<span class="sc">::</span><span class="fu">pmap_dbl</span>(., class_fun ),</span>
+<span id="cb1-84"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-84" aria-hidden="true" tabindex="-1"></a>        <span class="at">g =</span> <span class="fu">factor</span>(g)</span>
+<span id="cb1-85"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-85" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-86"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-86" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-87"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-87" aria-hidden="true" tabindex="-1"></a>    l <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb1-88"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-88" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-89"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_g) {</span>
+<span id="cb1-90"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-90" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-91"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-91" aria-hidden="true" tabindex="-1"></a>      l[[i]] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(grid<span class="sc">$</span>g <span class="sc">==</span> i, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-92"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-92" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-93"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-93" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-94"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-94" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-95"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-95" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculates conditional probabilities</span></span>
+<span id="cb1-96"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-96" aria-hidden="true" tabindex="-1"></a>    conditional_prb <span class="ot">=</span> <span class="fu">do.call</span>(cbind.data.frame, l) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-97"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-97" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set_colnames</span>(<span class="fu">paste0</span>(<span class="st">&quot;px_G&quot;</span>,<span class="dv">0</span><span class="sc">:</span>(n_g<span class="dv">-1</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-98"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-98" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb1-99"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-99" aria-hidden="true" tabindex="-1"></a>        <span class="at">py0_x =</span> treshold <span class="sc">*</span> px_G0,</span>
+<span id="cb1-100"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-100" aria-hidden="true" tabindex="-1"></a>        <span class="at">py1_x =</span> (<span class="dv">1</span><span class="sc">-</span>treshold) <span class="sc">*</span> px_G1,</span>
+<span id="cb1-101"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-101" aria-hidden="true" tabindex="-1"></a>        <span class="at">bayesborder =</span> py1_x <span class="sc">-</span> py0_x ,</span>
+<span id="cb1-102"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-102" aria-hidden="true" tabindex="-1"></a>        <span class="at">predictclass =</span> <span class="fu">ifelse</span>(py0_x <span class="sc">&gt;</span> py1_x, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># posterior class</span></span>
+<span id="cb1-103"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-103" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-104"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-104" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-105"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-106"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-106" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-107"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-107" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-108"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-108" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-109"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-109" aria-hidden="true" tabindex="-1"></a>    grid <span class="ot">&lt;-</span> <span class="fu">cbind</span>(grid, conditional_prb)</span>
+<span id="cb1-110"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-110" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-111"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-111" aria-hidden="true" tabindex="-1"></a>    dataset_plot_border <span class="ot">&lt;-</span> dataset_plot <span class="sc">+</span></span>
+<span id="cb1-112"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-112" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_contour</span>(<span class="at">data =</span> grid, <span class="fu">aes</span>(<span class="at">x =</span> x1,<span class="at">y =</span> x2, <span class="at">z =</span> bayesborder), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">breaks =</span> <span class="dv">0</span>) </span>
+<span id="cb1-113"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-113" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-114"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-114" aria-hidden="true" tabindex="-1"></a>    <span class="co"># return results</span></span>
+<span id="cb1-115"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-115" aria-hidden="true" tabindex="-1"></a>    results <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dataset_plot =</span> dataset_plot, <span class="at">dataset =</span> dataset, <span class="at">cond =</span> grid, <span class="at">border_plot =</span> dataset_plot_border)</span>
+<span id="cb1-116"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(results)</span>
+<span id="cb1-117"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-117" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-118"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-118" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-119"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-122"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="co"># Dataset gen with multivariated normal dist ------------------------------</span></span>
+<span id="cb1-124"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @name: dataset generator with multivariated normal distribution</span></span>
+<span id="cb1-126"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-126" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb1-127"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param </span></span>
+<span id="cb1-128"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return </span></span>
+<span id="cb1-129"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-130"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-131" aria-hidden="true" tabindex="-1"></a>dataset_gen_mvnorm <span class="ot">&lt;-</span> <span class="cf">function</span>(l_mu, l_cvm,l_w, <span class="at">size =</span> <span class="dv">1000</span>, <span class="at">nVar =</span> <span class="dv">2</span>, <span class="at">n_g =</span> <span class="dv">2</span>, <span class="at">class_fun =</span> <span class="cn">NULL</span>, <span class="at">treshold =</span> <span class="fl">0.5</span>) {</span>
+<span id="cb1-132"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-132" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-133"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-133" aria-hidden="true" tabindex="-1"></a>  <span class="co"># generates samples</span></span>
+<span id="cb1-134"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-134" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-135"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-135" aria-hidden="true" tabindex="-1"></a>  l_sample <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb1-136"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-136" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-137"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-137" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(l_mu)) {</span>
+<span id="cb1-138"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-138" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-139"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-139" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rmvnorm</span>(size<span class="sc">/</span><span class="fu">length</span>(l_w), l_mu[[i]], l_cvm[[i]]),i<span class="dv">-1</span>)</span>
+<span id="cb1-140"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-140" aria-hidden="true" tabindex="-1"></a>    l_sample[[i]] <span class="ot">&lt;-</span> s</span>
+<span id="cb1-141"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-141" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-142"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-142" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-143"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-143" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-144"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-144" aria-hidden="true" tabindex="-1"></a>  dataset <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind.data.frame,l_sample) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-145"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-145" aria-hidden="true" tabindex="-1"></a>    magrittr<span class="sc">::</span><span class="fu">set_colnames</span>( <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">&quot;x&quot;</span>, <span class="dv">1</span><span class="sc">:</span>nVar),<span class="st">&quot;g&quot;</span> ) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-146"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-146" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">g =</span> <span class="fu">factor</span>(g))</span>
+<span id="cb1-147"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-147" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-148"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-149" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Creates plot</span></span>
+<span id="cb1-150"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-150" aria-hidden="true" tabindex="-1"></a>  dataset_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dataset, <span class="fu">aes</span>(x1, x2, <span class="at">color =</span> <span class="fu">factor</span>(g))) <span class="sc">+</span> </span>
+<span id="cb1-151"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-151" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-152"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-152" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span> </span>
+<span id="cb1-153"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-153" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb1-154"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-154" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb1-155"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-155" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb1-156"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-156" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.text.x=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-157"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-157" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.ticks.x=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-158"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-158" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-159"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-159" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-160"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-160" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-161"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-161" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb1-162"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-162" aria-hidden="true" tabindex="-1"></a>      <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">size=</span><span class="dv">1</span>),</span>
+<span id="cb1-163"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-163" aria-hidden="true" tabindex="-1"></a>      <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-164"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-164" aria-hidden="true" tabindex="-1"></a>      <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-165"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-165" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.caption.position =</span> <span class="st">&quot;plot&quot;</span></span>
+<span id="cb1-166"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-166" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb1-167"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-167" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set1&quot;</span>)</span>
+<span id="cb1-168"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-168" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-169"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-169" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-170"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-170" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Build grid for contour</span></span>
+<span id="cb1-171"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-171" aria-hidden="true" tabindex="-1"></a>  x1_range <span class="ot">&lt;-</span>  <span class="fu">seq</span>(<span class="fu">min</span>(dataset<span class="sc">$</span>x1), <span class="fu">max</span>(dataset<span class="sc">$</span>x1), <span class="at">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb1-172"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-172" aria-hidden="true" tabindex="-1"></a>  x2_range <span class="ot">&lt;-</span>  <span class="fu">seq</span>(<span class="fu">min</span>(dataset<span class="sc">$</span>x2), <span class="fu">max</span>(dataset<span class="sc">$</span>x2), <span class="at">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb1-173"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-173" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span>  <span class="fu">expand.grid</span>(<span class="at">x1 =</span> x1_range, <span class="at">x2 =</span> x2_range)</span>
+<span id="cb1-174"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-174" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-175"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-175" aria-hidden="true" tabindex="-1"></a>  <span class="co"># conditional probability of (x1, x2) given y = 0</span></span>
+<span id="cb1-176"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-176" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> grid <span class="sc">%&gt;%</span> </span>
+<span id="cb1-177"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-177" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb1-178"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-178" aria-hidden="true" tabindex="-1"></a>      <span class="at">g =</span> purrr<span class="sc">::</span><span class="fu">pmap_dbl</span>(., class_fun ),</span>
+<span id="cb1-179"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-179" aria-hidden="true" tabindex="-1"></a>      <span class="at">g =</span> <span class="fu">factor</span>(g)</span>
+<span id="cb1-180"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-180" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-181"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-181" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-182"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-182" aria-hidden="true" tabindex="-1"></a>  grid_merge <span class="ot">&lt;-</span> <span class="fu">merge</span>(grid, <span class="fu">data.frame</span>( <span class="at">class =</span> <span class="dv">0</span><span class="sc">:</span>(n_g<span class="dv">-1</span>) ), <span class="at">all=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-183"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-183" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-184"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-184" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-185"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-185" aria-hidden="true" tabindex="-1"></a>  l <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb1-186"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-186" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-187"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-187" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_g) {</span>
+<span id="cb1-188"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-188" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-189"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-189" aria-hidden="true" tabindex="-1"></a>    l[[i]] <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(grid<span class="sc">$</span>g <span class="sc">==</span> i, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb1-190"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-190" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-191"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-191" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-192"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-192" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-193"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-193" aria-hidden="true" tabindex="-1"></a> new_grid <span class="ot">&lt;-</span> grid_merge <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">p_class =</span> <span class="fu">ifelse</span>(class <span class="sc">==</span> g, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb1-194"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-194" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-195"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-195" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-196"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-196" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculates conditional probabilities</span></span>
+<span id="cb1-197"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-197" aria-hidden="true" tabindex="-1"></a>  conditional_prb <span class="ot">=</span> <span class="fu">do.call</span>(cbind.data.frame, l) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-198"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-198" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_colnames</span>(<span class="fu">paste0</span>(<span class="st">&quot;px_G&quot;</span>,<span class="dv">0</span><span class="sc">:</span>(n_g<span class="dv">-1</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-199"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-199" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb1-200"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-200" aria-hidden="true" tabindex="-1"></a>       <span class="at">py0_x =</span> treshold <span class="sc">*</span> px_G0,</span>
+<span id="cb1-201"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-201" aria-hidden="true" tabindex="-1"></a>       <span class="at">py1_x =</span> (<span class="dv">1</span><span class="sc">-</span>treshold) <span class="sc">*</span> px_G1,</span>
+<span id="cb1-202"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-202" aria-hidden="true" tabindex="-1"></a>       <span class="at">bayesborder =</span> py1_x <span class="sc">-</span> py0_x ,</span>
+<span id="cb1-203"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-203" aria-hidden="true" tabindex="-1"></a>       <span class="at">predictclass =</span> <span class="fu">ifelse</span>(py0_x <span class="sc">&gt;</span> py1_x, <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># posterior class</span></span>
+<span id="cb1-204"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-204" aria-hidden="true" tabindex="-1"></a>     )</span>
+<span id="cb1-205"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-205" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-206"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-206" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> <span class="fu">cbind</span>(grid, conditional_prb)</span>
+<span id="cb1-207"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-207" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-208"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-208" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-209"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-209" aria-hidden="true" tabindex="-1"></a>  dataset_plot_border <span class="ot">&lt;-</span> dataset_plot <span class="sc">+</span></span>
+<span id="cb1-210"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-210" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_contour</span>(<span class="at">data =</span> grid, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> x2, <span class="at">z =</span> bayesborder), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">breaks =</span> <span class="dv">0</span>)</span>
+<span id="cb1-211"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-211" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-212"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-212" aria-hidden="true" tabindex="-1"></a>  dataset_plot_border_newgrid <span class="ot">&lt;-</span> dataset_plot <span class="sc">+</span></span>
+<span id="cb1-213"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-213" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_contour</span>(<span class="at">data =</span> new_grid, <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> x2, <span class="at">z =</span> p_class, <span class="at">color =</span> <span class="fu">as.factor</span>(class), <span class="at">group =</span> <span class="fu">as.factor</span>(class)), <span class="at">bins =</span> <span class="dv">1</span>)</span>
+<span id="cb1-214"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-214" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-215"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-215" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-216"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-216" aria-hidden="true" tabindex="-1"></a>  <span class="co"># return results</span></span>
+<span id="cb1-217"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-217" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dataset_plot =</span> dataset_plot, <span class="at">dataset =</span> dataset, <span class="at">cond =</span> new_grid, <span class="at">border_plot =</span> dataset_plot_border_newgrid)</span>
+<span id="cb1-218"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>( results )</span>
+<span id="cb1-219"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-219" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-220"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-220" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-221"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-222"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-223"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-225"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification metrics function -----------------------------------------</span></span>
+<span id="cb1-226"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-227"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-227" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Calculate metrics for each model</span></span>
+<span id="cb1-228"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-228" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb1-229"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-229" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param test_data A data frame</span></span>
+<span id="cb1-230"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-230" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param model A model</span></span>
+<span id="cb1-231"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-231" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return A list with fit, confusion matrix, confusion plot, accuracy, roc curve</span></span>
+<span id="cb1-232"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; and auc roc</span></span>
+<span id="cb1-233"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; </span></span>
+<span id="cb1-234"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @examples</span></span>
+<span id="cb1-235"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-235" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; </span></span>
+<span id="cb1-236"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-237"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-237" aria-hidden="true" tabindex="-1"></a>model_metrics <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">test_data =</span> <span class="cn">NULL</span>, <span class="at">model =</span> <span class="cn">NULL</span> )  {</span>
+<span id="cb1-238"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-238" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-239"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-239" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-240"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-240" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Verify if inputs are correct data types</span></span>
+<span id="cb1-241"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-241" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="st">&quot;A test dataframe should be provided&quot;</span> <span class="ot">=</span> <span class="fu">is.data.frame</span>(test_data))</span>
+<span id="cb1-242"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-242" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="st">&quot;A model should be provided&quot;</span> <span class="ot">=</span> <span class="sc">!</span><span class="fu">is.null</span>(model))</span>
+<span id="cb1-243"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-243" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-244"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-244" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-245"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-245" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fit test data</span></span>
+<span id="cb1-246"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-246" aria-hidden="true" tabindex="-1"></a>  fit_test <span class="ot">&lt;-</span> </span>
+<span id="cb1-247"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-247" aria-hidden="true" tabindex="-1"></a>    test_data <span class="sc">%&gt;%</span> </span>
+<span id="cb1-248"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-248" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_cols</span>(</span>
+<span id="cb1-249"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-249" aria-hidden="true" tabindex="-1"></a>      <span class="fu">predict</span>(model, <span class="at">new_data =</span> test_data),</span>
+<span id="cb1-250"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-250" aria-hidden="true" tabindex="-1"></a>      <span class="fu">predict</span>(model, <span class="at">new_data =</span> test_data, <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>),</span>
+<span id="cb1-251"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-251" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-252"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-252" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate_if</span>(is.numeric, round, <span class="at">digits=</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-253"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-253" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb1-254"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-254" aria-hidden="true" tabindex="-1"></a>      <span class="at">decision =</span> .pred_1 <span class="sc">-</span> .pred_0</span>
+<span id="cb1-255"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-255" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-256"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-256" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-257"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-257" aria-hidden="true" tabindex="-1"></a>  <span class="co"># confusion matrix</span></span>
+<span id="cb1-258"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-258" aria-hidden="true" tabindex="-1"></a>  confusion_matrix <span class="ot">&lt;-</span> <span class="fu">conf_mat</span>(fit_test, <span class="at">truth =</span> g, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb1-259"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-259" aria-hidden="true" tabindex="-1"></a>  confusion_matrix_plot <span class="ot">&lt;-</span> <span class="fu">autoplot</span>(confusion_matrix, <span class="at">type =</span> <span class="st">&quot;heatmap&quot;</span>)</span>
+<span id="cb1-260"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-260" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-261"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-261" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-262"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-262" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Accuracy</span></span>
+<span id="cb1-263"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-263" aria-hidden="true" tabindex="-1"></a>  acc <span class="ot">&lt;-</span> <span class="fu">accuracy</span>(fit_test, <span class="at">truth =</span> g, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb1-264"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-264" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-265"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-265" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Roc curve</span></span>
+<span id="cb1-266"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-266" aria-hidden="true" tabindex="-1"></a>  roc_curve <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">nlevels</span>(test_data<span class="sc">$</span>g) <span class="sc">&gt;</span> <span class="dv">2</span>) {</span>
+<span id="cb1-267"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-267" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-268"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-268" aria-hidden="true" tabindex="-1"></a>    <span class="fu">roc_curve</span>(</span>
+<span id="cb1-269"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-269" aria-hidden="true" tabindex="-1"></a>      fit_test, <span class="at">truth =</span> g, </span>
+<span id="cb1-270"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-270" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(<span class="st">&quot;.pred_&quot;</span>,<span class="dv">0</span>)<span class="sc">:</span><span class="fu">paste0</span>(<span class="st">&quot;.pred_&quot;</span>,<span class="fu">nlevels</span>(test_data<span class="sc">$</span>g)<span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-271"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-271" aria-hidden="true" tabindex="-1"></a>      <span class="at">.level =</span> .pred_0) <span class="sc">%&gt;%</span>  </span>
+<span id="cb1-272"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-272" aria-hidden="true" tabindex="-1"></a>      <span class="fu">autoplot</span>() </span>
+<span id="cb1-273"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-273" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-274"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-274" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-275"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-275" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-276"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-276" aria-hidden="true" tabindex="-1"></a>    <span class="fu">roc_curve</span>(fit_test, <span class="at">truth =</span> g, <span class="at">estimate =</span> .pred_0) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-277"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-277" aria-hidden="true" tabindex="-1"></a>    <span class="fu">autoplot</span>()</span>
+<span id="cb1-278"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-278" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-279"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-279" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-280"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-280" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-281"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-281" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-282"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-282" aria-hidden="true" tabindex="-1"></a>  auc_roc <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">nlevels</span>(test_data<span class="sc">$</span>g) <span class="sc">&gt;</span> <span class="dv">2</span>) {</span>
+<span id="cb1-283"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-283" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-284"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-284" aria-hidden="true" tabindex="-1"></a>    estimator <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">nlevels</span>(test_data<span class="sc">$</span>g) <span class="sc">&gt;</span> <span class="dv">2</span>, <span class="st">&quot;macro_weighted&quot;</span>,<span class="cn">NULL</span>) </span>
+<span id="cb1-285"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-285" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-286"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-286" aria-hidden="true" tabindex="-1"></a>   <span class="fu">roc_auc</span>(fit_test,</span>
+<span id="cb1-287"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-287" aria-hidden="true" tabindex="-1"></a>            <span class="at">truth =</span> g, </span>
+<span id="cb1-288"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-288" aria-hidden="true" tabindex="-1"></a>            <span class="fu">paste0</span>(<span class="st">&quot;.pred_&quot;</span>,<span class="dv">0</span>)<span class="sc">:</span><span class="fu">paste0</span>(<span class="st">&quot;.pred_&quot;</span>,<span class="fu">nlevels</span>(test_data<span class="sc">$</span>g)<span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb1-289"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-289" aria-hidden="true" tabindex="-1"></a>            <span class="at">estimator =</span> estimator)</span>
+<span id="cb1-290"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-290" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-291"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-291" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-292"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-292" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb1-293"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-293" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-294"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-294" aria-hidden="true" tabindex="-1"></a>    <span class="fu">roc_auc</span>(fit_test, <span class="at">truth =</span> g, .pred_0)</span>
+<span id="cb1-295"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-295" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-296"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-296" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-297"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-297" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-298"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-298" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-299"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-299" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-300"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-300" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">fit =</span> fit_test, </span>
+<span id="cb1-301"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-301" aria-hidden="true" tabindex="-1"></a>                  <span class="at">cf_matrix =</span> confusion_matrix, </span>
+<span id="cb1-302"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-302" aria-hidden="true" tabindex="-1"></a>                  <span class="at">cf_plot =</span>  confusion_matrix_plot, </span>
+<span id="cb1-303"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-303" aria-hidden="true" tabindex="-1"></a>                  <span class="at">acc =</span> acc, </span>
+<span id="cb1-304"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-304" aria-hidden="true" tabindex="-1"></a>                  <span class="at">roc_curve =</span> roc_curve, </span>
+<span id="cb1-305"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-305" aria-hidden="true" tabindex="-1"></a>                  <span class="at">auc_roc =</span> auc_roc)</span>
+<span id="cb1-306"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-306" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-307"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-307" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
+<span id="cb1-308"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-308" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-309"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-310"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-310" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-311"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-312"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-312" aria-hidden="true" tabindex="-1"></a><span class="co"># model_fit ---------------------------------------------------------------</span></span>
+<span id="cb1-313"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-314"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-314" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; Fits and compare two workflows applied to 2 datasets</span></span>
+<span id="cb1-315"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39;</span></span>
+<span id="cb1-316"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-316" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param datasets A list of datasets to compare</span></span>
+<span id="cb1-317"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-317" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param workflows A list containing elements of type workflow</span></span>
+<span id="cb1-318"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-318" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @param folds Integer number of folds for cross validation, default = 10</span></span>
+<span id="cb1-319"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-319" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @return dsa</span></span>
+<span id="cb1-320"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-320" aria-hidden="true" tabindex="-1"></a><span class="co">#&#39; @example </span></span>
+<span id="cb1-321"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-322"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-322" aria-hidden="true" tabindex="-1"></a>model_fit_compare <span class="ot">&lt;-</span> <span class="cf">function</span>(data, workflows, <span class="at">folds =</span> <span class="dv">10</span>) {</span>
+<span id="cb1-323"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-323" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-324"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-324" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Verify if inputs are correct data types</span></span>
+<span id="cb1-325"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="st">&quot;Datasets should be a list of dataframes&quot;</span> <span class="ot">=</span> <span class="fu">is.list</span>(data))</span>
+<span id="cb1-326"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-326" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="st">&quot;Workflows need to be of type workflow and passed as list&quot;</span> <span class="ot">=</span> <span class="fu">is.list</span>(workflows))</span>
+<span id="cb1-327"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-327" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-328"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-328" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define variables</span></span>
+<span id="cb1-329"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-329" aria-hidden="true" tabindex="-1"></a>  datasets <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data, <span class="cf">function</span>(f) f<span class="sc">$</span>dataset)</span>
+<span id="cb1-330"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-330" aria-hidden="true" tabindex="-1"></a>  grids <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data, <span class="cf">function</span>(f) f<span class="sc">$</span>cond)</span>
+<span id="cb1-331"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-331" aria-hidden="true" tabindex="-1"></a>  plots <span class="ot">&lt;-</span> <span class="fu">lapply</span>(data, <span class="cf">function</span>(f) f<span class="sc">$</span>border_plot)</span>
+<span id="cb1-332"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-332" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-333"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-333" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(datasets) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;dataset&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(datasets))</span>
+<span id="cb1-334"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(grids) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;dataset&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(datasets))</span>
+<span id="cb1-335"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(plots) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;dataset&quot;</span>,<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(datasets))</span>
+<span id="cb1-336"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-336" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-337"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-337" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-338"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-338" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Split train and test</span></span>
+<span id="cb1-339"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-339" aria-hidden="true" tabindex="-1"></a>  splits <span class="ot">&lt;-</span> <span class="fu">lapply</span>(datasets, rsample<span class="sc">::</span>initial_split, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb1-340"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-340" aria-hidden="true" tabindex="-1"></a>  split_dataset <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb1-341"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-341" aria-hidden="true" tabindex="-1"></a>    <span class="at">train =</span> <span class="fu">lapply</span>(splits, rsample<span class="sc">::</span>training),</span>
+<span id="cb1-342"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-342" aria-hidden="true" tabindex="-1"></a>    <span class="at">test =</span> <span class="fu">lapply</span>(splits, rsample<span class="sc">::</span>testing)</span>
+<span id="cb1-343"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-343" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-344"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-344" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-345"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-345" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-346"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-346" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fit control and resamples</span></span>
+<span id="cb1-347"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-347" aria-hidden="true" tabindex="-1"></a>  fit_control <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-348"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-348" aria-hidden="true" tabindex="-1"></a>  split_dataset<span class="sc">$</span>folds <span class="ot">&lt;-</span> <span class="fu">lapply</span>(split_dataset<span class="sc">$</span>train, vfold_cv, <span class="at">v =</span> folds)</span>
+<span id="cb1-349"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-349" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-350"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-350" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-351"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-351" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(split_dataset<span class="sc">$</span>folds)) {</span>
+<span id="cb1-352"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-352" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-353"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-353" aria-hidden="true" tabindex="-1"></a>    name <span class="ot">=</span> <span class="fu">names</span>(split_dataset<span class="sc">$</span>folds[i])</span>
+<span id="cb1-354"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-354" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-355"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-355" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for metrics</span></span>
+<span id="cb1-356"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-356" aria-hidden="true" tabindex="-1"></a>    split_dataset<span class="sc">$</span>fit_resample_train[[name]] <span class="ot">=</span> </span>
+<span id="cb1-357"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-357" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lapply</span>(</span>
+<span id="cb1-358"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-358" aria-hidden="true" tabindex="-1"></a>        workflows, </span>
+<span id="cb1-359"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-359" aria-hidden="true" tabindex="-1"></a>        tune<span class="sc">::</span>fit_resamples, </span>
+<span id="cb1-360"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-360" aria-hidden="true" tabindex="-1"></a>        <span class="at">resamples =</span> split_dataset[[<span class="st">&quot;folds&quot;</span>]][[i]], </span>
+<span id="cb1-361"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-361" aria-hidden="true" tabindex="-1"></a>        <span class="at">verbose =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb1-362"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-362" aria-hidden="true" tabindex="-1"></a>        <span class="at">control =</span> fit_control</span>
+<span id="cb1-363"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-363" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-364"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-364" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-365"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-365" aria-hidden="true" tabindex="-1"></a>    <span class="co"># models</span></span>
+<span id="cb1-366"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-366" aria-hidden="true" tabindex="-1"></a>    split_dataset<span class="sc">$</span>fit_model[[name]] <span class="ot">=</span></span>
+<span id="cb1-367"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-367" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lapply</span>(</span>
+<span id="cb1-368"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-368" aria-hidden="true" tabindex="-1"></a>        workflows, </span>
+<span id="cb1-369"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-369" aria-hidden="true" tabindex="-1"></a>        parsnip<span class="sc">::</span>fit,</span>
+<span id="cb1-370"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-370" aria-hidden="true" tabindex="-1"></a>        split_dataset[[<span class="st">&quot;train&quot;</span>]][[i]]</span>
+<span id="cb1-371"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-371" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-372"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-372" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-373"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-373" aria-hidden="true" tabindex="-1"></a>    <span class="co"># extract model</span></span>
+<span id="cb1-374"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-374" aria-hidden="true" tabindex="-1"></a>    split_dataset<span class="sc">$</span>models[[name]] <span class="ot">=</span></span>
+<span id="cb1-375"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-375" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lapply</span>(</span>
+<span id="cb1-376"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-376" aria-hidden="true" tabindex="-1"></a>        split_dataset<span class="sc">$</span>fit_model[[i]],</span>
+<span id="cb1-377"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-377" aria-hidden="true" tabindex="-1"></a>        workflows<span class="sc">::</span>extract_fit_parsnip</span>
+<span id="cb1-378"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-378" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-379"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-379" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-380"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-381"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-381" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-382"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-382" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Compare results</span></span>
+<span id="cb1-383"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-383" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-384"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-384" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define grids for plots contour</span></span>
+<span id="cb1-385"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-385" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(grids)) {</span>
+<span id="cb1-386"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-386" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-387"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-387" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (m <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(split_dataset<span class="sc">$</span>models)){</span>
+<span id="cb1-388"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-388" aria-hidden="true" tabindex="-1"></a>      grids<span class="sc">$</span>fitted[[<span class="fu">paste0</span>(<span class="st">&quot;dataset&quot;</span>,i)]][[<span class="fu">names</span>(split_dataset<span class="sc">$</span>models[[i]][m])]] <span class="ot">&lt;-</span> </span>
+<span id="cb1-389"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-389" aria-hidden="true" tabindex="-1"></a>        grids[[i]] <span class="sc">%&gt;%</span> </span>
+<span id="cb1-390"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-390" aria-hidden="true" tabindex="-1"></a>        <span class="fu">bind_cols</span>(</span>
+<span id="cb1-391"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-391" aria-hidden="true" tabindex="-1"></a>          <span class="fu">predict</span>(split_dataset<span class="sc">$</span>models[[i]][[m]], <span class="at">new_data =</span> grids[[i]]),</span>
+<span id="cb1-392"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-392" aria-hidden="true" tabindex="-1"></a>          <span class="fu">predict</span>(split_dataset<span class="sc">$</span>models[[i]][[m]], <span class="at">new_data =</span> grids[[i]], <span class="at">type =</span> <span class="st">&quot;prob&quot;</span>)</span>
+<span id="cb1-393"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-393" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-394"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-394" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(</span>
+<span id="cb1-395"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-395" aria-hidden="true" tabindex="-1"></a>          <span class="at">.pred_1 =</span> <span class="fu">round</span>(.pred_1, <span class="dv">3</span>),</span>
+<span id="cb1-396"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-396" aria-hidden="true" tabindex="-1"></a>          <span class="at">.pred_0 =</span> <span class="fu">round</span>(.pred_0, <span class="dv">3</span>),</span>
+<span id="cb1-397"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-397" aria-hidden="true" tabindex="-1"></a>          <span class="at">decision =</span> .pred_1 <span class="sc">-</span> .pred_0</span>
+<span id="cb1-398"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-398" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-399"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-399" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-400"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-400" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-401"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-401" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-402"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-402" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Generate new plots</span></span>
+<span id="cb1-403"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-403" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (p <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(plots)) {</span>
+<span id="cb1-404"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-404" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (g <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(grids<span class="sc">$</span>fitted)){</span>
+<span id="cb1-405"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-405" aria-hidden="true" tabindex="-1"></a>      plots<span class="sc">$</span>model_decision[[<span class="fu">paste0</span>(<span class="st">&quot;dataset&quot;</span>,p)]][[<span class="fu">names</span>(grids<span class="sc">$</span>fitted[[p]][g])]] <span class="ot">&lt;-</span> </span>
+<span id="cb1-406"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-406" aria-hidden="true" tabindex="-1"></a>        plots[[p]] <span class="sc">+</span></span>
+<span id="cb1-407"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-407" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_contour</span>(<span class="at">data =</span> grids<span class="sc">$</span>fitted[[p]][[g]], <span class="fu">aes</span>(<span class="at">x =</span> x1,<span class="at">y =</span> x2, <span class="at">z =</span> decision), <span class="at">color =</span> <span class="st">&quot;Purple&quot;</span>, <span class="at">breaks =</span> <span class="dv">0</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb1-408"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-408" aria-hidden="true" tabindex="-1"></a>        <span class="fu">geom_point</span>(<span class="at">data =</span> grids<span class="sc">$</span>fitted[[p]][[g]], <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> x2, <span class="at">color =</span>.pred_class ), <span class="at">size =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>)</span>
+<span id="cb1-409"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-409" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-410"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-410" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-411"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-411" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-412"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-412" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> (<span class="fu">list</span>(<span class="at">plots =</span> plots, <span class="at">models =</span> split_dataset, <span class="at">grids =</span> grids))</span>
+<span id="cb1-413"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-413" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results)</span>
+<span id="cb1-414"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-414" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-415"><a href="how-to-run-and-reproduce-the-conclusions.html#cb1-415" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<p style="text-align: center;">
+<a href="approaches-and-assumptions.html"><button class="btn btn-default">Previous</button></a>
+<a href="environment-info.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

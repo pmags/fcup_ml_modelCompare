@@ -199,8 +199,8 @@ boosted_wflow <-
 
 ```{r}
 
-data <- list(dataset_linear, )
-workflows <- list(boosting = bosted_wflow, dtree = dtree_wflow)
+data <- list(dataset_linear, dataset_normal_dist)
+workflows <- list(boosting = boosted_wflow, dtree = dtree_wflow)
 
 compare_fit <- model_fit_compare(data = data, workflows = workflows)
 
